@@ -4,7 +4,7 @@ const controller = require("../controllers/patients.controller");
 
 router.post(
   "/new-prescription",
-  authMiddleware(["doctor"]),
+  authMiddleware(["Doctor"]),
   controller.newPrescription
 );
 

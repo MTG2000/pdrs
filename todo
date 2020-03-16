@@ -1,3 +1,5 @@
 move the try-catch to the controller
 add commit and rollback
-add not null to primary keys
+hash Passwords
+make tables on delete cascade
+optimize sql queries

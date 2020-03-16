@@ -17,19 +17,20 @@ const usersRepository = require("../repositories/users.repository");
 const newPrescription = async (req, res) => {
   const { patientId, patientName, medicins, classificationId, note } = req.body;
   //!!! add validation !!!
-  const patientExist = await patientsRepository.getPatient(patientId);
+  const patientExist = await usersRepository.getPatients(patientId);
   if (!patientExist) {
-    await patientsRepository.newPatient(patientId, patientName);
+    await usersRepository.newPatient(patientId, patientName);
   }
   const doctorId = await usersRepository.getDoctorId(req.user.username);
-  if (!doctorId) res.status(400).send("Incorrect Data");
-  const prescriptionId = await medicinsRepository.newPrescription(
+  console.log(doctorId);
+  if (!doctorId) return res.status(400).send("Incorrect Data");
+  const prescriptionId = await patientsRepository.newPrescription(
     patientId,
     doctorId,
     classificationId,
     note
   );
-  const result = await medicinsRepository.addMedicinsToPrescription(
+  const result = await patientsRepository.addMedicinsToPrescription(
     prescriptionId,
     medicins
   );
@@ -37,25 +38,31 @@ const newPrescription = async (req, res) => {
 };
 
 const getPrescriptions = async (req, res) => {
-  const patientId = req.params.id;
+  const patientId = req.query.patientId;
   const classification = req.params.classification || "";
-  const chronicMedicins = [];
-  const prescriptions = await medicinsRepository.getPatientPrescriptions(
-    patientId,
-    classification
-  );
-  prescriptions.forEach(async prescription => {
-    const medicins = await medicinsRepository.getPrescriptionMedicins(
-      prescription.id
+  let chronicMedicins = [];
+  let prescriptions = [];
+  if (!classification)
+    prescriptions = await patientsRepository.getPatientPrescriptions(patientId);
+  else
+    prescriptions = await patientsRepository.getPatientPrescriptions(
+      patientId,
+      classification
+    );
+
+  for (const prescription of prescriptions) {
+    const medicins = await patientsRepository.getPrescriptionMedicins(
+      prescription.ID
     );
     prescription.medicins = medicins;
-    chronicMedicins = [
-      ...medicins.filter(m => m.isChronic),
-      ...chronicMedicins
-    ];
-  });
 
-  res.send({
+    chronicMedicins = [
+      ...chronicMedicins,
+      ...medicins.filter(m => m.isChronic == true)
+    ];
+  }
+
+  res.json({
     prescriptions,
     chronicMedicins
   });

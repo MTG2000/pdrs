@@ -33,7 +33,8 @@ app.use(express.json());
 //   await require("./services/db").initializeConnection("./db/pdrs.db");
 //   await require("./services/db").initializeTables();
 // })();
-
+app.use("/api/patients", require("./routes/patients.route"));
+app.use("/api/medicins", require("./routes/medicins.route"));
 app.use("/api/users", require("./routes/users.route"));
 
 app.listen(PORT, () => {

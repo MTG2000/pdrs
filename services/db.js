@@ -42,7 +42,7 @@ const initializeTables = async (db, dropExisitingTables = false) => {
 (async () => {
   db = await initializeConnection("./db/pdrs.db");
   await initializeTables(db);
-  // await seedTables(run);
+  // await seedTables(run, get);
 })();
 
 const begingTransaction = async () => {

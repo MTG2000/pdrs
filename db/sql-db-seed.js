@@ -1,6 +1,6 @@
 const sqlQueries = require("./sql-queries");
 
-module.exports = async run => {
+module.exports = async (run, get) => {
   //seed UserTypes
   try {
     //First Empty All Tables
@@ -15,7 +15,6 @@ module.exports = async run => {
     for (let ut of usersTypes) {
       ut = (await run(sqlQueries.insert_UserType, [ut])).lastID;
     }
-
     const users = [
       { userType: 1, username: "mtg", password: "123" },
       {
@@ -44,9 +43,11 @@ module.exports = async run => {
     console.log("Seeding Users");
     for (let i = 0; i < users.length; i++) {
       const u = users[i];
-      u.userType = usersTypes[u.userType];
+      const userTypeId = (
+        await get(sqlQueries.getUserTypeId, [usersTypes[u.userType]])
+      ).ID;
       u.id = (
-        await run(sqlQueries.insert_User, [u.userType, u.username, u.password])
+        await run(sqlQueries.insert_User, [userTypeId, u.username, u.password])
       ).lastID;
     }
 
@@ -55,7 +56,7 @@ module.exports = async run => {
     console.log("Seeding Doctors");
     for (let i = 0; i < users.length; i++) {
       const u = users[i];
-      if (usersTypes[2] === u.userType) {
+      if (u.userType == 2) {
         //if he is a doctor
         u.doctorId = (
           await run(sqlQueries.insert_Doctor, [u.doctorName, u.id])
@@ -67,7 +68,7 @@ module.exports = async run => {
     console.log("Seeding Pharmacies");
     for (let i = 0; i < users.length; i++) {
       const u = users[i];
-      if (usersTypes[3] === u.userType) {
+      if (3 === u.userType) {
         //if he is a phramacy
         u.pharmacyId = (
           await run(sqlQueries.insert_Pharmacy, [

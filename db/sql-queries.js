@@ -140,6 +140,49 @@ const insert_MedicinePrescription = `
 INSERT INTO Medicine_Prescription (Medicine_ID,Prescription_ID,isBold,isChronic) VALUES (?,?,?,?);
 `;
 
+const getUserTypeId = `
+select * from UsersTypes where lower(type) == lower(?)
+`;
+
+const getUserTypeById = `
+select * from UsersTypes where id == ?
+`;
+
+const getPatientsById = `
+select * from Patients where lower(id) like lower(?)
+`;
+
+const getDoctorIdByUsername = `
+SELECT d.id 
+from doctors d , users u
+where d.USER_ID = u.ID and lower(u.username) = lower(?)`;
+
+const getMedicinsByName = `
+Select * from Medicins where lower(Name) Like lower( ? )
+`;
+
+const medicineExist = `
+Select * from Medicins where lower(Name) = lower( ? )
+`;
+
+const getUser = `
+select * from Users where username=? and password = ?
+`;
+
+const getPatientPrescriptions = `
+  select * from prescriptions 
+  where patient_id = ? 
+`;
+
+const getPatientPrescriptionsByClassification = `
+  select * from prescriptions 
+  where patient_id = ? and classification_Id = ?
+`;
+
+const getPrescriptionMedicins = `
+  select * from Medicine_Prescription where prescription_ID = ?
+`;
+
 const createTablesPatch = [
   createTable_Users,
   createTable_UserTypes,
@@ -167,5 +210,15 @@ module.exports = {
   insert_Medicine,
   insert_Classification,
   insert_Prescription,
-  insert_MedicinePrescription
+  insert_MedicinePrescription,
+  getMedicinsByName,
+  medicineExist,
+  getUserTypeId,
+  getUserTypeById,
+  getPatientsById,
+  getDoctorIdByUsername,
+  getUser,
+  getPatientPrescriptions,
+  getPatientPrescriptionsByClassification,
+  getPrescriptionMedicins
 };
