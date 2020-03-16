@@ -28,7 +28,10 @@ router.post("/login", (req, res) => {
     //User Doesn't exist or wrong credentials
     return res.status(500).json("Incorrect Credentials");
 
-  const token = authService.generateToken({ name: user.name, role: user.role });
+  const token = authService.generateToken({
+    username: user.name,
+    role: user.role
+  });
 
   //set cookie with the token
   res
@@ -40,10 +43,14 @@ router.post("/login", (req, res) => {
     .send("Successfully login");
 });
 
-router.get("/private", authMiddleware, (req, res) => {
+router.get("/private", authMiddleware(), (req, res) => {
   res.send(req.user);
 });
 
-router.get("/", controller.getUsers);
+router.get("/private-admin", authMiddleware("admin"), (req, res) => {
+  res.send(req.user);
+});
+
+router.get("/patients", controller.getPatients);
 
 module.exports = router;

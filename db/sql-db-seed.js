@@ -1,0 +1,156 @@
+const sqlQueries = require("./sql-queries");
+
+module.exports = async run => {
+  //seed UserTypes
+  try {
+    //First Empty All Tables
+    for (const sql of sqlQueries.emptyAllTablesPatch) {
+      await run(sql);
+    }
+
+    const usersTypes = ["Master Admin", "Admin", "Doctor", "Pharmacy"];
+    // Seed UserTypes
+    //--------------
+    console.log("Seeding UsersTypes");
+    for (let ut of usersTypes) {
+      ut = (await run(sqlQueries.insert_UserType, [ut])).lastID;
+    }
+
+    const users = [
+      { userType: 1, username: "mtg", password: "123" },
+      {
+        userType: 2,
+        username: "ahmad",
+        password: "123",
+        doctorName: "Ahmad Ghazal"
+      },
+      {
+        userType: 2,
+        username: "morad",
+        password: "123",
+        doctorName: "Morad Nabeel"
+      },
+      {
+        userType: 3,
+        username: "samer",
+        password: "123",
+        pharmacyName: "Al-Fateh",
+        pharmacyLocation: "Aleppo Al-Jamelia"
+      }
+    ];
+
+    // Seed Users
+    //--------------
+    console.log("Seeding Users");
+    for (let i = 0; i < users.length; i++) {
+      const u = users[i];
+      u.userType = usersTypes[u.userType];
+      u.id = (
+        await run(sqlQueries.insert_User, [u.userType, u.username, u.password])
+      ).lastID;
+    }
+
+    //Seed Doctors
+    //--------------
+    console.log("Seeding Doctors");
+    for (let i = 0; i < users.length; i++) {
+      const u = users[i];
+      if (usersTypes[2] === u.userType) {
+        //if he is a doctor
+        u.doctorId = (
+          await run(sqlQueries.insert_Doctor, [u.doctorName, u.id])
+        ).lastID;
+      }
+    }
+    //Seed Pharmacies
+    //--------------
+    console.log("Seeding Pharmacies");
+    for (let i = 0; i < users.length; i++) {
+      const u = users[i];
+      if (usersTypes[3] === u.userType) {
+        //if he is a phramacy
+        u.pharmacyId = (
+          await run(sqlQueries.insert_Pharmacy, [
+            u.pharmacyName,
+            u.pharmacyLocation,
+            u.id
+          ])
+        ).lastID;
+      }
+    }
+
+    //Seed Patients
+    //--------------
+    const patients = [
+      { id: "02114432341", name: "Fadi Tahan" },
+      { id: "02114443115", name: "Basim Yakhoor" },
+      { id: "02116674324", name: "Abd-Alhadi Issa" },
+      { id: "02996753455", name: "Shahed Ibraheem" }
+    ];
+
+    console.log("Seeding Patients");
+    for (const p of patients) {
+      await run(sqlQueries.insert_Patient, [p.id, p.name]);
+    }
+
+    //Seed Medicins
+    //--------------
+    const medicins = [
+      { name: "Sitamol" },
+      { name: "Panadol" },
+      { name: "Profien" },
+      { name: "Shfazien-Forte" },
+      { name: "Benzamien" },
+      { name: "Spizazol-Forte" }
+    ];
+    console.log("Seeding Medicins");
+
+    for (const m of medicins) {
+      m.id = (await run(sqlQueries.insert_Medicine, [m.name])).lastID;
+    }
+
+    //Seed Classifications
+    //--------------
+    const classifications = [
+      { name: "Bones" },
+      { name: "Teeth" },
+      { name: "Neural" },
+      { name: "Skin" },
+      { name: "Digestive" },
+      { name: "Sight" }
+    ];
+    console.log("Seeding Classifications");
+    for (const c of classifications) {
+      c.id = (await run(sqlQueries.insert_Classification, [c.name])).lastID;
+    }
+
+    //Seed Prescriptions
+    //--------------
+    console.log("Seeding Prescriptions");
+    const prescriptionId = (
+      await run(sqlQueries.insert_Prescription, [
+        users[1].doctorId,
+        patients[0].id,
+        classifications[0].id,
+        "The Patient sufferd from an intense injuery in his right arm"
+      ])
+    ).lastID;
+
+    //Seed MedicinePrescription
+    //--------------
+    console.log("Seeding MedicinePrescription");
+    const medsToTake = [0, 1, 4];
+    for (const medIndex of medsToTake) {
+      await run(sqlQueries.insert_MedicinePrescription, [
+        medicins[medIndex].id,
+        prescriptionId,
+        "0",
+        medIndex === 4 ? "1" : "0"
+      ]);
+    }
+
+    console.log("Seeding Completed");
+  } catch (error) {
+    console.log("Error While Seeding: " + error);
+  }
+};

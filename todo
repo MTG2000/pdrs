@@ -1,0 +1,3 @@
+move the try-catch to the controller
+add commit and rollback
+add not null to primary keys
