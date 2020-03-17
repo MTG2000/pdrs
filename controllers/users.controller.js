@@ -25,7 +25,7 @@ const loginUser = async (req, res) => {
       httpOnly: true
     })
     .status(200)
-    .send("Successfully login");
+    .send({ success: "Successfully login" });
 };
 
 const getPatients = async (req, res) => {
@@ -54,8 +54,10 @@ const newPharmacy = async (req, res) => {
 const registerUser = async (req, res) => {
   try {
     const type = req.body.type;
+    const { username, password: passwordRaw } = req.body;
+    const password = await bcrypt.hash(passwordRaw, saltRounds);
     if (type === "doctor") {
-      const { username, password, doctorName } = req.body;
+      const { doctorName } = req.body;
       const doctorId = await repository.insertDoctor(
         username,
         password,
@@ -63,7 +65,7 @@ const registerUser = async (req, res) => {
       );
       return res.json(doctorId);
     } else if (type === "pharmacy") {
-      const { username, password, pharmacyName, address } = req.body;
+      const { pharmacyName, address } = req.body;
       const pharmacyId = await repository.insertPharmacy(
         username,
         password,
