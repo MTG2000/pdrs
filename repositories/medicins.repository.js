@@ -29,24 +29,13 @@ const addMedicine = async medicineName => {
 
 const getClassifications = async () => {
   try {
-    return await db.all(`select * from Classifications`);
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-const getClassificationId = async (name = "") => {
-  try {
-    return await db.all(`SELECT ID from classification where name = ? `, [
-      `${name}%`
-    ]);
+    return await DB.queryAll(sqlQueries.getClassificationsAll);
   } catch (error) {
     console.log(error);
   }
 };
 
 module.exports = {
-  getClassificationId,
   addMedicine,
   getMedicins,
   getClassifications,

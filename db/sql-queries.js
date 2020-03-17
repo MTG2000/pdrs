@@ -157,6 +157,12 @@ SELECT d.id
 from doctors d , users u
 where d.USER_ID = u.ID and lower(u.username) = lower(?)`;
 
+const getPharmacyIdByUsername = `
+SELECT p.id 
+from Pharmacies p , users u
+where p.USER_ID = u.ID and lower(u.username) = lower(?)
+`;
+
 const getMedicinsByName = `
 Select * from Medicins where lower(Name) Like lower( ? )
 `;
@@ -181,6 +187,22 @@ const getPatientPrescriptionsByClassification = `
 
 const getPrescriptionMedicins = `
   select * from Medicine_Prescription where prescription_ID = ?
+`;
+
+const getClassificationsAll = `
+select * from Classifications ;
+`;
+
+const dispenseMedicine = `
+update Medicine_Prescription 
+set Pharmacy_Id = ?
+where medicine_Id = ? and prescription_Id = ?
+`;
+
+const stopChronincMedicine = `
+update Medicine_Prescription 
+set isChronic = '0'
+where medicine_Id = ? and prescription_Id = ?
 `;
 
 const createTablesPatch = [
@@ -220,5 +242,9 @@ module.exports = {
   getUser,
   getPatientPrescriptions,
   getPatientPrescriptionsByClassification,
-  getPrescriptionMedicins
+  getPrescriptionMedicins,
+  getClassificationsAll,
+  getPharmacyIdByUsername,
+  dispenseMedicine,
+  stopChronincMedicine
 };

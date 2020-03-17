@@ -22,7 +22,6 @@ const newPrescription = async (req, res) => {
     await usersRepository.newPatient(patientId, patientName);
   }
   const doctorId = await usersRepository.getDoctorId(req.user.username);
-  console.log(doctorId);
   if (!doctorId) return res.status(400).send("Incorrect Data");
   const prescriptionId = await patientsRepository.newPrescription(
     patientId,
@@ -49,7 +48,6 @@ const getPrescriptions = async (req, res) => {
       patientId,
       classification
     );
-
   for (const prescription of prescriptions) {
     const medicins = await patientsRepository.getPrescriptionMedicins(
       prescription.ID
@@ -68,4 +66,41 @@ const getPrescriptions = async (req, res) => {
   });
 };
 
-module.exports = { newPrescription, getPrescriptions };
+// const reqBody = {
+//   patientId: "021233123",
+//   prescriptionId: 4,
+//   medicins: [1, 2]
+// };
+const dispenseMedicins = async (req, res) => {
+  try {
+    const { prescriptionId, medicins } = req.body;
+    const pharmacyId = await usersRepository.getPharmacyId(req.user.username);
+    for (const med of medicins) {
+      await patientsRepository.dispenseMedicine(
+        prescriptionId,
+        med,
+        pharmacyId
+      );
+    }
+    res.send({ success: true });
+  } catch (error) {
+    res.send("Error Catched");
+  }
+};
+
+const stopChronicMedicine = async (req, res) => {
+  try {
+    const { prescriptionId, medicineId } = req.body;
+    await patientsRepository.stopChronicMedicine(prescriptionId, medicineId);
+    res.send({ success: true });
+  } catch (error) {
+    res.send("Error Catched");
+  }
+};
+
+module.exports = {
+  newPrescription,
+  getPrescriptions,
+  dispenseMedicins,
+  stopChronicMedicine
+};

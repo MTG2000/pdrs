@@ -54,6 +54,7 @@ const addMedicinsToPrescription = async (prescriptionId, medicins) => {
 
 async function getPatientPrescriptions(patientId) {
   try {
+    console.log(patientId);
     return await DB.queryAll(sqlQueries.getPatientPrescriptions, [patientId]);
   } catch (error) {
     console.log(error);
@@ -84,6 +85,29 @@ const getPrescriptionMedicins = async prescriptionId => {
   }
 };
 
+const dispenseMedicine = async (prescriptionId, medicineId, pharmacyId) => {
+  try {
+    return await DB.queryAll(sqlQueries.dispenseMedicine, [
+      pharmacyId,
+      medicineId,
+      prescriptionId
+    ]);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const stopChronicMedicine = async (prescriptionId, medicineId) => {
+  try {
+    return await DB.run(sqlQueries.stopChronincMedicine, [
+      medicineId,
+      prescriptionId
+    ]);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 module.exports = {
   getPatient,
   getAllPatient,
@@ -91,5 +115,7 @@ module.exports = {
   addMedicinsToPrescription,
   getPatientPrescriptions,
   getPrescriptionMedicins,
-  getPatientPrescriptionsByClassification
+  getPatientPrescriptionsByClassification,
+  dispenseMedicine,
+  stopChronicMedicine
 };

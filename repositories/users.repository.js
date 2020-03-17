@@ -72,6 +72,17 @@ const getDoctorId = async (username = "") => {
   }
 };
 
+const getPharmacyId = async (username = "") => {
+  try {
+    const pharmacyId = await DB.get(sqlQueries.getPharmacyIdByUsername, [
+      username
+    ]);
+    return pharmacyId.ID;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 module.exports = {
   getPatients,
   getUser,
@@ -79,5 +90,6 @@ module.exports = {
   insertPharmacy,
   insertDoctor,
   newPatient,
-  getUserTypeById
+  getUserTypeById,
+  getPharmacyId
 };
