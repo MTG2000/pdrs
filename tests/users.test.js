@@ -6,7 +6,7 @@ beforeAll(async () => {
   await DB.initializeDB(true, true);
 });
 
-describe("register and login users", () => {
+describe("Registering and Creating Users", () => {
   let authToken;
 
   it("should login as admin", async () => {
@@ -35,9 +35,24 @@ describe("register and login users", () => {
     newDoctorId = res.body;
   });
 
+  let newPharmacyId;
+  it("should register a new pharmacy", async () => {
+    const res = await request(app)
+      .post("/api/users/register")
+      .set("Cookie", [`token = ${authToken}`])
+      .send({
+        username: "momo2",
+        password: "123",
+        type: "pharmacy",
+        pharmacyName: "Pharmacica",
+        address: "Damascus city"
+      });
+    expect(res.statusCode).toEqual(200);
+    newPharmacyId = res.body;
+  });
+
   it("get Patients by name", async () => {
     const res = await request(app).get("/api/users/patients");
-
     expect(res.statusCode).toEqual(200);
     expect(res.body[0].Name).toEqual("Fadi Tahan");
   });

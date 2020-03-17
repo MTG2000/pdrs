@@ -65,7 +65,9 @@ const registerUser = async (req, res, next) => {
         password,
         doctorName
       );
-      return res.json(doctorId);
+      res.json(doctorId);
+      next();
+      return;
     } else if (type === "pharmacy") {
       const { pharmacyName, address } = req.body;
       const pharmacyId = await repository.insertPharmacy(
@@ -74,15 +76,17 @@ const registerUser = async (req, res, next) => {
         pharmacyName,
         address
       );
-      return res.json(pharmacyId);
+      res.json(pharmacyId);
+      next();
+      return;
     }
     res.status(400).send({ error: "Type Not Available" });
   } catch (error) {
     console.error(error);
     res.failed = true;
     res.status(400).json({ error: error });
+    next();
   }
-  next();
 };
 
 module.exports = { getPatients, registerUser, newPharmacy, loginUser };

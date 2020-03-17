@@ -16,6 +16,7 @@ const transactionEnd = async (req, res, next) => {
   if (res.failed) {
     await rollbackTransaction();
   } else await commitTransaction();
+  res.end();
   next();
 };
 

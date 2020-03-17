@@ -7,7 +7,6 @@ const getUser = async username => {
 const getPatients = async (id = "") => {
   return await DB.queryAll(sqlQueries.getPatientsById, [`${id}%`]);
 };
-
 const newPatient = async (id, name) => {
   return await DB.run(sqlQueries.insert_Patient, [id, name]);
 };
