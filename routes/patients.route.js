@@ -1,26 +1,27 @@
 const router = require("express").Router();
 const authMiddleware = require("../middleware/auth");
-const sqlTrxMiddleware = require("../middleware/sqlTransaction");
+const transactionBeginMiddleware = require("../middleware/sqlTransaction")
+  .transactionBegin;
 const controller = require("../controllers/patients.controller");
 
 router.post(
   "/new-prescription",
   authMiddleware(["Doctor"]),
-  sqlTrxMiddleware,
+  transactionBeginMiddleware,
   controller.newPrescription
 );
 
 router.post(
   "/stop-chronic",
   authMiddleware(["Doctor"]),
-  sqlTrxMiddleware,
+  transactionBeginMiddleware,
   controller.stopChronicMedicine
 );
 
 router.post(
   "/dipense",
   authMiddleware(["Pharmacy"]),
-  sqlTrxMiddleware,
+  transactionBeginMiddleware,
   controller.dispenseMedicins
 );
 

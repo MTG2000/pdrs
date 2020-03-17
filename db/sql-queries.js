@@ -180,10 +180,9 @@ set isChronic = '0'
 where medicine_Id = ? and prescription_Id = ?
 `;
 
-const createPatientsIndex = `CREATE INDEX IF NOT EXISTS patients_name_idx on PATIENTS(Name)`;
 const createMedicinsIndex = `CREATE INDEX IF NOT EXISTS medicine_name_idx ON Medicins(Name);`;
 
-const createIndicesPatch = [createPatientsIndex, createMedicinsIndex];
+const createIndicesPatch = [createMedicinsIndex];
 
 const emptyAllTablesPatch = [
   "Delete from UsersTypes",

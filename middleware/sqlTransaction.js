@@ -4,12 +4,19 @@ const {
   rollbackTransaction
 } = require("../services/db");
 
-module.exports = async (req, res, next) => {
+const transactionBegin = async (req, res, next) => {
+  console.log("Transaction Begin");
   await begingTransaction();
   next();
+};
+
+const transactionEnd = async (req, res, next) => {
+  console.log("Transaction End");
+
   if (res.failed) {
     await rollbackTransaction();
-  } else {
-    await commitTransaction();
-  }
+  } else await commitTransaction();
+  next();
 };
+
+module.exports = { transactionBegin, transactionEnd };

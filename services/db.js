@@ -14,8 +14,6 @@ const initializeConnection = async path => {
 
 const initializeTables = async (db, dropExisitingTables = false) => {
   try {
-    await begingTransaction();
-
     if (dropExisitingTables) {
       console.log("Dropping Tables");
       for (const sql of sqlQueries.dropAllTablesPatch) {
@@ -38,22 +36,22 @@ const initializeTables = async (db, dropExisitingTables = false) => {
 
     console.log("Tables Created Successfully");
 
-    console.log("Creating Indices");
+    // console.log("Creating Indices");
     for (const sql of sqlQueries.createIndicesPatch) {
       await run(sql);
     }
-    console.log("Indices created successfully");
-
-    await commitTransaction();
+    // console.log("Indices created successfully");
   } catch (error) {
-    await rollbackTransaction();
+    console.log("Error Happened white creating tables" + error);
   }
 };
 
 (async () => {
   db = await initializeConnection("./db/pdrs.db");
+  await begingTransaction();
   await initializeTables(db, false);
   // await seedTables(run, get);
+  await commitTransaction();
 })();
 
 const begingTransaction = async () => {

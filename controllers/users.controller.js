@@ -51,7 +51,7 @@ const newPharmacy = async (req, res) => {
   }
 };
 
-const registerUser = async (req, res) => {
+const registerUser = async (req, res, next) => {
   try {
     const type = req.body.type;
     const { username, password: passwordRaw } = req.body;
@@ -80,6 +80,7 @@ const registerUser = async (req, res) => {
     res.failed = true;
     res.status(400).json({ error: error });
   }
+  next();
 };
 
 module.exports = { getPatients, registerUser, newPharmacy, loginUser };

@@ -13,7 +13,7 @@ const usersRepository = require("../repositories/users.repository");
 // classification:"bones",
 // note:"the patient suffer from an injury to his knee"
 // }
-const newPrescription = async (req, res) => {
+const newPrescription = async (req, res, next) => {
   try {
     const {
       patientId,
@@ -28,7 +28,7 @@ const newPrescription = async (req, res) => {
       await usersRepository.newPatient(patientId, patientName);
     }
     const doctorId = await usersRepository.getDoctorId(req.user.username);
-    if (!doctorId) return res.status(400).send("Incorrect Data");
+    if (!doctorId) return res.status(400).send({ error: "Incorrect Data" });
     const prescriptionId = await patientsRepository.newPrescription(
       patientId,
       doctorId,
@@ -45,6 +45,7 @@ const newPrescription = async (req, res) => {
     res.failed = true;
     res.status(400).json({ error: error });
   }
+  next();
 };
 
 const getPrescriptions = async (req, res) => {
@@ -82,7 +83,7 @@ const getPrescriptions = async (req, res) => {
 //   prescriptionId: 4,
 //   medicins: [1, 2]
 // };
-const dispenseMedicins = async (req, res) => {
+const dispenseMedicins = async (req, res, next) => {
   try {
     const { prescriptionId, medicins } = req.body;
     const pharmacyId = await usersRepository.getPharmacyId(req.user.username);
@@ -99,9 +100,10 @@ const dispenseMedicins = async (req, res) => {
     res.failed = true;
     res.status(400).json({ error: error });
   }
+  next();
 };
 
-const stopChronicMedicine = async (req, res) => {
+const stopChronicMedicine = async (req, res, next) => {
   try {
     const { prescriptionId, medicineId } = req.body;
     await patientsRepository.stopChronicMedicine(prescriptionId, medicineId);
@@ -111,6 +113,7 @@ const stopChronicMedicine = async (req, res) => {
     res.failed = true;
     res.status(400).json({ error: error });
   }
+  next();
 };
 
 module.exports = {

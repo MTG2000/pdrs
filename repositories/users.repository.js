@@ -28,9 +28,9 @@ const insertUser = async (username, password, type = "pharmacy") => {
 
 const insertDoctor = async (username, password, doctorName) => {
   const userId = await insertUser(username, password, "doctor");
-  const doctorId = (
-    await DB.run(sqlQueries.insert_Doctor, [doctorName, userId])
-  ).lastID;
+  const doctorId =
+    //  userId])
+    (await DB.run(sqlQueries.insert_Doctor, [doctorName, 999])).lastID;
   return doctorId;
 };
 

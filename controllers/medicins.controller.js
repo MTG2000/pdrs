@@ -1,9 +1,13 @@
 const repository = require("../repositories/medicins.repository");
+const {
+  begingTransaction,
+  commitTransaction,
+  rollbackTransaction
+} = require("../services/db");
 
 const getMedicins = async (req, res) => {
   const { name = "" } = req.query;
   const medicins = await repository.getMedicins(name);
-
   res.json(medicins);
 };
 
@@ -12,10 +16,11 @@ const getClassifications = async (req, res) => {
   res.json(classifications);
 };
 
-const newMedicine = async (req, res) => {
+const newMedicine = async (req, res, next) => {
   try {
     const { name } = req.body;
     const medicineExist = await repository.medicineExist(name);
+
     if (!medicineExist) {
       const medicineId = await repository.addMedicine(name);
       res.status(201).json(medicineId);
@@ -25,6 +30,7 @@ const newMedicine = async (req, res) => {
     res.failed = true;
     res.status(400).json({ error: error });
   }
+  next();
 };
 
 module.exports = { getMedicins, getClassifications, newMedicine };

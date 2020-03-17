@@ -29,13 +29,12 @@ app.use(express.json());
 //     })
 //   );
 
-// (async () => {
-//   await require("./services/db").initializeConnection("./db/pdrs.db");
-//   await require("./services/db").initializeTables();
-// })();
 app.use("/api/patients", require("./routes/patients.route"));
 app.use("/api/medicins", require("./routes/medicins.route"));
 app.use("/api/users", require("./routes/users.route"));
+
+//
+app.use(require("./middleware/sqlTransaction").transactionEnd);
 
 app.listen(PORT, () => {
   console.log(`Listening on port : ${PORT}`);

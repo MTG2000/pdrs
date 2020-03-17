@@ -10,7 +10,8 @@ const medicineExist = async medicineName => {
 };
 
 const addMedicine = async medicineName => {
-  return (await DB.run(sqlQueries.insert_Medicine, [medicineName])).lastId;
+  const result = await DB.run(sqlQueries.insert_Medicine, [medicineName]);
+  return result.lastID;
 };
 
 const getClassifications = async () => {
