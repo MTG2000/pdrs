@@ -2,9 +2,9 @@ const request = require("supertest");
 const app = require("../server");
 const DB = require("../services/db");
 
-beforeAll(async () => {
-  await DB.initializeDB(true, true);
-});
+// beforeAll(async () => {
+//   await DB.initializeDB(true, true, true);
+// });
 
 describe("Registering and Creating Users", () => {
   let authToken;
@@ -61,5 +61,6 @@ describe("Registering and Creating Users", () => {
 afterAll(async done => {
   // Closing the DB connection allows Jest to exit successfully.
   // dbConnection.close();
+  await DB.closeDB();
   done();
 });

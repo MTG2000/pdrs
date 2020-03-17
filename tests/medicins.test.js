@@ -2,10 +2,9 @@ const request = require("supertest");
 const app = require("../server");
 const DB = require("../services/db");
 
-beforeAll(async () => {
-  await DB.initializeDB(true, true);
-  console.log("CREATE CONNECTION");
-});
+// beforeAll(async () => {
+//   await DB.initializeDB(true, true, true);
+// });
 
 describe("Testing medicins api", () => {
   it("should get all classification", async () => {
@@ -40,6 +39,6 @@ describe("Testing medicins api", () => {
 
 afterAll(async done => {
   // Closing the DB connection allows Jest to exit successfully.
-  // dbConnection.close();
+  await DB.closeDB();
   done();
 });

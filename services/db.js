@@ -1,4 +1,4 @@
-const sql = require("sqlite-async");
+const sql = require("sqlite");
 const sqlQueries = require("../db/sql-queries");
 const seedTables = require("../db/sql-db-seed");
 let db;
@@ -59,11 +59,18 @@ const initializeTables = async (
 // })();
 
 const initializeDB = async (seed = false, dropTables = false, log = false) => {
+  console.log(db);
   db = await initializeConnection("./db/pdrs.db");
+  await db.configure("busyTimeout", 4000);
   await begingTransaction();
   await initializeTables(db, dropTables, log);
   seed && (await seedTables(run, get, log));
   await commitTransaction();
+};
+
+const closeDB = async () => {
+  // await db.close();
+  console.log("Closed");
 };
 
 const begingTransaction = async () => {
@@ -100,6 +107,7 @@ module.exports = {
     rollbackTransaction
   },
   initializeDB,
+  closeDB,
   begingTransaction,
   commitTransaction,
   rollbackTransaction
