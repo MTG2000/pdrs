@@ -15,25 +15,37 @@ const usersRepository = require("../repositories/users.repository");
 // note:"the patient suffer from an injury to his knee"
 // }
 const newPrescription = async (req, res) => {
-  const { patientId, patientName, medicins, classificationId, note } = req.body;
-  //!!! add validation !!!
-  const patientExist = await usersRepository.getPatients(patientId);
-  if (!patientExist) {
-    await usersRepository.newPatient(patientId, patientName);
+  try {
+    const {
+      patientId,
+      patientName,
+      medicins,
+      classificationId,
+      note
+    } = req.body;
+    //!!! add validation !!!
+    const patientExist = await usersRepository.getPatients(patientId);
+    if (!patientExist) {
+      await usersRepository.newPatient(patientId, patientName);
+    }
+    const doctorId = await usersRepository.getDoctorId(req.user.username);
+    if (!doctorId) return res.status(400).send("Incorrect Data");
+    const prescriptionId = await patientsRepository.newPrescription(
+      patientId,
+      doctorId,
+      classificationId,
+      note
+    );
+    const result = await patientsRepository.addMedicinsToPrescription(
+      prescriptionId,
+      medicins
+    );
+    res.send({ success: result });
+  } catch (error) {
+    console.error(error);
+    res.failed = true;
+    res.status(400).json({ error: error });
   }
-  const doctorId = await usersRepository.getDoctorId(req.user.username);
-  if (!doctorId) return res.status(400).send("Incorrect Data");
-  const prescriptionId = await patientsRepository.newPrescription(
-    patientId,
-    doctorId,
-    classificationId,
-    note
-  );
-  const result = await patientsRepository.addMedicinsToPrescription(
-    prescriptionId,
-    medicins
-  );
-  res.send({ success: result });
 };
 
 const getPrescriptions = async (req, res) => {
@@ -84,7 +96,9 @@ const dispenseMedicins = async (req, res) => {
     }
     res.send({ success: true });
   } catch (error) {
-    res.send("Error Catched");
+    console.error(error);
+    res.failed = true;
+    res.status(400).json({ error: error });
   }
 };
 
@@ -94,7 +108,9 @@ const stopChronicMedicine = async (req, res) => {
     await patientsRepository.stopChronicMedicine(prescriptionId, medicineId);
     res.send({ success: true });
   } catch (error) {
-    res.send("Error Catched");
+    console.error(error);
+    res.failed = true;
+    res.status(400).json({ error: error });
   }
 };
 

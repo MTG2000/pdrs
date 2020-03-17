@@ -2,37 +2,19 @@ const DB = require("../services/db").DB;
 const sqlQueries = require("../db/sql-queries");
 
 const getMedicins = async medicineName => {
-  try {
-    return await DB.queryAll(sqlQueries.getMedicinsByName, [
-      `${medicineName}%`
-    ]);
-  } catch (error) {
-    console.log(error);
-  }
+  return await DB.queryAll(sqlQueries.getMedicinsByName, [`${medicineName}%`]);
 };
 
 const medicineExist = async medicineName => {
-  try {
-    return await DB.get(sqlQueries.medicineExist, [medicineName]);
-  } catch (error) {
-    console.log(error);
-  }
+  return await DB.get(sqlQueries.medicineExist, [medicineName]);
 };
 
 const addMedicine = async medicineName => {
-  try {
-    return (await DB.run(sqlQueries.insert_Medicine, [medicineName])).lastId;
-  } catch (error) {
-    console.log(error);
-  }
+  return (await DB.run(sqlQueries.insert_Medicine, [medicineName])).lastId;
 };
 
 const getClassifications = async () => {
-  try {
-    return await DB.queryAll(sqlQueries.getClassificationsAll);
-  } catch (error) {
-    console.log(error);
-  }
+  return await DB.queryAll(sqlQueries.getClassificationsAll);
 };
 
 module.exports = {

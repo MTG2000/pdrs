@@ -33,27 +33,7 @@ const getPatients = async (req, res) => {
 };
 
 const newPharmacy = async (req, res) => {
-  const { username, password, pharmacyName, address } = req.body;
-  const pharmacyId = await repository.insertPharmacy(
-    username,
-    password,
-    pharmacyName,
-    address
-  );
-  return pharmacyId;
-};
-
-const registerUser = async (req, res) => {
-  const type = req.body.type;
-  if (type === "doctor") {
-    const { username, password, doctorName } = req.body;
-    const doctorId = await repository.insertDoctor(
-      username,
-      password,
-      doctorName
-    );
-    return res.json(doctorId);
-  } else if (type === "pharmacy") {
+  try {
     const { username, password, pharmacyName, address } = req.body;
     const pharmacyId = await repository.insertPharmacy(
       username,
@@ -61,10 +41,39 @@ const registerUser = async (req, res) => {
       pharmacyName,
       address
     );
-    return res.json(pharmacyId);
+    res.json(pharmacyId);
+  } catch (error) {
+    res.failed = true;
+    res.status(400).json({ error: error });
   }
+};
 
-  res.status(400).send({ error: "Type Not Available" });
+const registerUser = async (req, res) => {
+  try {
+    const type = req.body.type;
+    if (type === "doctor") {
+      const { username, password, doctorName } = req.body;
+      const doctorId = await repository.insertDoctor(
+        username,
+        password,
+        doctorName
+      );
+      return res.json(doctorId);
+    } else if (type === "pharmacy") {
+      const { username, password, pharmacyName, address } = req.body;
+      const pharmacyId = await repository.insertPharmacy(
+        username,
+        password,
+        pharmacyName,
+        address
+      );
+      return res.json(pharmacyId);
+    }
+    res.status(400).send({ error: "Type Not Available" });
+  } catch (error) {
+    res.failed = true;
+    res.status(400).json({ error: error });
+  }
 };
 
 module.exports = { getPatients, registerUser, newPharmacy, loginUser };

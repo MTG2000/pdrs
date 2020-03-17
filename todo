@@ -3,3 +3,4 @@ add commit and rollback
 hash Passwords
 make tables on delete cascade
 optimize sql queries
+set cookies security to true

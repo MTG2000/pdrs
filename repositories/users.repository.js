@@ -2,26 +2,14 @@ const DB = require("../services/db").DB;
 const sqlQueries = require("../db/sql-queries");
 
 const getUser = async (username, password) => {
-  try {
-    return await DB.get(sqlQueries.getUser, [username, password]);
-  } catch (error) {
-    console.log(error);
-  }
+  return await DB.get(sqlQueries.getUser, [username, password]);
 };
 const getPatients = async (id = "") => {
-  try {
-    return await DB.queryAll(sqlQueries.getPatientsById, [`${id}%`]);
-  } catch (error) {
-    console.log(error);
-  }
+  return await DB.queryAll(sqlQueries.getPatientsById, [`${id}%`]);
 };
 
 const newPatient = async (id, name) => {
-  try {
-    return await DB.run(sqlQueries.insert_Patient, [id, name]);
-  } catch (error) {
-    console.log(error);
-  }
+  return await DB.run(sqlQueries.insert_Patient, [id, name]);
 };
 
 const getUserTypeId = async name => {
@@ -39,48 +27,32 @@ const insertUser = async (username, password, type = "pharmacy") => {
 };
 
 const insertDoctor = async (username, password, doctorName) => {
-  try {
-    const userId = await insertUser(username, password, "doctor");
-    const doctorId = (
-      await DB.run(sqlQueries.insert_Doctor, [doctorName, userId])
-    ).lastID;
-    return doctorId;
-  } catch (error) {
-    console.log(error);
-  }
+  const userId = await insertUser(username, password, "doctor");
+  const doctorId = (
+    await DB.run(sqlQueries.insert_Doctor, [doctorName, userId])
+  ).lastID;
+  return doctorId;
 };
 
 const insertPharmacy = async (username, password, pharmacyName, address) => {
-  try {
-    const userId = await insertUser(username, password, "pharmacy");
-    const pharmacyId = (
-      await DB.run(sqlQueries.insert_Pharmacy, [pharmacyName, address, userId])
-    ).lastID;
+  const userId = await insertUser(username, password, "pharmacy");
+  const pharmacyId = (
+    await DB.run(sqlQueries.insert_Pharmacy, [pharmacyName, address, userId])
+  ).lastID;
 
-    return pharmacyId;
-  } catch (error) {
-    console.log(error);
-  }
+  return pharmacyId;
 };
 
 const getDoctorId = async (username = "") => {
-  try {
-    const doctorId = await DB.get(sqlQueries.getDoctorIdByUsername, [username]);
-    return doctorId.ID;
-  } catch (error) {
-    console.log(error);
-  }
+  const doctorId = await DB.get(sqlQueries.getDoctorIdByUsername, [username]);
+  return doctorId.ID;
 };
 
 const getPharmacyId = async (username = "") => {
-  try {
-    const pharmacyId = await DB.get(sqlQueries.getPharmacyIdByUsername, [
-      username
-    ]);
-    return pharmacyId.ID;
-  } catch (error) {
-    console.log(error);
-  }
+  const pharmacyId = await DB.get(sqlQueries.getPharmacyIdByUsername, [
+    username
+  ]);
+  return pharmacyId.ID;
 };
 
 module.exports = {
