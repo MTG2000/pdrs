@@ -1,5 +1,3 @@
-move the try-catch to the controller
-add commit and rollback
 hash Passwords
 make tables on delete cascade
 optimize sql queries

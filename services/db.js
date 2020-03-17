@@ -39,8 +39,16 @@ const initializeTables = async (db, dropExisitingTables = false) => {
   }
 };
 
+const dropAllTables = async () => {
+  console.log("Dropping Tables");
+  for (const sql of sqlQueries.dropAllTablesPatch) {
+    await run(sql);
+  }
+};
+
 (async () => {
   db = await initializeConnection("./db/pdrs.db");
+  // await dropAllTables();
   await initializeTables(db);
   // await seedTables(run, get);
 })();

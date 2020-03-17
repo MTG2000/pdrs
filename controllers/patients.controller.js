@@ -1,5 +1,4 @@
 const patientsRepository = require("../repositories/patients.repository");
-const medicinsRepository = require("../repositories/medicins.repository");
 const usersRepository = require("../repositories/users.repository");
 
 // {
@@ -62,7 +61,7 @@ const getPrescriptions = async (req, res) => {
     );
   for (const prescription of prescriptions) {
     const medicins = await patientsRepository.getPrescriptionMedicins(
-      prescription.ID
+      prescription.Id
     );
     prescription.medicins = medicins;
 

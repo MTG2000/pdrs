@@ -13,10 +13,10 @@ const newPatient = async (id, name) => {
 };
 
 const getUserTypeId = async name => {
-  return (await DB.get(sqlQueries.getUserTypeId, [name])).ID;
+  return (await DB.get(sqlQueries.getUserTypeId, [name])).Id;
 };
 const getUserTypeById = async id => {
-  return (await DB.get(sqlQueries.getUserTypeById, [id])).TYPE;
+  return (await DB.get(sqlQueries.getUserTypeById, [id])).Type;
 };
 
 const insertUser = async (username, password, type = "pharmacy") => {
@@ -45,14 +45,14 @@ const insertPharmacy = async (username, password, pharmacyName, address) => {
 
 const getDoctorId = async (username = "") => {
   const doctorId = await DB.get(sqlQueries.getDoctorIdByUsername, [username]);
-  return doctorId.ID;
+  return doctorId.Id;
 };
 
 const getPharmacyId = async (username = "") => {
   const pharmacyId = await DB.get(sqlQueries.getPharmacyIdByUsername, [
     username
   ]);
-  return pharmacyId.ID;
+  return pharmacyId.Id;
 };
 
 module.exports = {

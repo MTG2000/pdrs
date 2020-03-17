@@ -43,6 +43,7 @@ const newPharmacy = async (req, res) => {
     );
     res.json(pharmacyId);
   } catch (error) {
+    console.error(error);
     res.failed = true;
     res.status(400).json({ error: error });
   }
@@ -71,6 +72,7 @@ const registerUser = async (req, res) => {
     }
     res.status(400).send({ error: "Type Not Available" });
   } catch (error) {
+    console.error(error);
     res.failed = true;
     res.status(400).json({ error: error });
   }
