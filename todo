@@ -1,3 +1,4 @@
 optimize sql queries
 set cookies security to true
-fix maxLength Issue
+add validation
+remove token from response

@@ -2,7 +2,7 @@ const sqlQueries = require("./sql-queries");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 
-module.exports = async (run, get) => {
+module.exports = async (run, get, log = false) => {
   //seed UserTypes
   try {
     //First Empty All Tables
@@ -13,7 +13,7 @@ module.exports = async (run, get) => {
     const usersTypes = ["Master Admin", "Admin", "Doctor", "Pharmacy"];
     // Seed UserTypes
     //--------------
-    console.log("Seeding UsersTypes");
+    log && console.log("Seeding UsersTypes");
     for (let ut of usersTypes) {
       ut = (await run(sqlQueries.insert_UserType, [ut])).lastID;
     }
@@ -42,7 +42,7 @@ module.exports = async (run, get) => {
 
     // Seed Users
     //--------------
-    console.log("Seeding Users");
+    log && console.log("Seeding Users");
     for (let i = 0; i < users.length; i++) {
       const u = users[i];
       const userTypeId = (
@@ -60,7 +60,7 @@ module.exports = async (run, get) => {
 
     //Seed Doctors
     //--------------
-    console.log("Seeding Doctors");
+    log && console.log("Seeding Doctors");
     for (let i = 0; i < users.length; i++) {
       const u = users[i];
       if (u.userType == 2) {
@@ -72,7 +72,7 @@ module.exports = async (run, get) => {
     }
     //Seed Pharmacies
     //--------------
-    console.log("Seeding Pharmacies");
+    log && console.log("Seeding Pharmacies");
     for (let i = 0; i < users.length; i++) {
       const u = users[i];
       if (3 === u.userType) {
@@ -96,7 +96,7 @@ module.exports = async (run, get) => {
       { id: "02996753455", name: "Shahed Ibraheem" }
     ];
 
-    console.log("Seeding Patients");
+    log && console.log("Seeding Patients");
     for (const p of patients) {
       await run(sqlQueries.insert_Patient, [p.id, p.name]);
     }
@@ -111,7 +111,7 @@ module.exports = async (run, get) => {
       { name: "Benzamien" },
       { name: "Spizazol-Forte" }
     ];
-    console.log("Seeding Medicins");
+    log && console.log("Seeding Medicins");
 
     for (const m of medicins) {
       m.id = (await run(sqlQueries.insert_Medicine, [m.name])).lastID;
@@ -127,14 +127,14 @@ module.exports = async (run, get) => {
       { name: "Digestive" },
       { name: "Sight" }
     ];
-    console.log("Seeding Classifications");
+    log && console.log("Seeding Classifications");
     for (const c of classifications) {
       c.id = (await run(sqlQueries.insert_Classification, [c.name])).lastID;
     }
 
     //Seed Prescriptions
     //--------------
-    console.log("Seeding Prescriptions");
+    log && console.log("Seeding Prescriptions");
     const prescriptionId = (
       await run(sqlQueries.insert_Prescription, [
         users[1].doctorId,
@@ -146,7 +146,7 @@ module.exports = async (run, get) => {
 
     //Seed MedicinePrescription
     //--------------
-    console.log("Seeding MedicinePrescription");
+    log && console.log("Seeding MedicinePrescription");
     const medsToTake = [0, 1, 4];
     for (const medIndex of medsToTake) {
       await run(sqlQueries.insert_MedicinePrescription, [
@@ -157,7 +157,7 @@ module.exports = async (run, get) => {
       ]);
     }
 
-    console.log("Seeding Completed");
+    log && console.log("Seeding Completed");
   } catch (error) {
     console.log("Error While Seeding: " + error);
   }

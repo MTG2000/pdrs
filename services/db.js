@@ -12,14 +12,18 @@ const initializeConnection = async path => {
   }
 };
 
-const initializeTables = async (db, dropExisitingTables = false) => {
+const initializeTables = async (
+  db,
+  dropExisitingTables = false,
+  log = false
+) => {
   try {
     if (dropExisitingTables) {
-      console.log("Dropping Tables");
+      log && console.log("Dropping Tables");
       for (const sql of sqlQueries.dropAllTablesPatch) {
         await run(sql);
       }
-      console.log("Tables Dropped Successfully");
+      log && console.log("Tables Dropped Successfully");
     }
     const createTablesStatements = sqlQueries.createTablesPatch;
     for (let i = 0; i < createTablesStatements.length; i++) {
@@ -34,7 +38,7 @@ const initializeTables = async (db, dropExisitingTables = false) => {
       }
     }
 
-    console.log("Tables Created Successfully");
+    log && console.log("Tables Created Successfully");
 
     // console.log("Creating Indices");
     for (const sql of sqlQueries.createIndicesPatch) {
@@ -46,13 +50,21 @@ const initializeTables = async (db, dropExisitingTables = false) => {
   }
 };
 
-(async () => {
+// (async () => {
+//   db = await initializeConnection("./db/pdrs.db");
+//   await begingTransaction();
+//   await initializeTables(db, false);
+//   // await seedTables(run, get);
+//   await commitTransaction();
+// })();
+
+const initializeDB = async (seed = false, dropTables = false, log = false) => {
   db = await initializeConnection("./db/pdrs.db");
   await begingTransaction();
-  await initializeTables(db, false);
-  // await seedTables(run, get);
+  await initializeTables(db, dropTables, log);
+  seed && (await seedTables(run, get, log));
   await commitTransaction();
-})();
+};
 
 const begingTransaction = async () => {
   await db.run(sqlQueries.transactionBegin);
@@ -87,8 +99,7 @@ module.exports = {
     commitTransaction,
     rollbackTransaction
   },
-  initializeConnection,
-  initializeTables,
+  initializeDB,
   begingTransaction,
   commitTransaction,
   rollbackTransaction

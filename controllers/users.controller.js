@@ -7,8 +7,7 @@ const loginUser = async (req, res) => {
   //Verify credentials
   const { username, password } = req.body;
   const user = await repository.getUser(username);
-  const passwordCorrect = await bcrypt.compare(password, user.Password);
-  if (!user || !passwordCorrect)
+  if (!user || !(await bcrypt.compare(password, user.Password)))
     //User Doesn't exist or wrong credentials
     return res.status(401).json("Incorrect Credentials");
 
@@ -25,7 +24,10 @@ const loginUser = async (req, res) => {
       httpOnly: true
     })
     .status(200)
-    .send({ success: "Successfully login" });
+    .send({
+      success: "Successfully login",
+      token //Testing Purposes ONLY !!!!!!!!!!!
+    });
 };
 
 const getPatients = async (req, res) => {
