@@ -13,7 +13,6 @@ if (!dev) {
 }
 
 // server.use(cors());
-
 server.use(cookieParser());
 server.use(express.urlencoded({ extended: false }));
 server.use(express.json());
@@ -33,9 +32,10 @@ server.use("/api/medicins", require("./routes/medicins.route"));
 server.use("/api/users", require("./routes/users.route"));
 
 server.use(require("./middleware/sqlTransaction").transactionEnd);
-
 (async () => {
-  if (server.get("env") !== "test") await DB.initializeDB(false, false);
+  if (server.get("env") === "development")
+    await DB.initializeDB(true, true, true);
+  else await DB.initializeDB(false, false, false);
 })();
 
 module.exports = server;

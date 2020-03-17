@@ -50,16 +50,7 @@ const initializeTables = async (
   }
 };
 
-// (async () => {
-//   db = await initializeConnection("./db/pdrs.db");
-//   await begingTransaction();
-//   await initializeTables(db, false);
-//   // await seedTables(run, get);
-//   await commitTransaction();
-// })();
-
 const initializeDB = async (seed = false, dropTables = false, log = false) => {
-  console.log(db);
   db = await initializeConnection("./db/pdrs.db");
   await db.configure("busyTimeout", 4000);
   await begingTransaction();
@@ -69,7 +60,7 @@ const initializeDB = async (seed = false, dropTables = false, log = false) => {
 };
 
 const closeDB = async () => {
-  // await db.close();
+  await db.close();
   console.log("Closed");
 };
 
