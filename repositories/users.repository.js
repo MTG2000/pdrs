@@ -1,8 +1,8 @@
 const DB = require("../services/db").DB;
 const sqlQueries = require("../db/sql-queries");
 
-const getUser = async (username, password) => {
-  return await DB.get(sqlQueries.getUser, [username, password]);
+const getUser = async username => {
+  return await DB.get(sqlQueries.getUser, [username]);
 };
 const getPatients = async (id = "") => {
   return await DB.queryAll(sqlQueries.getPatientsById, [`${id}%`]);

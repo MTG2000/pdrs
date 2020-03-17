@@ -1,4 +1,6 @@
 const sqlQueries = require("./sql-queries");
+const bcrypt = require("bcrypt");
+const saltRounds = 10;
 
 module.exports = async (run, get) => {
   //seed UserTypes
@@ -45,9 +47,14 @@ module.exports = async (run, get) => {
       const u = users[i];
       const userTypeId = (
         await get(sqlQueries.getUserTypeId, [usersTypes[u.userType]])
-      ).ID;
+      ).Id;
+      const passwordHash = await bcrypt.hash(u.password, saltRounds);
       u.id = (
-        await run(sqlQueries.insert_User, [userTypeId, u.username, u.password])
+        await run(sqlQueries.insert_User, [
+          userTypeId,
+          u.username,
+          passwordHash
+        ])
       ).lastID;
     }
 

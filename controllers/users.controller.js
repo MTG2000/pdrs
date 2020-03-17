@@ -1,16 +1,18 @@
 const repository = require("../repositories/users.repository");
 const authService = require("../services/auth");
+const bcrypt = require("bcrypt");
+const saltRounds = 10;
 
 const loginUser = async (req, res) => {
   //Verify credentials
   const { username, password } = req.body;
-  const user = await repository.getUser(username, password);
-  const role = await repository.getUserTypeById(user.UserType_ID);
-
-  if (!user)
+  const user = await repository.getUser(username);
+  const passwordCorrect = await bcrypt.compare(password, user.Password);
+  if (!user || !passwordCorrect)
     //User Doesn't exist or wrong credentials
     return res.status(401).json("Incorrect Credentials");
 
+  const role = await repository.getUserTypeById(user.UserType_Id);
   const token = authService.generateToken({
     username: user.USERNAME,
     role: role

@@ -12,7 +12,7 @@ const createTable_Users = `
 CREATE TABLE IF NOT EXISTS Users 
 ( 
 Id  INTEGER PRIMARY KEY, 
-UserType_ID   INTEGER REFERENCES USERSTYPES(ID), 
+UserType_Id   INTEGER REFERENCES USERSTYPES(ID), 
 Username  VARCHAR(25) NOT NULL UNIQUE, 
 Password  VARCHAR(50) NOT NULL 
 )`;
@@ -48,7 +48,6 @@ CREATE TABLE IF NOT EXISTS Medicins
   Id  INTEGER PRIMARY KEY, 
   Name  VARCHAR(100) NOT NULL UNIQUE
 );
-CREATE INDEX medicine_name ON Medicins(Name);
 `;
 
 const createTable_Classifications = `
@@ -74,35 +73,11 @@ CREATE TABLE IF NOT EXISTS Medicine_Prescription
 ( 
   Medicine_ID  INTEGER REFERENCES MEDICINEs (ID), 
   Prescription_ID  INTEGER REFERENCES PRESCRIPTIONs (ID) ON UPDATE CASCADE ON DELETE CASCADE, 
-  isBold CHAR(1) NOT NULL, 
-  isChronic CHAR(1) NOT NULL, 
+  IsBold CHAR(1) NOT NULL, 
+  IsChronic CHAR(1) NOT NULL, 
   Pharmacy_ID   INTEGER REFERENCES Pharmacies(ID), 
   PRIMARY KEY  ( Medicine_ID, Prescription_ID)
 );`;
-
-const emptyAllTablesPatch = [
-  "Delete from UsersTypes",
-  "Delete from Users",
-  "Delete from Pharmacies",
-  "Delete from Doctors",
-  "Delete from Patients",
-  "Delete from Medicins",
-  "Delete from Classifications",
-  "Delete from Prescriptions",
-  "Delete from Medicine_Prescription"
-];
-
-const dropAllTablesPatch = [
-  "Drop Table UsersTypes",
-  "Drop Table Users",
-  "Drop Table Pharmacies",
-  "Drop Table Doctors",
-  "Drop Table Patients",
-  "Drop Table Medicins",
-  "Drop Table Classifications",
-  "Drop Table Prescriptions",
-  "Drop Table Medicine_Prescription"
-];
 
 const insert_UserType = `
 INSERT INTO UsersTypes (type) VALUES (?);
@@ -172,7 +147,7 @@ Select * from Medicins where lower(Name) = lower( ? )
 `;
 
 const getUser = `
-select * from Users where username=? and password = ?
+select * from Users where username=? 
 `;
 
 const getPatientPrescriptions = `
@@ -205,6 +180,35 @@ set isChronic = '0'
 where medicine_Id = ? and prescription_Id = ?
 `;
 
+const createPatientsIndex = `CREATE INDEX IF NOT EXISTS patients_name_idx on PATIENTS(Name)`;
+const createMedicinsIndex = `CREATE INDEX IF NOT EXISTS medicine_name_idx ON Medicins(Name);`;
+
+const createIndicesPatch = [createPatientsIndex, createMedicinsIndex];
+
+const emptyAllTablesPatch = [
+  "Delete from UsersTypes",
+  "Delete from Users",
+  "Delete from Pharmacies",
+  "Delete from Doctors",
+  "Delete from Patients",
+  "Delete from Medicins",
+  "Delete from Classifications",
+  "Delete from Prescriptions",
+  "Delete from Medicine_Prescription"
+];
+
+const dropAllTablesPatch = [
+  "Drop Table UsersTypes",
+  "Drop Table Users",
+  "Drop Table Pharmacies",
+  "Drop Table Doctors",
+  "Drop Table Patients",
+  "Drop Table Medicins",
+  "Drop Table Classifications",
+  "Drop Table Prescriptions",
+  "Drop Table Medicine_Prescription"
+];
+
 const createTablesPatch = [
   createTable_Users,
   createTable_UserTypes,
@@ -221,6 +225,7 @@ module.exports = {
   createTablesPatch,
   emptyAllTablesPatch,
   dropAllTablesPatch,
+  createIndicesPatch,
   transactionBegin,
   transactionCommit,
   transactionRollback,
