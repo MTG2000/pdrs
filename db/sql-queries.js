@@ -11,10 +11,11 @@ CREATE TABLE IF NOT EXISTS UsersTypes (
 const createTable_Users = `
 CREATE TABLE IF NOT EXISTS Users 
 ( 
-Id  INTEGER PRIMARY KEY, 
-UserType_Id   INTEGER REFERENCES USERSTYPES(ID), 
+Id INTEGER PRIMARY KEY, 
+UserType_Id   INTEGER , 
 Username  VARCHAR(25) NOT NULL UNIQUE, 
-Password  VARCHAR(50) NOT NULL 
+Password  VARCHAR(50) NOT NULL ,
+FOREIGN KEY (UserType_Id) REFERENCES USERSTYPES(ID)
 )`;
 
 const createTable_Pharmacies = `
@@ -23,7 +24,9 @@ CREATE TABLE IF NOT EXISTS Pharmacies
   Id     INTEGER PRIMARY KEY, 
   Name    VARCHAR(20) NOT NULL, 
   Location   VARCHAR(100) NOT NULL ,
-  User_Id  INTEGER REFERENCES USERS(ID) 
+  User_Id  INTEGER ,
+  FOREIGN KEY (User_Id) REFERENCES USERS(ID)
+
 );`;
 
 const createTable_Doctors = `
@@ -31,7 +34,9 @@ CREATE TABLE IF NOT EXISTS Doctors
 ( 
   Id   INTEGER PRIMARY KEY, 
   Name  VARCHAR(30) NOT NULL, 
-  User_Id  INTEGER REFERENCES USERS(ID)
+  User_Id  INTEGER,
+  FOREIGN KEY (User_Id) REFERENCES USERS(ID)
+
 );`;
 
 const createTable_Patients = `
@@ -61,22 +66,29 @@ const createTable_Prescriptions = `
 CREATE TABLE IF NOT EXISTS Prescriptions 
 ( 
   Id  INTEGER PRIMARY KEY, 
-  Doctor_Id   INTEGER REFERENCES DOCTORS(ID), 
-  Patient_Id  varchar(20) REFERENCES PATIENTS (ID) ON UPDATE CASCADE ON DELETE CASCADE, 
-  Classification_Id  INTEGER REFERENCES CLASSIFICATIONS (ID), 
+  Doctor_Id   INTEGER , 
+  Patient_Id  varchar(20) , 
+  Classification_Id  INTEGER , 
   Pre_Date  TIMESTAMP, 
-  Description  VARCHAR(200) 
+  Description  VARCHAR(200) ,
+  FOREIGN KEY (Doctor_Id) REFERENCES DOCTORS(ID),
+  FOREIGN KEY (Patient_Id) REFERENCES PATIENTS(ID),
+  FOREIGN KEY (Classification_Id) REFERENCES CLASSIFICATIONS (ID)
 ); `;
 
 const createTable_MedicinePrescription = `
 CREATE TABLE IF NOT EXISTS Medicine_Prescription  
 ( 
-  Medicine_ID  INTEGER REFERENCES MEDICINEs (ID), 
-  Prescription_ID  INTEGER REFERENCES PRESCRIPTIONs (ID) ON UPDATE CASCADE ON DELETE CASCADE, 
+  Medicine_Id  INTEGER , 
+  Prescription_Id  INTEGER , 
   IsBold CHAR(1) NOT NULL, 
   IsChronic CHAR(1) NOT NULL, 
-  Pharmacy_ID   INTEGER REFERENCES Pharmacies(ID), 
-  PRIMARY KEY  ( Medicine_ID, Prescription_ID)
+  Pharmacy_Id   INTEGER , 
+  PRIMARY KEY  ( Medicine_ID, Prescription_ID),
+  FOREIGN KEY (Medicine_Id) REFERENCES MEDICINS (ID),
+  FOREIGN KEY (Prescription_Id)  REFERENCES PRESCRIPTIONS (ID),
+  FOREIGN KEY (Pharmacy_Id) REFERENCES Pharmacies(ID)
+
 );`;
 
 const insert_UserType = `
@@ -197,15 +209,15 @@ const emptyAllTablesPatch = [
 ];
 
 const dropAllTablesPatch = [
-  "Drop Table UsersTypes",
-  "Drop Table Users",
-  "Drop Table Pharmacies",
-  "Drop Table Doctors",
-  "Drop Table Patients",
-  "Drop Table Medicins",
-  "Drop Table Classifications",
-  "Drop Table Prescriptions",
-  "Drop Table Medicine_Prescription"
+  "Drop Table IF EXISTS Doctors",
+  "Drop Table IF EXISTS Pharmacies",
+  "Drop Table IF EXISTS UsersTypes",
+  "Drop Table IF EXISTS Users",
+  "Drop Table IF EXISTS Patients",
+  "Drop Table IF EXISTS Medicins",
+  "Drop Table IF EXISTS Classifications",
+  "Drop Table IF EXISTS Prescriptions",
+  "Drop Table IF EXISTS Medicine_Prescription"
 ];
 
 const createTablesPatch = [

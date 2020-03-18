@@ -13,6 +13,8 @@ router.post(
   controller.registerUser
 );
 
+router.get("/", authMiddleware(["Admin"]), controller.getAllUsers);
+
 router.get("/patients", controller.getPatients);
 
 module.exports = router;

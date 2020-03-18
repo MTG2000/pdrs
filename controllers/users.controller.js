@@ -3,9 +3,15 @@ const authService = require("../services/auth");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 
+const getAllUsers = async (req, res) => {
+  const users = await repository.getAllUsers();
+  res.send(users);
+};
+
 const loginUser = async (req, res) => {
   //Verify credentials
   const { username, password } = req.body;
+
   const user = await repository.getUser(username);
   if (!user || !(await bcrypt.compare(password, user.Password)))
     //User Doesn't exist or wrong credentials
@@ -13,7 +19,7 @@ const loginUser = async (req, res) => {
 
   const role = await repository.getUserTypeById(user.UserType_Id);
   const token = authService.generateToken({
-    username: user.USERNAME,
+    username: user.Username,
     role: role
   });
 
@@ -72,4 +78,4 @@ const registerUser = async (req, res, next) => {
   }
 };
 
-module.exports = { getPatients, registerUser, loginUser };
+module.exports = { getPatients, registerUser, loginUser, getAllUsers };

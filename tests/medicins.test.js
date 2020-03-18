@@ -32,12 +32,19 @@ describe("Testing Medicins api", () => {
   });
 
   it("it should add new medicine", async () => {
-    const res = await await chai
+    const res = await chai
       .request(server)
       .post("/api/medicins/new")
       .set("Cookie", [`token= ${adminToken}`])
       .send({ name: "Hydra-Vita 400" });
     res.should.have.status(201);
     res.body.should.be.a("number");
+  });
+
+  it("it should get medicine", async () => {
+    const res = await chai.request(server).get("/api/medicins?name=hy");
+    res.should.have.status(200);
+    res.body[0].should.have.property("Name");
+    res.body[0].Name.should.be.equal("Hydra-Vita 400");
   });
 });

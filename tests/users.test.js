@@ -52,7 +52,7 @@ describe("Testing Users Api", () => {
       .post("/api/users/register")
       .set("Cookie", [`token= ${adminToken}`])
       .send({
-        username: "momo2",
+        username: "2momo2",
         password: "123",
         type: "pharmacy",
         pharmacyName: "Momo Pharmacian",
@@ -60,5 +60,15 @@ describe("Testing Users Api", () => {
       });
     res.should.have.status(201);
     res.body.should.be.a("number");
+  });
+
+  it("it should get all users", async () => {
+    const res = await chai
+      .request(server)
+      .get("/api/users")
+      .set("Cookie", [`token= ${adminToken}`]);
+    res.should.have.status(200);
+    res.body.should.be.a("array");
+    // console.log(res.body);
   });
 });

@@ -19,12 +19,14 @@ const initializeTables = async (
 ) => {
   try {
     if (dropExisitingTables) {
-      log && console.log("Dropping Tables");
       for (const sql of sqlQueries.dropAllTablesPatch) {
         await run(sql);
       }
       log && console.log("Tables Dropped Successfully");
     }
+
+    //Use this TO Enforce foreign keys restrictions
+
     const createTablesStatements = sqlQueries.createTablesPatch;
     for (let i = 0; i < createTablesStatements.length; i++) {
       try {
@@ -53,10 +55,12 @@ const initializeTables = async (
 const initializeDB = async (seed = false, dropTables = false, log = false) => {
   db = await initializeConnection("./db/pdrs.db");
   await db.configure("busyTimeout", 4000);
+
   await begingTransaction();
   await initializeTables(db, dropTables, log);
   seed && (await seedTables(run, get, log));
   await commitTransaction();
+  await db.run("PRAGMA foreign_keys = ON;");
 };
 
 const closeDB = async () => {

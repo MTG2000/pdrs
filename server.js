@@ -33,7 +33,7 @@ server.use("/api/users", require("./routes/users.route"));
 
 server.use(require("./middleware/sqlTransaction").transactionEnd);
 (async () => {
-  if (server.get("env") === "test") return;
+  if (server.get("env") === "test") return; //Initialize the db is done in the test setup file
   if (server.get("env") === "development")
     await DB.initializeDB(true, true, true);
   else await DB.initializeDB(false, false, false);
