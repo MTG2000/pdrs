@@ -66,7 +66,7 @@ describe("Testing Patients Api", () => {
       .send({
         patientId: "02227779988",
         patientName: "Fouad Shekho",
-        classificationId: 555,
+        classificationId: 1,
         note: "A break in the knee",
         medicins: [
           {
@@ -87,7 +87,36 @@ describe("Testing Patients Api", () => {
         ]
       });
     res.should.have.status(400);
-    // res.body.should.be.a("object");
-    // res.body.should.have.property("success");
+  });
+
+  it("it should not add invalid prescriptions (invalid classification)", async () => {
+    const res = await chai
+      .request(server)
+      .post("/api/patients/new-prescription")
+      .set("Cookie", [`token= ${doctorToken}`])
+      .send({
+        patientId: "02227779988",
+        patientName: "Fouad Shekho",
+        classificationId: 1111,
+        note: "A break in the knee",
+        medicins: [
+          {
+            id: 1,
+            isBold: false,
+            isChronic: false
+          },
+          {
+            id: 3,
+            isBold: true,
+            isChronic: false
+          },
+          {
+            id: 4,
+            isBold: false,
+            isChronic: true
+          }
+        ]
+      });
+    res.should.have.status(400);
   });
 });

@@ -37,7 +37,7 @@ describe("Testing Users Api", () => {
       .post("/api/users/register")
       .set("Cookie", [`token= ${adminToken}`])
       .send({
-        username: "momo",
+        username: "momo1",
         password: "123",
         type: "doctor",
         doctorName: "Momo "
@@ -52,7 +52,7 @@ describe("Testing Users Api", () => {
       .post("/api/users/register")
       .set("Cookie", [`token= ${adminToken}`])
       .send({
-        username: "2momo2",
+        username: "momo2",
         password: "123",
         type: "pharmacy",
         pharmacyName: "Momo Pharmacian",
@@ -62,11 +62,46 @@ describe("Testing Users Api", () => {
     res.body.should.be.a("number");
   });
 
+  it("it should not register duplicate username", async () => {
+    const res = await chai
+      .request(server)
+      .post("/api/users/register")
+      .set("Cookie", [`token= ${adminToken}`])
+      .send({
+        username: "momo2",
+        type: "pharmacy",
+        pharmacyName: "Momo Pharmacian",
+        address: "Damascus City"
+      });
+    res.should.have.status(400);
+  });
+
+  it("it should not register without password", async () => {
+    const res = await chai
+      .request(server)
+      .post("/api/users/register")
+      .set("Cookie", [`token= ${adminToken}`])
+      .send({
+        username: "momo3",
+        type: "pharmacy",
+        pharmacyName: "Momo Pharmacian",
+        address: "Damascus City"
+      });
+    res.should.have.status(400);
+  });
+
   it("it should get all users", async () => {
     const res = await chai
       .request(server)
       .get("/api/users")
       .set("Cookie", [`token= ${adminToken}`]);
+    res.should.have.status(200);
+    res.body.should.be.a("array");
+    // console.log(res.body);
+  });
+
+  it("it should get all patients", async () => {
+    const res = await chai.request(server).get("/api/users/patients");
     res.should.have.status(200);
     res.body.should.be.a("array");
     // console.log(res.body);
