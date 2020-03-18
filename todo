@@ -2,3 +2,4 @@ optimize sql queries
 set cookies security to true
 add validation
 remove token from response
+look for saveCookies functionality

@@ -4,6 +4,11 @@ const sqlQueries = require("../db/sql-queries");
 const getUser = async username => {
   return await DB.get(sqlQueries.getUser, [username]);
 };
+
+const getAllUsers = async () => {
+  return await DB.queryAll(`select * from users`);
+};
+
 const getPatients = async (id = "") => {
   return await DB.queryAll(sqlQueries.getPatientsById, [`${id}%`]);
 };
@@ -27,9 +32,9 @@ const insertUser = async (username, password, type = "pharmacy") => {
 
 const insertDoctor = async (username, password, doctorName) => {
   const userId = await insertUser(username, password, "doctor");
-  const doctorId =
-    //  userId])
-    (await DB.run(sqlQueries.insert_Doctor, [doctorName, 999])).lastID;
+  const doctorId = (
+    await DB.run(sqlQueries.insert_Doctor, [doctorName, userId])
+  ).lastID;
   return doctorId;
 };
 
@@ -62,5 +67,6 @@ module.exports = {
   insertDoctor,
   newPatient,
   getUserTypeById,
-  getPharmacyId
+  getPharmacyId,
+  getAllUsers
 };

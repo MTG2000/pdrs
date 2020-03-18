@@ -24,11 +24,11 @@ const newPrescription = async (req, res, next) => {
     } = req.body;
     //!!! add validation !!!
     const patientExist = await usersRepository.getPatients(patientId);
-    if (!patientExist) {
+    if (!patientExist[0]) {
       await usersRepository.newPatient(patientId, patientName);
     }
     const doctorId = await usersRepository.getDoctorId(req.user.username);
-    if (!doctorId) return res.status(400).send({ error: "Incorrect Data" });
+    if (!doctorId) throw Error("Doctor Not Correct");
     const prescriptionId = await patientsRepository.newPrescription(
       patientId,
       doctorId,
@@ -39,7 +39,7 @@ const newPrescription = async (req, res, next) => {
       prescriptionId,
       medicins
     );
-    res.send({ success: result });
+    res.status(201).send({ success: result });
   } catch (error) {
     console.error(error);
     res.failed = true;
