@@ -36,23 +36,6 @@ const getPatients = async (req, res) => {
   res.send(patinets);
 };
 
-const newPharmacy = async (req, res) => {
-  try {
-    const { username, password, pharmacyName, address } = req.body;
-    const pharmacyId = await repository.insertPharmacy(
-      username,
-      password,
-      pharmacyName,
-      address
-    );
-    res.json(pharmacyId);
-  } catch (error) {
-    console.error(error);
-    res.failed = true;
-    res.status(400).json({ error: error });
-  }
-};
-
 const registerUser = async (req, res, next) => {
   try {
     const type = req.body.type;
@@ -65,7 +48,7 @@ const registerUser = async (req, res, next) => {
         password,
         doctorName
       );
-      res.json(doctorId);
+      res.status(201).json(doctorId);
       next();
       return;
     } else if (type === "pharmacy") {
@@ -76,7 +59,7 @@ const registerUser = async (req, res, next) => {
         pharmacyName,
         address
       );
-      res.json(pharmacyId);
+      res.status(201).json(pharmacyId);
       next();
       return;
     }
@@ -89,4 +72,4 @@ const registerUser = async (req, res, next) => {
   }
 };
 
-module.exports = { getPatients, registerUser, newPharmacy, loginUser };
+module.exports = { getPatients, registerUser, loginUser };
