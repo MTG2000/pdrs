@@ -173,7 +173,9 @@ const getPatientPrescriptionsByClassification = `
 `;
 
 const getPrescriptionMedicins = `
-  select * from Medicine_Prescription where prescription_ID = ?
+select m.name , mp.isBold,mp.IsChronic,mp.Pharmacy_Id
+from Medicine_Prescription mp , Medicins m
+where prescription_ID = ? and mp.Medicine_Id = m.Id
 `;
 
 const getClassificationsAll = `

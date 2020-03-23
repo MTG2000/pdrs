@@ -1,0 +1,133 @@
+/*start header*/
+/*start navigatin bar*/
+nav{
+    background-color: #11aca0
+}
+nav h1{
+    display: block;
+    color: white;
+    text-transform: uppercase
+    
+}
+nav a{
+    display: block;
+    color: white;
+    text-decoration: none;
+    margin-top: 12px
+}
+nav a::first-letter{
+     text-transform: uppercase 
+}
+nav a:hover{
+    color: white;
+    text-decoration: none
+}
+/*end navigatin bar*/
+/*start id input*/
+form{
+    display: block;
+    margin: 5% auto;
+ 
+}
+form label{
+    color: #11aca0; 
+}
+
+form input{
+    display: block;
+    margin: auto;
+    border: 2px solid #eee;
+    text-align: center;
+}
+
+.patient-id{
+	margin: 50px auto;
+	max-width: 300px !important;
+}
+/*end id input*/
+/*end header*/
+/*start icon bar*/
+.filter-icon{
+    width: 75px;
+    height: 75px;
+    /*height: 100%;*/
+    border-radius: 50%;
+    box-shadow:1px 1px 6px 1px #999,
+              -1px -1px 6px 1px #999
+              ;
+    padding: 10px !important;
+}
+.filter-icon:hover{
+     box-shadow:1px 1px 12px 1px #11aca0,
+              -1px -1px 12px 1px #11aca0
+}
+/* end icon bar*/
+/*start patient card*/
+.prescripton-card{
+     position: relative;
+     max-width: 700px;
+     min-height: 200px;
+     margin-top: 70px;
+     background-color: #f5f5f5;
+     box-shadow:2px 2px 6px 1px #999
+              
+}
+
+    .note{
+      position: absolute;
+      left:-20px;
+      top: -20px;
+      background-color: #11aca0;
+      color: white;
+      padding: 10px;
+      width: 75%;
+}
+
+.note p{
+	font-size: 1.2em;
+}
+.prescripton-card .icon{
+     width:60px;
+     height:60px;
+     padding: 5px;
+     position: absolute;
+     right: -25px;
+     top: -25px;
+     border-radius: 50%;
+     box-shadow:1px 1px 6px 1px #999,
+              -1px -1px 6px 1px #999;
+    background-color: white;
+}
+.mt-6{
+	margin-top: 70px;
+}
+.medicins p{
+    color: #666;
+}
+.medicins .chronic{
+    font-weight:bolder;
+   
+}
+.date span{
+    display: block;
+    text-align: center
+}
+.date span::first-letter{
+    text-transform: uppercase
+}
+.date{
+    width: 65px;
+    height: 75px;
+    position: absolute;
+    right: -25px;
+    bottom: -30px;
+    background-color: #11aca0;
+    color: white;
+    padding: 10px;
+ 
+}
+/*end patien card*/
+
+
+
+

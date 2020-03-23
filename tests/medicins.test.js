@@ -18,6 +18,16 @@ describe("Testing Medicins api", () => {
     res.body.should.be.a("array");
   });
 
+  it("it should deep equal", async () => {
+    const arrOfObj = [
+      { name: "mohammed" },
+      { name: "ahmad" },
+      { name: "fadi" }
+    ];
+    const objToLookFor = { name: "mohammed" };
+    arrOfObj.should.deep.include(objToLookFor);
+  });
+
   it("it should login as admin", async () => {
     const res = await agent.post("/api/users/login").send({
       username: "mtg",
