@@ -1,6 +1,8 @@
 import React from "react";
 import icon from "./heart.svg";
 import date from "date-and-time";
+import Check from "@material-ui/icons/Check";
+import Close from "@material-ui/icons/Close";
 
 /*{
       Id: 1,
@@ -37,8 +39,8 @@ const PrescriptionCard = ({ prescription }) => {
   console.log(prescription);
   return (
     <div className="prescription-card mx-auto py-5">
-      <div className="note  bg-primary">
-        <p className=" mb-0">{prescription.Description}</p>
+      <div className="note  bg-primary px-3 py-3">
+        <p className=" mb-0 ">{prescription.Description}</p>
       </div>
       <div className="icon ">
         <img src={icon} alt="classification" />
@@ -46,12 +48,23 @@ const PrescriptionCard = ({ prescription }) => {
 
       <div className="medicins px-4 py-5 py-md-0  row justify-content-begin">
         {prescription.medicins.map((m, i) => (
-          <p key={i} className="col-10 col-md-5 mx-2 ">
-            {m.Name}
-          </p>
+          <div className="col-10 col-md-5 mx-2">
+            {m.Pharmacy_Id ? (
+              <Check style={{ color: "green" }} />
+            ) : (
+              <Close style={{ color: "red" }} />
+            )}{" "}
+            <p
+              key={i}
+              className={`d-inline-block ml-2 ${
+                m.IsBold === "1" ? "font-weight-bold" : ""
+              }`}
+            >
+              {m.Name}
+            </p>
+          </div>
         ))}
       </div>
-      <div className="row no-gutters content-card"></div>
       <div className="date bg-primary">
         <span className="h4 text-center">{newDate.split(" ")[0]}</span>
         <span>{newDate.split(" ")[1]}</span>

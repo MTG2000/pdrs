@@ -4,7 +4,8 @@ import { Box, makeStyles, useTheme } from "@material-ui/core";
 
 const useStyle = makeStyles({
   input: theme => ({
-    borderColor: `${theme.palette.primary.main} !important`
+    borderColor: `${theme.palette.primary.main} !important`,
+    borderWidth: 2
   })
 });
 
@@ -23,6 +24,11 @@ const PatientIdInput = () => {
         variant="outlined"
         color="primary"
         className={classes.input}
+        InputProps={{
+          classes: {
+            notchedOutline: classes.input
+          }
+        }}
       />
     </Box>
   );

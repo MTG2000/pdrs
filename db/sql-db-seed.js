@@ -152,7 +152,7 @@ module.exports = async (run, get, log = false) => {
       await run(sqlQueries.insert_MedicinePrescription, [
         medicins[medIndex].id,
         prescriptionId,
-        "0",
+        medIndex === 4 ? "1" : "0",
         medIndex === 4 ? "1" : "0"
       ]);
     }
