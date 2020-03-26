@@ -1,5 +1,8 @@
 const sqlQueries = require("./sql-queries");
 const bcrypt = require("bcrypt");
+const path = require("path");
+const Constants = require("../Utils/Constants");
+
 const saltRounds = 10;
 
 module.exports = async (run, get, log = false) => {
@@ -120,16 +123,24 @@ module.exports = async (run, get, log = false) => {
     //Seed Classifications
     //--------------
     const classifications = [
+      { name: "Heart" },
       { name: "Bones" },
-      { name: "Teeth" },
-      { name: "Neural" },
-      { name: "Skin" },
-      { name: "Digestive" },
-      { name: "Sight" }
+      { name: "Brain" },
+      { name: "Eye" },
+      { name: "Stomach" },
+      { name: "Tooth" }
     ];
     log && console.log("Seeding Classifications");
     for (const c of classifications) {
-      c.id = (await run(sqlQueries.insert_Classification, [c.name])).lastID;
+      c.id = (
+        await run(sqlQueries.insert_Classification, [
+          c.name,
+          path.join(
+            Constants.classificationsIconsPath,
+            `${c.name.toLowerCase()}.svg`
+          )
+        ])
+      ).lastID;
     }
 
     //Seed Prescriptions

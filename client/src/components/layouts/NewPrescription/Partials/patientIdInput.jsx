@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import TextField from "@material-ui/core/TextField";
-import { makeStyles, useTheme, Button } from "@material-ui/core";
+import { makeStyles, useTheme } from "@material-ui/core";
 
 const useStyle = makeStyles({
   input: theme => ({
@@ -9,23 +9,17 @@ const useStyle = makeStyles({
   })
 });
 
-const PatientIdInput = ({ handleSubmit, patientName }) => {
+const PatientIdInput = ({ patientId, setPatientId }) => {
   const theme = useTheme();
   const classes = useStyle({ ...theme });
 
-  const [patientId, setPatientId] = useState("");
   return (
-    <form
-      className="mx-auto  row justify-content-between align-items-center"
-      style={{ maxWidth: 320 }}
-      onSubmit={e => {
-        e.preventDefault();
-        handleSubmit(patientId);
-      }}
-    >
+    <div className="w-100 row justify-content-center">
+      {" "}
       <TextField
         id="patient-id"
         label="Patient Id"
+        type="number"
         value={patientId}
         onChange={e => setPatientId(e.target.value)}
         variant="outlined"
@@ -37,14 +31,7 @@ const PatientIdInput = ({ handleSubmit, patientName }) => {
           }
         }}
       />
-      <div className="mx-2 my-2">
-        <Button variant="contained" color="primary" type="submit">
-          Search
-        </Button>
-      </div>
-
-      <h4 className="col-12  my-2 px-1">{patientName}</h4>
-    </form>
+    </div>
   );
 };
 

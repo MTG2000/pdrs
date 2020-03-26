@@ -6,6 +6,7 @@ import { Route, Switch } from "react-router-dom";
 import { Container } from "react-bootstrap";
 // import Home from "./components/layouts/Home";
 import PatientsPrescriptions from "./components/layouts/PatinetsPrescriptions";
+import NewPrescription from "./components/layouts/NewPrescription";
 
 function App() {
   return (
@@ -17,7 +18,7 @@ function App() {
             path="/patients-prescriptions"
             component={PatientsPrescriptions}
           />
-
+          <Route path="/" component={NewPrescription} />
           <Route path="/" component={PatientsPrescriptions} />
           {/* <Route path="/" component={Home} /> */}
         </Switch>

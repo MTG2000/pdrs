@@ -1,3 +1,4 @@
 set cookies security to true
 add validation
 remove token from response
+add hover with classification name to the ClassificationFilter

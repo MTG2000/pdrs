@@ -59,7 +59,8 @@ const createTable_Classifications = `
 CREATE TABLE IF NOT EXISTS Classifications  
 ( 
   Id  INTEGER PRIMARY KEY, 
-  Name VARCHAR(25) NOT NULL UNIQUE
+  Name VARCHAR(25) NOT NULL UNIQUE,
+  ImageUrl VARCHAR(100)
 ); `;
 
 const createTable_Prescriptions = `
@@ -116,7 +117,7 @@ INSERT INTO Medicins (Name) VALUES (?);
 `;
 
 const insert_Classification = `
-INSERT INTO Classifications (Name) VALUES (?);
+INSERT INTO Classifications (Name,ImageUrl) VALUES (?,?);
 `;
 
 const insert_Prescription = `
@@ -163,8 +164,9 @@ select * from Users where username=?
 `;
 
 const getPatientPrescriptions = `
-  select * from prescriptions 
-  where patient_id = ? 
+select p.Id , p.Doctor_Id , p.Description as Note, p.Pre_Date as Prescription_Date ,  c.Name as Classification_Name , c.ImageUrl as ClassificationIconUrl , patients.Name as Patient_Name 
+from prescriptions p , Classifications c , Patients patients
+ where patient_id = ? and p.Classification_Id = c.id and p.Patient_Id = patients.Id
 `;
 
 const getPatientPrescriptionsByClassification = `
