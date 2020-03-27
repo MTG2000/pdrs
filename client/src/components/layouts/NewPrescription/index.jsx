@@ -4,10 +4,17 @@ import { Box } from "@material-ui/core";
 import "./style/style.scss";
 import ClassificationsFilter from "./Partials/ClassificationsFilter";
 import PrescriptionNote from "./Partials/PrescriptionNote";
+import MedicinSelect from "./Partials/MedicinSelect";
+import MedicinsList from "./Partials/MedicinsList";
 
 const NewPrescription = () => {
   const [patientId, setPatientId] = useState("");
   const [selectedClassification, setSelectedClassification] = useState();
+  const [medicins, setMedicins] = useState([
+    { value: 4, label: "Shfazien-Forte" },
+    { value: 5, label: "Benzamien" },
+    { value: 1, label: "Sitamol" }
+  ]);
 
   const [classifications, setClassifications] = useState([]);
   useEffect(() => {
@@ -17,9 +24,9 @@ const NewPrescription = () => {
       setClassifications(data);
     })();
   }, []);
-
+  console.log(medicins);
   return (
-    <Box>
+    <Box pb={8}>
       <Box py={5} display="flex">
         <PatientIdInput patientId={patientId} setPatientId={setPatientId} />
       </Box>
@@ -29,6 +36,12 @@ const NewPrescription = () => {
         setSelectedClassification={id => setSelectedClassification(id)}
       />
       <PrescriptionNote />
+      <div className="row">
+        <MedicinSelect
+          handleSelect={medicine => setMedicins([medicine, ...medicins])}
+        />
+        <MedicinsList medicins={medicins} />
+      </div>
     </Box>
   );
 };

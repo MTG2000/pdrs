@@ -128,7 +128,11 @@ module.exports = async (run, get, log = false) => {
       { name: "Brain" },
       { name: "Eye" },
       { name: "Stomach" },
-      { name: "Tooth" }
+      { name: "Tooth" },
+      { name: "Kidney" },
+      { name: "Lungs" },
+      { name: "Ear" },
+      { name: "Sex" }
     ];
     log && console.log("Seeding Classifications");
     for (const c of classifications) {

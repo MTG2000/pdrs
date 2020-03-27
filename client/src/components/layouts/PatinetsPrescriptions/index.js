@@ -1,13 +1,25 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Box } from "@material-ui/core";
 import PatientIdInput from "./Partials/patientIdInput";
 import "./style/style.scss";
 import PrescriptionsList from "./Partials/PrescriptionsList";
+import ClassificationsFilter from "../NewPrescription/Partials/ClassificationsFilter";
 
 const PatientsPrescriptions = () => {
   const [prescriptions, setPrescriptions] = useState([]);
   const [patientName, setPatientName] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const [selectedClassification, setSelectedClassification] = useState();
+
+  const [classifications, setClassifications] = useState([]);
+  useEffect(() => {
+    (async () => {
+      const res = await fetch("/api/medicins/classifications");
+      const data = await res.json();
+      setClassifications(data);
+    })();
+  }, []);
 
   const onPatientIdChange = async patinetId => {
     setLoading(true);
@@ -28,6 +40,11 @@ const PatientsPrescriptions = () => {
           patientName={patientName}
         />
       </Box>
+      <ClassificationsFilter
+        classifications={classifications}
+        selectedClassification={selectedClassification}
+        setSelectedClassification={id => setSelectedClassification(id)}
+      />
       <PrescriptionsList prescriptions={prescriptions} loading={loading} />
     </Box>
   );
