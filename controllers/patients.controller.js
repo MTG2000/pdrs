@@ -50,16 +50,17 @@ const newPrescription = async (req, res, next) => {
 
 const getPrescriptions = async (req, res) => {
   const patientId = req.query.patientId;
-  const classification = req.params.classification || "";
+  const classification = req.query.classification || "";
   let chronicMedicins = [];
   let prescriptions = [];
   if (!classification)
     prescriptions = await patientsRepository.getPatientPrescriptions(patientId);
-  else
-    prescriptions = await patientsRepository.getPatientPrescriptions(
+  else {
+    prescriptions = await patientsRepository.getPatientPrescriptionsByClassification(
       patientId,
-      classification
+      +classification
     );
+  }
   for (const prescription of prescriptions) {
     const medicins = await patientsRepository.getPrescriptionMedicins(
       prescription.Id

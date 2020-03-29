@@ -9,6 +9,9 @@ const Header = () => {
       <Navbar.Toggle aria-controls="responsive-navbar-nav" />
       <Navbar.Collapse id="responsive-navbar-nav">
         <Nav className="ml-auto text-white">
+          <Link className="nav-link text-white" to="/">
+            New Prescription
+          </Link>
           <Link className="nav-link text-white" to="/patients-prescriptions">
             Patinets Prescriptions
           </Link>

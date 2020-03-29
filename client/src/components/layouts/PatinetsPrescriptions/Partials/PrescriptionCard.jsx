@@ -2,6 +2,7 @@ import React from "react";
 import date from "date-and-time";
 import Check from "@material-ui/icons/Check";
 import Close from "@material-ui/icons/Close";
+import { toJS } from "mobx";
 
 /*{
             "Id": 1,
@@ -34,8 +35,7 @@ import Close from "@material-ui/icons/Close";
         */
 const PrescriptionCard = ({ prescription }) => {
   const newDate = date.format(new Date(), "DD MMM");
-
-  console.log(prescription);
+  console.log(toJS(prescription));
   return (
     <div className="prescription-card mx-auto py-5">
       <div className="note  bg-primary px-3 py-3">

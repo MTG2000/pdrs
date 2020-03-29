@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import TextField from "@material-ui/core/TextField";
 import { makeStyles, useTheme, Button } from "@material-ui/core";
+import { observer } from "mobx-react";
 
 const useStyle = makeStyles({
   input: theme => ({
@@ -9,25 +10,25 @@ const useStyle = makeStyles({
   })
 });
 
-const PatientIdInput = ({ handleSubmit, patientName }) => {
+const PatientIdInput = ({ store }) => {
   const theme = useTheme();
   const classes = useStyle({ ...theme });
 
-  const [patientId, setPatientId] = useState("");
   return (
     <form
       className="mx-auto  row justify-content-between align-items-center"
       style={{ maxWidth: 320 }}
       onSubmit={e => {
         e.preventDefault();
-        handleSubmit(patientId);
+        store.FetchPrescriptions();
       }}
     >
       <TextField
+        type="number"
         id="patient-id"
         label="Patient Id"
-        value={patientId}
-        onChange={e => setPatientId(e.target.value)}
+        value={store.patientId}
+        onChange={e => store.SetPatientId(e.target.value)}
         variant="outlined"
         color="primary"
         className={classes.input}
@@ -43,9 +44,9 @@ const PatientIdInput = ({ handleSubmit, patientName }) => {
         </Button>
       </div>
 
-      <h4 className="col-12  my-2 px-1">{patientName}</h4>
+      <h4 className="col-12  my-2 px-1">{store.patientName}</h4>
     </form>
   );
 };
 
-export default PatientIdInput;
+export default observer(PatientIdInput);

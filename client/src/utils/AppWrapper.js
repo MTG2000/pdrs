@@ -6,13 +6,16 @@ import { theme } from "./materialTheme";
 import ScrollToTop from "./ScrollToTopController";
 import { BrowserRouter } from "react-router-dom";
 import "./aos";
+import { ContextProvider } from "../stores/Context";
 
 const AppWrapper = props => {
   return (
     <BrowserRouter>
-      <ThemeProvider theme={theme}>
-        <ScrollToTop>{props.children}</ScrollToTop>
-      </ThemeProvider>
+      <ContextProvider>
+        <ThemeProvider theme={theme}>
+          <ScrollToTop>{props.children}</ScrollToTop>
+        </ThemeProvider>
+      </ContextProvider>
     </BrowserRouter>
   );
 };

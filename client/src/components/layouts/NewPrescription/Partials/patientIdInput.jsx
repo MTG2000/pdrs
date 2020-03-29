@@ -9,19 +9,18 @@ const useStyle = makeStyles({
   })
 });
 
-const PatientIdInput = ({ patientId, setPatientId }) => {
+const PatientIdInput = ({ store }) => {
   const theme = useTheme();
   const classes = useStyle({ ...theme });
 
   return (
     <div className="w-100 row justify-content-center">
-      {" "}
       <TextField
         id="patient-id"
         label="Patient Id"
         type="number"
-        value={patientId}
-        onChange={e => setPatientId(e.target.value)}
+        value={store.patientId}
+        onChange={e => store.SetPatientId(e.target.value)}
         variant="outlined"
         color="primary"
         className={classes.input}

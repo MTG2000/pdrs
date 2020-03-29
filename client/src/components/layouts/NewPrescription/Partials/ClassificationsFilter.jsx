@@ -1,20 +1,17 @@
 import React from "react";
+import { observer } from "mobx-react";
 
-const ClassificationsFilter = ({
-  classifications = [],
-  selectedClassification,
-  setSelectedClassification
-}) => {
+const ClassificationsFilter = ({ store }) => {
   return (
     <div className="row justify-content-center">
-      {classifications.map(c => (
+      {store.classifications.map(c => (
         <div
           key={c.Id}
           data-id={c.Id}
           className={`classification-icon  mx-4 my-2 ${
-            selectedClassification === c.Id ? "selected" : ""
+            store.selectedClassification === c.Id ? "selected" : ""
           }`}
-          onClick={() => setSelectedClassification(c.Id)}
+          onClick={() => store.SelectClassification(c.Id)}
         >
           <img src={c.ImageUrl} alt={c.Name} />
         </div>
@@ -23,4 +20,4 @@ const ClassificationsFilter = ({
   );
 };
 
-export default ClassificationsFilter;
+export default observer(ClassificationsFilter);

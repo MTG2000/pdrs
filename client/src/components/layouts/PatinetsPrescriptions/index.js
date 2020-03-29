@@ -1,53 +1,32 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Box } from "@material-ui/core";
 import PatientIdInput from "./Partials/patientIdInput";
 import "./style/style.scss";
 import PrescriptionsList from "./Partials/PrescriptionsList";
 import ClassificationsFilter from "../NewPrescription/Partials/ClassificationsFilter";
+import { mainContext } from "../../../stores/Context";
+import { observer } from "mobx-react";
 
 const PatientsPrescriptions = () => {
-  const [prescriptions, setPrescriptions] = useState([]);
-  const [patientName, setPatientName] = useState("");
-  const [loading, setLoading] = useState(false);
+  const { PatientPrescriptionsStore } = useContext(mainContext);
 
-  const [selectedClassification, setSelectedClassification] = useState();
+  const [store] = useState(new PatientPrescriptionsStore());
 
-  const [classifications, setClassifications] = useState([]);
   useEffect(() => {
-    (async () => {
-      const res = await fetch("/api/medicins/classifications");
-      const data = await res.json();
-      setClassifications(data);
-    })();
-  }, []);
+    store.FetchClassifications();
+  }, [store]);
 
-  const onPatientIdChange = async patinetId => {
-    setLoading(true);
-    const res = await fetch(
-      `api/patients/prescriptions?patientId=${patinetId}`
-    );
-    const data = await res.json();
-    setPrescriptions(data.prescriptions);
-    setPatientName(data.prescriptions[0] && data.prescriptions[0].Patient_Name);
-    setLoading(false);
-  };
+  if (store.loading) return <h2 className="py-5 px-5 text-center">Loading</h2>;
 
   return (
     <Box>
       <Box py={5} display="flex">
-        <PatientIdInput
-          handleSubmit={onPatientIdChange}
-          patientName={patientName}
-        />
+        <PatientIdInput store={store} />
       </Box>
-      <ClassificationsFilter
-        classifications={classifications}
-        selectedClassification={selectedClassification}
-        setSelectedClassification={id => setSelectedClassification(id)}
-      />
-      <PrescriptionsList prescriptions={prescriptions} loading={loading} />
+      <ClassificationsFilter store={store} />
+      <PrescriptionsList store={store} />
     </Box>
   );
 };
 
-export default PatientsPrescriptions;
+export default observer(PatientsPrescriptions);

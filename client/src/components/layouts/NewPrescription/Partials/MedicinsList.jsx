@@ -1,7 +1,10 @@
 import React from "react";
 import MedicineCard from "./MedicineCard";
+import { observer } from "mobx-react";
 
-const MedicinsList = ({ medicins = [] }) => {
+const MedicinsList = ({ store }) => {
+  const medicins = store.medicins;
+
   return (
     <div
       className="row justify-content-center mx-auto col-md-6"
@@ -21,4 +24,4 @@ const MedicinsList = ({ medicins = [] }) => {
   );
 };
 
-export default MedicinsList;
+export default observer(MedicinsList);

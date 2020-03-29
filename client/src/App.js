@@ -7,7 +7,7 @@ import { Container } from "react-bootstrap";
 // import Home from "./components/layouts/Home";
 import PatientsPrescriptions from "./components/layouts/PatinetsPrescriptions";
 import NewPrescription from "./components/layouts/NewPrescription";
-import Overlay from "./components/layouts/Partials/Overlay";
+// import Overlay from "./components/layouts/Partials/Overlay";
 
 function App() {
   return (

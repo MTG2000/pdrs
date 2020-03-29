@@ -1,7 +1,7 @@
 import React from "react";
 import SearchableSelect from "../../Partials/SearchableSelect";
 
-const MedicinSelect = ({ handleSelect }) => {
+const MedicinSelect = ({ store }) => {
   return (
     <div className="col-md-6 py-5 mx-auto row justify-content-center">
       <div style={{ maxWidth: 500, width: "100%" }}>
@@ -11,7 +11,7 @@ const MedicinSelect = ({ handleSelect }) => {
           classes="w-100"
           placeholder="Type A Medicine Name"
           handleSelect={v => {
-            handleSelect(v);
+            store.AddMedicine(v);
           }}
         />
       </div>

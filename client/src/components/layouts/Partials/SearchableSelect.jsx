@@ -22,7 +22,6 @@ class SearchableSelect extends React.Component {
 
   handleChange = selectedOption => {
     this.props.handleSelect && this.props.handleSelect(selectedOption);
-    console.log(selectedOption);
     this.setState({
       selectedOption: selectedOption
     });
@@ -53,7 +52,6 @@ class SearchableSelect extends React.Component {
     const fetchUrl = `${this.props.fetchUrl}${
       queryName ? `?${queryName}=${inputValue}` : ""
     }`;
-    console.log(fetchUrl);
     fetch(fetchUrl).then(response => {
       response.json().then(data => {
         if (this.props.mapOptionsToValues)

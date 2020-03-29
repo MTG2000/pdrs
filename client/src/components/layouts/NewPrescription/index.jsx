@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import PatientIdInput from "./Partials/patientIdInput";
 import { Box } from "@material-ui/core";
 import "./style/style.scss";
@@ -6,44 +6,43 @@ import ClassificationsFilter from "./Partials/ClassificationsFilter";
 import PrescriptionNote from "./Partials/PrescriptionNote";
 import MedicinSelect from "./Partials/MedicinSelect";
 import MedicinsList from "./Partials/MedicinsList";
+import { Button } from "@material-ui/core";
+import { mainContext } from "../../../stores/Context";
+import { observer } from "mobx-react";
 
 const NewPrescription = () => {
-  const [patientId, setPatientId] = useState("");
-  const [selectedClassification, setSelectedClassification] = useState();
-  const [medicins, setMedicins] = useState([
-    { value: 4, label: "Shfazien-Forte" },
-    { value: 5, label: "Benzamien" },
-    { value: 1, label: "Sitamol" }
-  ]);
+  const { NewPrescriptionStore } = useContext(mainContext);
 
-  const [classifications, setClassifications] = useState([]);
+  const [store] = useState(new NewPrescriptionStore());
+
   useEffect(() => {
-    (async () => {
-      const res = await fetch("/api/medicins/classifications");
-      const data = await res.json();
-      setClassifications(data);
-    })();
-  }, []);
-  console.log(medicins);
+    store.FetchClassifications();
+  }, [store]);
+
+  if (store.loading) return <h2 className="py-5 px-5 text-center">Loading</h2>;
+
   return (
     <Box pb={8}>
       <Box py={5} display="flex">
-        <PatientIdInput patientId={patientId} setPatientId={setPatientId} />
+        <PatientIdInput store={store} />
       </Box>
-      <ClassificationsFilter
-        classifications={classifications}
-        selectedClassification={selectedClassification}
-        setSelectedClassification={id => setSelectedClassification(id)}
-      />
-      <PrescriptionNote />
+      <ClassificationsFilter store={store} />
+      <PrescriptionNote store={store} />
       <div className="row">
-        <MedicinSelect
-          handleSelect={medicine => setMedicins([medicine, ...medicins])}
-        />
-        <MedicinsList medicins={medicins} />
+        <MedicinSelect store={store} />
+        <MedicinsList store={store} />
+      </div>
+      <div className="row justify-content-center py-3">
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => NewPrescriptionStore.SubmitPrescription()}
+        >
+          Submit Prescription
+        </Button>
       </div>
     </Box>
   );
 };
 
-export default NewPrescription;
+export default observer(NewPrescription);
