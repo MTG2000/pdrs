@@ -9,8 +9,8 @@ const getAllUsers = async () => {
   return await DB.queryAll(`select * from users`);
 };
 
-const getPatients = async (id = "") => {
-  return await DB.queryAll(sqlQueries.getPatientsById, [`${id}%`]);
+const getPatient = async (id = "") => {
+  return await DB.get(sqlQueries.getPatientById, [id]);
 };
 const newPatient = async (id, name) => {
   return await DB.run(sqlQueries.insert_Patient, [id, name]);
@@ -60,7 +60,7 @@ const getPharmacyId = async (username = "") => {
 };
 
 module.exports = {
-  getPatients,
+  getPatient,
   getUser,
   getDoctorId,
   insertPharmacy,

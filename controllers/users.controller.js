@@ -36,10 +36,10 @@ const loginUser = async (req, res) => {
     });
 };
 
-const getPatients = async (req, res) => {
+const getPatient = async (req, res) => {
   const { id } = req.query;
-  const patinets = await repository.getPatients(id);
-  res.send(patinets);
+  const patinet = await repository.getPatient(id);
+  res.send(patinet || {});
 };
 
 const registerUser = async (req, res, next) => {
@@ -78,4 +78,4 @@ const registerUser = async (req, res, next) => {
   }
 };
 
-module.exports = { getPatients, registerUser, loginUser, getAllUsers };
+module.exports = { getPatient, registerUser, loginUser, getAllUsers };

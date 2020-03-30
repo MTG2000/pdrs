@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import TextField from "@material-ui/core/TextField";
 import { makeStyles, useTheme, Button } from "@material-ui/core";
 import { observer } from "mobx-react";
@@ -13,39 +13,31 @@ const useStyle = makeStyles({
 const PatientIdInput = ({ store }) => {
   const theme = useTheme();
   const classes = useStyle({ ...theme });
+  const [id, setId] = useState("");
 
   return (
-    <form
-      className="mx-auto  row justify-content-between align-items-center"
-      style={{ maxWidth: 320 }}
-      onSubmit={e => {
-        e.preventDefault();
-        store.FetchPrescriptions();
-      }}
-    >
+    <div className=" mx-auto row flex-column" style={{ maxWidth: 330 }}>
       <TextField
-        type="number"
         id="patient-id"
         label="Patient Id"
-        value={store.patientId}
-        onChange={e => store.SetPatientId(e.target.value)}
+        type="number"
+        value={id}
+        onChange={e => setId(e.target.value)}
+        onBlur={() => store.SetPatientId(id)}
+        onKeyUp={e => e.keyCode === 13 && e.target.blur()} //if Enter was pressed
         variant="outlined"
         color="primary"
-        className={classes.input}
+        className={`${classes.input} mb-3`}
         InputProps={{
           classes: {
             notchedOutline: classes.input
           }
         }}
       />
-      <div className="mx-2 my-2">
-        <Button variant="contained" color="primary" type="submit">
-          Search
-        </Button>
-      </div>
-
-      <h4 className="col-12  my-2 px-1">{store.patientName}</h4>
-    </form>
+      {!store.showPatientNameInput && (
+        <h2 className="my-2">{store.patientName}</h2>
+      )}
+    </div>
   );
 };
 

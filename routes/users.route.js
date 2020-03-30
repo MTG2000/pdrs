@@ -15,6 +15,6 @@ router.post(
 
 router.get("/", authMiddleware(["Admin"]), controller.getAllUsers);
 
-router.get("/patients", controller.getPatients);
+router.get("/patients", controller.getPatient);
 
 module.exports = router;

@@ -1,5 +1,5 @@
 import React from "react";
-import SearchableSelect from "../../Partials/SearchableSelect";
+import SearchableSelect from "../../Shared/SearchableSelect";
 
 const MedicinSelect = ({ store }) => {
   return (

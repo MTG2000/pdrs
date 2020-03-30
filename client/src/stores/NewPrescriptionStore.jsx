@@ -1,21 +1,36 @@
 import { observable, action, decorate, autorun, runInAction, toJS } from "mobx";
 
 class NewPrescription {
-  patinetId = "";
+  patientId = "";
   patientName = "";
+  showPatientNameInput = false;
   note = "";
   medicins = [];
   classifications = [];
   selectedClassification = -1;
   loading = true;
-  constructor() {
-    autorun(() => {
-      console.log(toJS(this.classifications)); //use toJS to show the actual js objects not the mobx objects
-    });
-  }
+  constructor() {}
 
   SetPatientId(v) {
-    this.patinetId = v;
+    this.patientId = v;
+    this.FetchPatientName();
+  }
+
+  SetPatientName(v) {
+    this.patientName = v;
+  }
+
+  async FetchPatientName() {
+    const res = await fetch(`/api/users/patients?id=${this.patientId}`);
+    const data = await res.json();
+    runInAction(() => {
+      if (data.Name) {
+        this.patientName = data.Name;
+        this.showPatientNameInput = false;
+      } else {
+        this.showPatientNameInput = true;
+      }
+    });
   }
 
   async FetchClassifications() {
@@ -53,7 +68,7 @@ class NewPrescription {
 
   SubmitPrescription() {
     const prescription = {
-      patientId: this.patinetId,
+      patientId: this.patientId,
       note: this.note,
       medicins: toJS(this.medicins),
       classificationId: this.selectedClassification
@@ -65,7 +80,8 @@ class NewPrescription {
 decorate(NewPrescription, {
   loading: observable,
   selectedClassification: observable,
-  patinetId: observable,
+  patientId: observable,
+  showPatientNameInput: observable,
   patientName: observable,
   note: observable,
   medicins: observable,
@@ -78,7 +94,9 @@ decorate(NewPrescription, {
   ToggleChronic: action,
   SelectClassification: action,
   SetNote: action,
-  SubmitPrescription: action
+  SubmitPrescription: action,
+  FetchPatientName: action,
+  SetPatientName: action
 });
 
 export default NewPrescription;

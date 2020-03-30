@@ -1,18 +1,33 @@
-import { observable, action, decorate, autorun, runInAction, toJS } from "mobx";
+import { observable, action, decorate, runInAction, autorun } from "mobx";
 
 class PatientPrescriptionsStore {
-  patinetId = "";
+  //Observables
+  patientId = "";
   patientName = "";
-
   classifications = [];
   prescriptions = [];
   selectedClassification = 0;
   loading = true;
   loadingPrescriptions = false;
-  constructor() {}
+
+  //Class Props
+  constructor() {
+    this.abortController = new AbortController();
+    this.signal = this.abortController.signal;
+  }
 
   SetPatientId(v) {
-    this.patinetId = v;
+    this.patientId = v;
+    this.FetchPatientName();
+    this.FetchPrescriptions();
+  }
+
+  async FetchPatientName() {
+    const res = await fetch(`/api/users/patients?id=${this.patientId}`);
+    const data = await res.json();
+    runInAction(() => {
+      this.patientName = data.Name || "";
+    });
   }
 
   async FetchClassifications() {
@@ -25,26 +40,25 @@ class PatientPrescriptionsStore {
   }
 
   async FetchPrescriptions() {
+    if (this.loadingPrescriptions) this.abortController.abort();
     this.loadingPrescriptions = true;
     let fetchUrl = "api/patients/prescriptions?";
-    fetchUrl = fetchUrl.concat(`patientId=${this.patinetId}`);
+    fetchUrl = fetchUrl.concat(`patientId=${this.patientId}`);
     if (this.selectedClassification)
       fetchUrl = fetchUrl.concat(
         `&classification=${this.selectedClassification}`
       );
-
-    const res = await fetch(fetchUrl);
+    const res = await fetch(fetchUrl, { signal: this.signal });
     const data = await res.json();
     runInAction(() => {
       this.prescriptions = data.prescriptions;
-      if (this.prescriptions[0])
-        this.patientName = this.prescriptions[0].Patient_Name;
       this.loadingPrescriptions = false;
     });
   }
 
   SelectClassification(id) {
     this.selectedClassification = id;
+    this.FetchPrescriptions();
   }
 }
 
@@ -53,13 +67,14 @@ decorate(PatientPrescriptionsStore, {
   loadingPrescriptions: observable,
   selectedClassification: observable,
   prescriptions: observable,
-  patinetId: observable,
+  patientId: observable,
   patientName: observable,
   classifications: observable,
   SetPatientId: action,
   FetchClassifications: action,
   SelectClassification: action,
-  FetchPrescriptions: action
+  FetchPrescriptions: action,
+  FetchPatientName: action
 });
 
 export default PatientPrescriptionsStore;

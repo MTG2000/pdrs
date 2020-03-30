@@ -136,8 +136,8 @@ const getUserTypeById = `
 select * from UsersTypes where id == ?
 `;
 
-const getPatientsById = `
-select * from Patients where lower(id) like lower(?)
+const getPatientById = `
+select * from Patients where lower(id) = lower(?)
 `;
 
 const getDoctorIdByUsername = `
@@ -258,7 +258,7 @@ module.exports = {
   medicineExist,
   getUserTypeId,
   getUserTypeById,
-  getPatientsById,
+  getPatientById,
   getDoctorIdByUsername,
   getUser,
   getPatientPrescriptions,

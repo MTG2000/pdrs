@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
-import PatientIdInput from "./Partials/patientIdInput";
+import PatientIdInput from "./Partials/PatientIdInput";
 import { Box } from "@material-ui/core";
 import "./style/style.scss";
 import ClassificationsFilter from "./Partials/ClassificationsFilter";
@@ -7,7 +7,7 @@ import PrescriptionNote from "./Partials/PrescriptionNote";
 import MedicinSelect from "./Partials/MedicinSelect";
 import MedicinsList from "./Partials/MedicinsList";
 import { Button } from "@material-ui/core";
-import { mainContext } from "../../../stores/Context";
+import { mainContext } from "../../stores/Context";
 import { observer } from "mobx-react";
 
 const NewPrescription = () => {
@@ -23,9 +23,10 @@ const NewPrescription = () => {
 
   return (
     <Box pb={8}>
-      <Box py={5} display="flex">
+      <Box pt={5} display="flex">
         <PatientIdInput store={store} />
       </Box>
+
       <ClassificationsFilter store={store} />
       <PrescriptionNote store={store} />
       <div className="row">
