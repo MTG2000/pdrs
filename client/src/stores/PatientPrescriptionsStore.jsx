@@ -21,20 +21,24 @@ class PatientPrescriptionsStore {
   }
 
   async FetchPatientName() {
-    const res = await fetch(`/api/users/patients?id=${this.patientId}`);
-    const data = await res.json();
-    runInAction(() => {
-      this.patientName = data.Name || "";
-    });
+    try {
+      const res = await fetch(`/api/users/patients?id=${this.patientId}`);
+      const { data } = await res.json();
+      runInAction(() => {
+        this.patientName = data.Name || "";
+      });
+    } catch (error) {}
   }
 
   async FetchClassifications() {
-    const res = await fetch("/api/medicins/classifications");
-    const data = await res.json();
-    runInAction(() => {
-      this.classifications = data;
-      this.loading = false;
-    });
+    try {
+      const res = await fetch("/api/medicins/classifications");
+      const { data } = await res.json();
+      runInAction(() => {
+        this.classifications = data;
+        this.loading = false;
+      });
+    } catch (error) {}
   }
 
   async FetchPrescriptions() {
@@ -52,7 +56,7 @@ class PatientPrescriptionsStore {
       this.abortController = new AbortController();
       this.signal = this.abortController.signal;
       const res = await fetch(fetchUrl, { signal: this.signal });
-      const data = await res.json();
+      const { data } = await res.json();
       runInAction(() => {
         this.prescriptions = data.prescriptions;
         this.loadingPrescriptions = false;

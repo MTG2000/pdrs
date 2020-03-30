@@ -4,3 +4,5 @@ remove token from response
 add login page
 add some reaction to the respone on creating a new prescription ( basicley add notifications)
 add a 'All' Classification
+add some type of standardization for the responses
+Maybe add some Dependency Injection

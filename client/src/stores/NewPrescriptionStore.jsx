@@ -21,25 +21,29 @@ class NewPrescriptionStore {
   }
 
   async FetchPatientName() {
-    const res = await fetch(`/api/users/patients?id=${this.patientId}`);
-    const data = await res.json();
-    runInAction(() => {
-      if (data.Name) {
-        this.patientName = data.Name;
-        this.showPatientNameInput = false;
-      } else {
-        this.showPatientNameInput = true;
-      }
-    });
+    try {
+      const res = await fetch(`/api/users/patients?id=${this.patientId}`);
+      const { data } = await res.json();
+      runInAction(() => {
+        if (data.Name) {
+          this.patientName = data.Name;
+          this.showPatientNameInput = false;
+        } else {
+          this.showPatientNameInput = true;
+        }
+      });
+    } catch (error) {}
   }
 
   async FetchClassifications() {
-    const res = await fetch("/api/medicins/classifications");
-    const data = await res.json();
-    runInAction(() => {
-      this.classifications = data;
-      this.loading = false;
-    });
+    try {
+      const res = await fetch("/api/medicins/classifications");
+      const { data } = await res.json();
+      runInAction(() => {
+        this.classifications = data;
+        this.loading = false;
+      });
+    } catch (error) {}
   }
 
   SelectClassification(id) {
@@ -67,23 +71,25 @@ class NewPrescriptionStore {
   }
 
   async SubmitPrescription() {
-    const prescription = {
-      patientId: this.patientId,
-      patientName: this.patientName,
-      note: this.note,
-      medicins: toJS(this.medicins),
-      classificationId: this.selectedClassification
-    };
-    const response = await fetch("/api/patients/new-prescription", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(prescription)
-    });
-    const data = await response.json();
-    console.log("Response: ", data);
+    try {
+      const prescription = {
+        patientId: this.patientId,
+        patientName: this.patientName,
+        note: this.note,
+        medicins: toJS(this.medicins),
+        classificationId: this.selectedClassification
+      };
+      const response = await fetch("/api/patients/new-prescription", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(prescription)
+      });
+      const { data } = await response.json();
+      console.log("Response: ", data);
+    } catch (error) {}
   }
 }
 

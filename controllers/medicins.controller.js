@@ -1,19 +1,15 @@
 const repository = require("../repositories/medicins.repository");
-const {
-  begingTransaction,
-  commitTransaction,
-  rollbackTransaction
-} = require("../services/db");
+const SendResponse = require("../Utils/SendResponse");
 
 const getMedicins = async (req, res) => {
   const { name = "" } = req.query;
   const medicins = await repository.getMedicins(name);
-  res.json(medicins);
+  SendResponse.JsonData(res, medicins);
 };
 
 const getClassifications = async (req, res) => {
   const classifications = await repository.getClassifications();
-  res.json(classifications);
+  SendResponse.JsonData(res, classifications);
 };
 
 const newMedicine = async (req, res, next) => {
@@ -28,7 +24,7 @@ const newMedicine = async (req, res, next) => {
   } catch (error) {
     console.error(error);
     res.failed = true;
-    res.status(400).json({ error: error });
+    SendResponse.JsonFailed(res, error);
   }
   next();
 };

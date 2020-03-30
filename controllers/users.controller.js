@@ -2,10 +2,11 @@ const repository = require("../repositories/users.repository");
 const authService = require("../services/auth");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
+const SendResponse = require("../Utils/SendResponse");
 
 const getAllUsers = async (req, res) => {
   const users = await repository.getAllUsers();
-  res.send(users);
+  SendResponse.JsonData(res, users);
 };
 
 const loginUser = async (req, res) => {
@@ -24,22 +25,18 @@ const loginUser = async (req, res) => {
   });
 
   //set cookie with the token
-  res
-    .cookie("token", token, {
-      secure: false, // set to true if your using https
-      httpOnly: true
-    })
-    .status(200)
-    .send({
-      success: "Successfully login",
-      token //Testing Purposes ONLY !!!!!!!!!!!
-    });
+  res.cookie("token", token, {
+    secure: false, // set to true if your using https
+    httpOnly: true
+  });
+  SendResponse.JsonSuccess(res, "Logged-In Successfully", _, { token });
 };
 
 const getPatient = async (req, res) => {
   const { id } = req.query;
   const patinet = await repository.getPatient(id);
-  res.send(patinet || {});
+  if (patinet) SendResponse.JsonData(res, patinet);
+  else SendResponse.JsonNotFound(res);
 };
 
 const registerUser = async (req, res, next) => {
@@ -54,7 +51,7 @@ const registerUser = async (req, res, next) => {
         password,
         doctorName
       );
-      res.status(201).json(doctorId);
+      SendResponse.JsonCreated(res, "Doctor Created Successfully");
       next();
       return;
     } else if (type === "pharmacy") {
@@ -65,15 +62,16 @@ const registerUser = async (req, res, next) => {
         pharmacyName,
         address
       );
-      res.status(201).json(pharmacyId);
+      SendResponse.JsonCreated(res, "Pharmacy Created Successfully");
       next();
       return;
     }
-    res.status(400).send({ error: "Type Not Available" });
+    SendResponse.JsonFailed(res, "Type Not Valid");
   } catch (error) {
     console.error(error);
     res.failed = true;
-    res.status(400).json({ error: error });
+
+    SendResponse.JsonFailed(res, "Could Not Register User");
     next();
   }
 };

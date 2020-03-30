@@ -1,5 +1,6 @@
 const patientsRepository = require("../repositories/patients.repository");
 const usersRepository = require("../repositories/users.repository");
+const SendResponse = require("../Utils/SendResponse");
 
 // {
 //     patientId:0233913331,
@@ -39,11 +40,15 @@ const newPrescription = async (req, res, next) => {
       prescriptionId,
       medicins.map(m => ({ ...m, id: m.value }))
     );
-    res.status(201).send({ success: result });
+    SendResponse.JsonCreated(
+      res,
+      "Success",
+      "Presecription Created Successfully"
+    );
   } catch (error) {
     console.error(error);
     res.failed = true;
-    res.status(400).json({ error: error });
+    SendResponse.JsonFailed(res, "Failed", "Couldn't Create Prescription");
   }
   next();
 };
@@ -73,7 +78,7 @@ const getPrescriptions = async (req, res) => {
     ];
   }
 
-  res.json({
+  SendResponse.JsonData(res, {
     prescriptions: prescriptions.reverse(),
     chronicMedicins
   });
@@ -95,11 +100,11 @@ const dispenseMedicins = async (req, res, next) => {
         pharmacyId
       );
     }
-    res.send({ success: true });
+    SendResponse.JsonSuccess(res);
   } catch (error) {
     console.error(error);
     res.failed = true;
-    res.status(400).json({ error: error });
+    SendResponse.JsonFailed(res);
   }
   next();
 };
@@ -108,11 +113,11 @@ const stopChronicMedicine = async (req, res, next) => {
   try {
     const { prescriptionId, medicineId } = req.body;
     await patientsRepository.stopChronicMedicine(prescriptionId, medicineId);
-    res.send({ success: true });
+    SendResponse.JsonSuccess(res);
   } catch (error) {
     console.error(error);
     res.failed = true;
-    res.status(400).json({ error: error });
+    SendResponse.JsonFailed(res);
   }
   next();
 };
