@@ -1,4 +1,5 @@
 import { observable, action, decorate, runInAction } from "mobx";
+import { NotificationManager } from "react-notifications";
 
 class PatientPrescriptionsStore {
   //Observables
@@ -62,12 +63,14 @@ class PatientPrescriptionsStore {
       });
     } catch (error) {
       //Request cancelled so that a new one can be sent
+      NotificationManager.error("Couldn't Get Prescriptions");
+      this.loadingPrescriptions = false;
     }
   }
 
   SelectClassification(id) {
     this.selectedClassification = id;
-    this.FetchPrescriptions();
+    if (this.patientId) this.FetchPrescriptions();
   }
 }
 
