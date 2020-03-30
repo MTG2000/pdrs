@@ -53,7 +53,7 @@ class SearchableSelect extends React.Component {
       queryName ? `?${queryName}=${inputValue}` : ""
     }`;
     fetch(fetchUrl).then(response => {
-      response.json().then(data => {
+      response.json().then(({ data }) => {
         if (this.props.mapOptionsToValues)
           callback(this.props.mapOptionsToValues(data));
         else callback(this.mapOptionsToValues(data));

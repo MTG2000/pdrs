@@ -1,4 +1,5 @@
-import { observable, action, decorate, autorun, runInAction, toJS } from "mobx";
+import { observable, action, decorate, runInAction, toJS } from "mobx";
+import { NotificationManager } from "react-notifications";
 
 class NewPrescriptionStore {
   patientId = "";
@@ -9,7 +10,7 @@ class NewPrescriptionStore {
   classifications = [];
   selectedClassification = -1;
   loading = true;
-  constructor() {}
+  redirect = false;
 
   SetPatientId(v) {
     this.patientId = v;
@@ -88,12 +89,19 @@ class NewPrescriptionStore {
         body: JSON.stringify(prescription)
       });
       const { data } = await response.json();
-      console.log("Response: ", data);
+      console.log(data);
+      NotificationManager.success("Prescription Created Successfully");
+      setTimeout(() => {
+        runInAction(() => {
+          this.redirect = true;
+        });
+      }, 3000);
     } catch (error) {}
   }
 }
 
 decorate(NewPrescriptionStore, {
+  redirect: observable,
   loading: observable,
   selectedClassification: observable,
   patientId: observable,

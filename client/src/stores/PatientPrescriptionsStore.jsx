@@ -1,4 +1,4 @@
-import { observable, action, decorate, runInAction, autorun } from "mobx";
+import { observable, action, decorate, runInAction } from "mobx";
 
 class PatientPrescriptionsStore {
   //Observables
@@ -9,10 +9,9 @@ class PatientPrescriptionsStore {
   selectedClassification = 0;
   loading = true;
   loadingPrescriptions = false;
+  //Class Props
   abortController;
   signal;
-  //Class Props
-  constructor() {}
 
   SetPatientId(v) {
     this.patientId = v;

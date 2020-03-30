@@ -9,15 +9,19 @@ import MedicinsList from "./Partials/MedicinsList";
 import { Button } from "@material-ui/core";
 import { mainContext } from "../../stores/Context";
 import { observer } from "mobx-react";
+import { NotificationManager } from "react-notifications";
+import { Redirect } from "react-router-dom";
 
 const NewPrescription = () => {
   const { NewPrescriptionStore } = useContext(mainContext);
-
+  const [redirect, setRedirect] = useState(false);
   const [store] = useState(new NewPrescriptionStore());
 
   useEffect(() => {
     store.FetchClassifications();
   }, [store]);
+
+  if (store.redirect) return <Redirect to="/" />;
 
   if (store.loading) return <h2 className="py-5 px-5 text-center">Loading</h2>;
 
