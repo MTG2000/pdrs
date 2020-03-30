@@ -3,6 +3,7 @@ const server = express();
 const cookieParser = require("cookie-parser");
 const DB = require("./services/db");
 const path = require("path");
+const bodyParser = require("body-parser");
 require("dotenv").config();
 
 const dev = server.get("env") !== "production";
@@ -14,6 +15,8 @@ if (!dev) {
 }
 
 // server.use(cors());
+// support parsing of application/json type post data
+// server.use(bodyParser.urlencoded({ extended: false }));
 server.use(express.static(path.join(__dirname, "static")));
 server.use(cookieParser());
 server.use(express.urlencoded({ extended: false }));

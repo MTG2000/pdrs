@@ -37,7 +37,7 @@ const NewPrescription = () => {
         <Button
           variant="contained"
           color="primary"
-          onClick={() => NewPrescriptionStore.SubmitPrescription()}
+          onClick={() => store.SubmitPrescription()}
         >
           Submit Prescription
         </Button>

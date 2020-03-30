@@ -17,8 +17,8 @@ const addMedicinsToPrescription = async (prescriptionId, medicins) => {
     await DB.run(sqlQueries.insert_MedicinePrescription, [
       m.id,
       prescriptionId,
-      m.isBold,
-      m.isChronic
+      m.isBold || "0",
+      m.isChronic || "0"
     ]);
   }
   return true;

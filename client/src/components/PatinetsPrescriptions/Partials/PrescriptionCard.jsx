@@ -34,7 +34,10 @@ import { toJS } from "mobx";
         }
         */
 const PrescriptionCard = ({ prescription }) => {
-  const newDate = date.format(new Date(), "DD MMM");
+  const newDate = date.format(
+    new Date(prescription.Prescription_Date),
+    "DD MMM"
+  );
   return (
     <div className="prescription-card mx-auto py-5">
       <div className="note  bg-primary px-3 py-3">

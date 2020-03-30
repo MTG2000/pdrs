@@ -23,8 +23,8 @@ const newPrescription = async (req, res, next) => {
       note
     } = req.body;
     //!!! add validation !!!
-    const patientExist = await usersRepository.getPatients(patientId);
-    if (!patientExist[0]) {
+    const patientExist = await usersRepository.getPatient(patientId);
+    if (!patientExist) {
       await usersRepository.newPatient(patientId, patientName);
     }
     const doctorId = await usersRepository.getDoctorId(req.user.username);
@@ -37,7 +37,7 @@ const newPrescription = async (req, res, next) => {
     );
     const result = await patientsRepository.addMedicinsToPrescription(
       prescriptionId,
-      medicins
+      medicins.map(m => ({ ...m, id: m.value }))
     );
     res.status(201).send({ success: result });
   } catch (error) {
@@ -74,7 +74,7 @@ const getPrescriptions = async (req, res) => {
   }
 
   res.json({
-    prescriptions,
+    prescriptions: prescriptions.reverse(),
     chronicMedicins
   });
 };

@@ -1,6 +1,6 @@
 import { observable, action, decorate, autorun, runInAction, toJS } from "mobx";
 
-class NewPrescription {
+class NewPrescriptionStore {
   patientId = "";
   patientName = "";
   showPatientNameInput = false;
@@ -66,18 +66,30 @@ class NewPrescription {
     this.note = value;
   }
 
-  SubmitPrescription() {
+  async SubmitPrescription() {
     const prescription = {
       patientId: this.patientId,
+      patientName: this.patientName,
       note: this.note,
       medicins: toJS(this.medicins),
       classificationId: this.selectedClassification
     };
     console.log(prescription);
+
+    const response = await fetch("/api/patients/new-prescription", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(prescription)
+    });
+    const data = await response.json();
+    console.log("Response: ", data);
   }
 }
 
-decorate(NewPrescription, {
+decorate(NewPrescriptionStore, {
   loading: observable,
   selectedClassification: observable,
   patientId: observable,
@@ -99,6 +111,6 @@ decorate(NewPrescription, {
   SetPatientName: action
 });
 
-export default NewPrescription;
+export default NewPrescriptionStore;
 // const todoStoreInstance = new NewPrescription();
 // export default todoStoreInstance;
