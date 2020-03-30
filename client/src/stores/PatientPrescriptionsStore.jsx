@@ -9,12 +9,10 @@ class PatientPrescriptionsStore {
   selectedClassification = 0;
   loading = true;
   loadingPrescriptions = false;
-
+  abortController;
+  signal;
   //Class Props
-  constructor() {
-    this.abortController = new AbortController();
-    this.signal = this.abortController.signal;
-  }
+  constructor() {}
 
   SetPatientId(v) {
     this.patientId = v;
@@ -40,20 +38,28 @@ class PatientPrescriptionsStore {
   }
 
   async FetchPrescriptions() {
-    if (this.loadingPrescriptions) this.abortController.abort();
-    this.loadingPrescriptions = true;
-    let fetchUrl = "api/patients/prescriptions?";
-    fetchUrl = fetchUrl.concat(`patientId=${this.patientId}`);
-    if (this.selectedClassification)
-      fetchUrl = fetchUrl.concat(
-        `&classification=${this.selectedClassification}`
-      );
-    const res = await fetch(fetchUrl, { signal: this.signal });
-    const data = await res.json();
-    runInAction(() => {
-      this.prescriptions = data.prescriptions;
-      this.loadingPrescriptions = false;
-    });
+    try {
+      if (this.loadingPrescriptions) this.abortController.abort();
+      this.loadingPrescriptions = true;
+      let fetchUrl = "/api/patients/prescriptions?";
+      fetchUrl = fetchUrl.concat(`patientId=${this.patientId}`);
+      if (this.selectedClassification)
+        fetchUrl = fetchUrl.concat(
+          `&classification=${this.selectedClassification}`
+        );
+
+      //These will be used to abort the request if different parameters are specified
+      this.abortController = new AbortController();
+      this.signal = this.abortController.signal;
+      const res = await fetch(fetchUrl, { signal: this.signal });
+      const data = await res.json();
+      runInAction(() => {
+        this.prescriptions = data.prescriptions;
+        this.loadingPrescriptions = false;
+      });
+    } catch (error) {
+      //Request cancelled so that a new one can be sent
+    }
   }
 
   SelectClassification(id) {

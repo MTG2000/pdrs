@@ -74,8 +74,6 @@ class NewPrescriptionStore {
       medicins: toJS(this.medicins),
       classificationId: this.selectedClassification
     };
-    console.log(prescription);
-
     const response = await fetch("/api/patients/new-prescription", {
       method: "POST",
       headers: {
