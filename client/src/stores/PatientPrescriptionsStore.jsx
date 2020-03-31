@@ -25,9 +25,11 @@ class PatientPrescriptionsStore {
       const res = await fetch(`/api/users/patients?id=${this.patientId}`);
       const { data } = await res.json();
       runInAction(() => {
-        this.patientName = data.Name || "";
+        this.patientName = data.Name;
       });
-    } catch (error) {}
+    } catch (error) {
+      this.patientName = "";
+    }
   }
 
   async FetchClassifications() {

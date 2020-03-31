@@ -33,7 +33,10 @@ class NewPrescriptionStore {
           this.showPatientNameInput = true;
         }
       });
-    } catch (error) {}
+    } catch (error) {
+      this.showPatientNameInput = true;
+      this.patientName = "";
+    }
   }
 
   async FetchClassifications() {

@@ -1,12 +1,15 @@
 add validation
 
--FrontEnd
+-- FrontEnd
 add login page
 add a 'All' Classification
+Add the PrivateRoute
+
+Create a Main Page
 
 
 
--BackEnd
+-- BackEnd
 Maybe add some Dependency Injection
 create a proper seeding mechanism
 
