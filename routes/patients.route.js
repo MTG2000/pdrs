@@ -19,10 +19,16 @@ router.post(
 );
 
 router.post(
-  "/dipense",
+  "/dispense",
   authMiddleware(["Pharmacy"]),
   transactionBeginMiddleware,
   controller.dispenseMedicins
+);
+
+router.get(
+  "/prescriptions-to-dispense",
+  authMiddleware(["Pharmacy"]),
+  controller.getPrescriptionsToDispense
 );
 
 router.get("/prescriptions", authMiddleware(), controller.getPrescriptions);

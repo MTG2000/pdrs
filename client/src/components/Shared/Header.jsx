@@ -18,7 +18,12 @@ const Header = ({ store }) => {
               New Prescription
             </Link>
           )}
-          {(role === "Doctor" || role === "Pharmacy") && (
+          {role === "Pharmacy" && (
+            <Link className="nav-link text-white" to="/dispense-prescription">
+              Dispense Prescription
+            </Link>
+          )}
+          {role === "Doctor" && (
             <Link className="nav-link text-white" to="/patients-prescriptions">
               Patinets Prescriptions
             </Link>

@@ -1,8 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
-import "./utils/vendors";
-import AppWrapper from "./utils/AppWrapper";
+import "./helpers/vendors";
+import AppWrapper from "./helpers/AppWrapper";
 
 ReactDOM.render(
   <AppWrapper>

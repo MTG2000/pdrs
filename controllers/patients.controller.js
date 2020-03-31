@@ -78,6 +78,43 @@ const getPrescriptions = async (req, res) => {
     ];
   }
 
+  //remove duplicates
+  chronicMedicins = chronicMedicins.filter(
+    (m, i) => chronicMedicins.indexOf(m) === i
+  );
+
+  SendResponse.JsonData(res, {
+    prescriptions: prescriptions.reverse(),
+    chronicMedicins
+  });
+};
+
+const getPrescriptionsToDispense = async (req, res) => {
+  const patientId = req.query.patientId;
+  let chronicMedicins = [];
+  let prescriptions = [];
+  let allPrescriptions = await patientsRepository.getPatientPrescriptions(
+    patientId
+  );
+
+  for (const prescription of allPrescriptions) {
+    const medicins = await patientsRepository.getPrescriptionMedicinsToDispense(
+      prescription.Id
+    );
+    if (medicins.length > 0) {
+      prescriptions.push(prescription);
+      prescriptions[prescriptions.length - 1].medicins = medicins;
+    }
+    chronicMedicins = [
+      ...chronicMedicins,
+      ...medicins.filter(m => m.isChronic == true)
+    ];
+  }
+  //remove duplicates
+  chronicMedicins = chronicMedicins.filter(
+    (m, i) => chronicMedicins.indexOf(m) === i
+  );
+
   SendResponse.JsonData(res, {
     prescriptions: prescriptions.reverse(),
     chronicMedicins
@@ -125,6 +162,7 @@ const stopChronicMedicine = async (req, res, next) => {
 module.exports = {
   newPrescription,
   getPrescriptions,
+  getPrescriptionsToDispense,
   dispenseMedicins,
   stopChronicMedicine
 };

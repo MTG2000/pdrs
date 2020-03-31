@@ -44,6 +44,12 @@ const getPrescriptionMedicins = async prescriptionId => {
   ]);
 };
 
+const getPrescriptionMedicinsToDispense = async prescriptionId => {
+  return await DB.queryAll(sqlQueries.getPrescriptionMedicinsToDispense, [
+    prescriptionId
+  ]);
+};
+
 const dispenseMedicine = async (prescriptionId, medicineId, pharmacyId) => {
   return await DB.queryAll(sqlQueries.dispenseMedicine, [
     pharmacyId,
@@ -64,6 +70,7 @@ module.exports = {
   addMedicinsToPrescription,
   getPatientPrescriptions,
   getPrescriptionMedicins,
+  getPrescriptionMedicinsToDispense,
   getPatientPrescriptionsByClassification,
   dispenseMedicine,
   stopChronicMedicine

@@ -181,6 +181,12 @@ from Medicine_Prescription mp , Medicins m
 where prescription_ID = ? and mp.Medicine_Id = m.Id
 `;
 
+const getPrescriptionMedicinsToDispense = `
+select m.Id, m.name , mp.isBold,mp.IsChronic,mp.Pharmacy_Id
+from Medicine_Prescription mp , Medicins m
+where prescription_ID = ? and mp.Medicine_Id = m.Id and mp.Pharmacy_Id is NULL
+`;
+
 const getClassificationsAll = `
 select * from Classifications ;
 `;
@@ -264,6 +270,7 @@ module.exports = {
   getPatientPrescriptions,
   getPatientPrescriptionsByClassification,
   getPrescriptionMedicins,
+  getPrescriptionMedicinsToDispense,
   getClassificationsAll,
   getPharmacyIdByUsername,
   dispenseMedicine,
