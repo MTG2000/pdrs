@@ -29,7 +29,10 @@ const loginUser = async (req, res) => {
     secure: false, // set to true if your using https
     httpOnly: true
   });
-  SendResponse.JsonSuccess(res, "Logged-In Successfully", _, { token });
+  SendResponse.JsonSuccess(res, "Logged-In Successfully", "", {
+    username: user.Username,
+    role: role
+  });
 };
 
 const getPatient = async (req, res) => {

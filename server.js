@@ -16,7 +16,7 @@ if (!dev) {
 
 // server.use(cors());
 // support parsing of application/json type post data
-// server.use(bodyParser.urlencoded({ extended: false }));
+server.use(bodyParser.urlencoded({ extended: false }));
 server.use(express.static(path.join(__dirname, "static")));
 server.use(cookieParser());
 server.use(express.urlencoded({ extended: false }));
