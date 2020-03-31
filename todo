@@ -2,12 +2,13 @@ add validation
 
 -- FrontEnd
 add a 'All' Classification
+
 Add loading icons to the btns
-Make Prescription Page for pharmacy
 Admin Page 
 
 Replace every: 'import {} from '*/*' with import * from '*/*/*' '
 Add Lazy Loading
+add AOS
 Create a Main Page
 change the navbar
 Improve The Overall UI

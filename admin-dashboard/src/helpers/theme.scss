@@ -1,0 +1,16 @@
+/* import only the necessary Bootstrap files */
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+/* -------begin customization-------- */
+/* change the primary theme color, and add a new theme color */
+/* -------begin customization-------- */
+/* change the primary theme color, and add a new theme color */
+
+$theme-colors: (
+  primary: #007ebe,
+  grey: rgb(223, 223, 223)
+);
+/* -------end customization-------- */
+/* -------end customization-------- */
+/* finally, import Bootstrap to set the changes! */
+@import "bootstrap";
