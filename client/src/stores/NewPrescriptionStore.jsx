@@ -88,8 +88,7 @@ class NewPrescriptionStore {
         },
         body: JSON.stringify(prescription)
       });
-      const { data } = await response.json();
-      console.log(data);
+      await response.json();
       NotificationManager.success("Prescription Created Successfully");
       setTimeout(() => {
         runInAction(() => {

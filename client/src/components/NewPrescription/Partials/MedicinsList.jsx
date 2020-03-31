@@ -17,8 +17,16 @@ const MedicinsList = ({ store }) => {
           <label className="mx-1 mr-4 mr-xs-5">Bold</label>
         </div>
       </div>
-      {medicins.map(m => {
-        return <MedicineCard key={m.value} name={m.label} />;
+      {medicins.map((m, i) => {
+        return (
+          <MedicineCard
+            key={m.value}
+            name={m.label}
+            onRemove={() => store.RemoveMedicin(i)}
+            onToggleBold={() => store.ToggleBold(i)}
+            onToggleChronic={() => store.ToggleChronic(i)}
+          />
+        );
       })}
     </div>
   );

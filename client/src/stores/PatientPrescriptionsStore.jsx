@@ -44,6 +44,9 @@ class PatientPrescriptionsStore {
   async FetchPrescriptions() {
     try {
       if (this.loadingPrescriptions) this.abortController.abort();
+    } catch (error) {}
+
+    try {
       this.loadingPrescriptions = true;
       let fetchUrl = "/api/patients/prescriptions?";
       fetchUrl = fetchUrl.concat(`patientId=${this.patientId}`);
@@ -62,6 +65,7 @@ class PatientPrescriptionsStore {
         this.loadingPrescriptions = false;
       });
     } catch (error) {
+      console.log(error);
       //Request cancelled so that a new one can be sent
       NotificationManager.error("Couldn't Get Prescriptions");
       this.loadingPrescriptions = false;

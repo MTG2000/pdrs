@@ -1,6 +1,14 @@
-set cookies security to true
 add validation
-remove token from response
+
+-FrontEnd
 add login page
 add a 'All' Classification
+
+
+
+-BackEnd
 Maybe add some Dependency Injection
+create a proper seeding mechanism
+
+set cookies security to true
+remove token from response

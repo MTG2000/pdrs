@@ -14,7 +14,13 @@ const useStyle = makeStyles({
   }
 });
 
-const MedicineCard = ({ name, id }) => {
+const MedicineCard = ({
+  name,
+  id,
+  onRemove,
+  onToggleBold,
+  onToggleChronic
+}) => {
   const classes = useStyle();
 
   return (
@@ -27,12 +33,18 @@ const MedicineCard = ({ name, id }) => {
           <Checkbox
             color="primary"
             inputProps={{ "aria-label": "secondary checkbox" }}
+            onChange={onToggleChronic}
           />
           <Checkbox
             color="primary"
             inputProps={{ "aria-label": "secondary checkbox" }}
+            onChange={onToggleBold}
           />
-          <Delete style={{ color: "#b90404" }} className={classes.icon} />
+          <Delete
+            onClick={onRemove}
+            style={{ color: "#b90404" }}
+            className={classes.icon}
+          />
         </div>
       </div>
     </div>
