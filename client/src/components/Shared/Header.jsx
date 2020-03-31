@@ -1,13 +1,9 @@
-import React, { useContext, useState } from "react";
+import React from "react";
 import { Navbar, Nav } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { mainContext } from "../../stores/Context";
 import { observer } from "mobx-react";
 
-const Header = () => {
-  const { AppStore } = useContext(mainContext);
-
-  const [store] = useState(AppStore);
+const Header = ({ store }) => {
   const username = store.username;
   const role = store.role;
 

@@ -8,7 +8,6 @@ class AppStore {
   constructor() {
     this.username = localStorage.getItem("username");
     this.role = localStorage.getItem("user-role");
-    autorun(() => console.log(this.role));
   }
 
   async Login(username, password) {
