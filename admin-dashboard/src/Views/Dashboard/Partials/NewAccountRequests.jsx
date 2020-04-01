@@ -6,12 +6,12 @@ import AccountRequestCard from "./AccountRequestCard";
 const NewAccountRequests = ({ store }) => {
   useEffect(() => {
     store.FetchNewAccountRequests();
-  }, []);
+  }, [store]);
 
   if (store.loadingNewAccountRequests)
     return <h2 className="text-center py-5">Loading Account Requests...</h2>;
 
-  if (store.newAccountRequests.length == 0)
+  if (store.newAccountRequests.length === 0)
     return <h2 className="text-center py-5">No New Requests...</h2>;
 
   console.log(toJS(store.newAccountRequests));

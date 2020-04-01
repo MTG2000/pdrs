@@ -1,72 +1,79 @@
 const DB = require("../services/db").DB;
 const sqlQueries = require("../db/sql-queries");
 
-const getUser = async username => {
-  return await DB.get(sqlQueries.getUser, [username]);
-};
+class Repository {
+  getUser = async username => {
+    return await DB.get(sqlQueries.getUser, [username]);
+  };
 
-const getAllUsers = async () => {
-  return await DB.queryAll(`select * from users`);
-};
+  getAllUsers = async () => {
+    let users = await DB.queryAll(sqlQueries.getAllUsers);
+    //Add the actual name of the user  by looking his type first then looking up his name in the appropriate table
+    const DoctorTypeId = await DB.get(sqlQueries.getUserTypeId, ["Doctor"]);
+    const PharmacyTypeId = await DB.get(sqlQueries.getUserTypeId, ["Pharmacy"]);
+    for (const user of users) {
+      if (user.UserType_Id === DoctorTypeId.Id)
+        user.DoctorName = (
+          await DB.get(sqlQueries.getDoctorById, [user.Id])
+        ).Name;
+      else if (user.UserType_Id === PharmacyTypeId.Id) {
+        user.PharmacyName = (
+          await DB.get(sqlQueries.getPharmacyById, [user.Id])
+        ).Name;
+      }
+    }
+    return users;
+  };
 
-const getPatient = async (id = "") => {
-  return await DB.get(sqlQueries.getPatientById, [id]);
-};
-const newPatient = async (id, name) => {
-  return await DB.run(sqlQueries.insert_Patient, [id, name]);
-};
+  getPatient = async (id = "") => {
+    return await DB.get(sqlQueries.getPatientById, [id]);
+  };
+  newPatient = async (id, name) => {
+    return await DB.run(sqlQueries.insert_Patient, [id, name]);
+  };
 
-const getUserTypeId = async name => {
-  return (await DB.get(sqlQueries.getUserTypeId, [name])).Id;
-};
-const getUserTypeById = async id => {
-  return (await DB.get(sqlQueries.getUserTypeById, [id])).Type;
-};
+  getUserTypeId = async name => {
+    return (await DB.get(sqlQueries.getUserTypeId, [name])).Id;
+  };
+  getUserTypeById = async id => {
+    return (await DB.get(sqlQueries.getUserTypeById, [id])).Type;
+  };
 
-const insertUser = async (username, password, type = "pharmacy") => {
-  const userTypeId = await getUserTypeId(type);
-  return (
-    await DB.run(sqlQueries.insert_User, [userTypeId, username, password])
-  ).lastID;
-};
+  insertUser = async (username, password, type = "pharmacy") => {
+    const userTypeId = await getUserTypeId(type);
+    return (
+      await DB.run(sqlQueries.insert_User, [userTypeId, username, password])
+    ).lastID;
+  };
 
-const insertDoctor = async (username, password, doctorName) => {
-  const userId = await insertUser(username, password, "doctor");
-  const doctorId = (
-    await DB.run(sqlQueries.insert_Doctor, [doctorName, userId])
-  ).lastID;
-  return doctorId;
-};
+  insertDoctor = async (username, password, doctorName) => {
+    const userId = await insertUser(username, password, "doctor");
+    const doctorId = (
+      await DB.run(sqlQueries.insert_Doctor, [doctorName, userId])
+    ).lastID;
+    return doctorId;
+  };
 
-const insertPharmacy = async (username, password, pharmacyName, address) => {
-  const userId = await insertUser(username, password, "pharmacy");
-  const pharmacyId = (
-    await DB.run(sqlQueries.insert_Pharmacy, [pharmacyName, address, userId])
-  ).lastID;
+  insertPharmacy = async (username, password, pharmacyName, address) => {
+    const userId = await insertUser(username, password, "pharmacy");
+    const pharmacyId = (
+      await DB.run(sqlQueries.insert_Pharmacy, [pharmacyName, address, userId])
+    ).lastID;
 
-  return pharmacyId;
-};
+    return pharmacyId;
+  };
 
-const getDoctorId = async (username = "") => {
-  const doctorId = await DB.get(sqlQueries.getDoctorIdByUsername, [username]);
-  return doctorId.Id;
-};
+  getDoctorId = async (username = "") => {
+    const doctorId = await DB.get(sqlQueries.getDoctorIdByUsername, [username]);
+    return doctorId.Id;
+  };
 
-const getPharmacyId = async (username = "") => {
-  const pharmacyId = await DB.get(sqlQueries.getPharmacyIdByUsername, [
-    username
-  ]);
-  return pharmacyId.Id;
-};
+  getPharmacyId = async (username = "") => {
+    const pharmacyId = await DB.get(sqlQueries.getPharmacyIdByUsername, [
+      username
+    ]);
+    return pharmacyId.Id;
+  };
+}
 
-module.exports = {
-  getPatient,
-  getUser,
-  getDoctorId,
-  insertPharmacy,
-  insertDoctor,
-  newPatient,
-  getUserTypeById,
-  getPharmacyId,
-  getAllUsers
-};
+module.exports = new Repository();

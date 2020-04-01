@@ -6,12 +6,12 @@ import NewMessageCard from "./NewMessageCard";
 const NewMessagesList = ({ store }) => {
   useEffect(() => {
     store.FetchNewMessages();
-  }, []);
+  }, [store]);
 
   if (store.loadingNewMessages)
     return <h2 className="text-center py-5">Loading...</h2>;
 
-  if (store.newMessages.length == 0)
+  if (store.newMessages.length === 0)
     return <h2 className="text-center py-5">No New Messages...</h2>;
 
   return (

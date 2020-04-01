@@ -228,6 +228,10 @@ Select * from Medicins where lower(Name) = lower( ? )
 select * from Users where username=? 
 `;
 
+  getAllUsers = `
+select * from Users  
+`;
+
   getPatientPrescriptions = `
 select p.Id , p.Doctor_Id , p.Description as Note, p.Pre_Date as Prescription_Date ,  c.Name as Classification_Name , c.ImageUrl as ClassificationIconUrl , patients.Name as Patient_Name 
 from prescriptions p , Classifications c , Patients patients

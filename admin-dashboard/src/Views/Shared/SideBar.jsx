@@ -33,7 +33,7 @@ const SideBar = () => {
     >
       <SideNav.Toggle />
       <SideNav.Nav
-        defaultSelected="home"
+        defaultSelected={window.location.pathname.slice(1)}
         onSelect={selected => {
           const to = "/" + selected;
           if (window.location.pathname !== to) {
@@ -51,7 +51,7 @@ const SideBar = () => {
           <NavIcon>
             <PersonAdd style={{ fontSize: "1.75em" }} />
           </NavIcon>
-          <NavText>Add User</NavText>
+          <NavText>Manage Users</NavText>
         </NavItem>
         <NavItem eventKey="statistics">
           <NavIcon>

@@ -5,8 +5,8 @@ import { mainContext } from "../../stores/Context";
 import NewAccountRequests from "./Partials/NewAccountRequests";
 
 const Dashboard = () => {
-  const { AppState } = useContext(mainContext);
-  const [store] = useState(AppState);
+  const { DashboardStore } = useContext(mainContext);
+  const [store] = useState(DashboardStore);
 
   return (
     <Container className="py-5">
