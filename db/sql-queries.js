@@ -1,14 +1,15 @@
-const transactionBegin = `BEGIN TRANSACTION;`;
-const transactionCommit = `COMMIT;`;
-const transactionRollback = `ROLLBACK;`;
+class SqlQueries {
+  transactionBegin = `BEGIN TRANSACTION;`;
+  transactionCommit = `COMMIT;`;
+  transactionRollback = `ROLLBACK;`;
 
-const createTable_UserTypes = `
+  createTable_UserTypes = `
 CREATE TABLE IF NOT EXISTS UsersTypes ( 
     Id   INTEGER PRIMARY KEY, 
     Type   VARCHAR(30) NOT NULL UNIQUE
 );`;
 
-const createTable_Users = `
+  createTable_Users = `
 CREATE TABLE IF NOT EXISTS Users 
 ( 
 Id INTEGER PRIMARY KEY, 
@@ -18,7 +19,7 @@ Password  VARCHAR(50) NOT NULL ,
 FOREIGN KEY (UserType_Id) REFERENCES USERSTYPES(ID)
 )`;
 
-const createTable_Pharmacies = `
+  createTable_Pharmacies = `
 CREATE TABLE IF NOT EXISTS Pharmacies 
 ( 
   Id     INTEGER PRIMARY KEY, 
@@ -29,7 +30,7 @@ CREATE TABLE IF NOT EXISTS Pharmacies
 
 );`;
 
-const createTable_Doctors = `
+  createTable_Doctors = `
 CREATE TABLE IF NOT EXISTS Doctors  
 ( 
   Id   INTEGER PRIMARY KEY, 
@@ -39,7 +40,7 @@ CREATE TABLE IF NOT EXISTS Doctors
 
 );`;
 
-const createTable_Patients = `
+  createTable_Patients = `
 CREATE TABLE IF NOT EXISTS Patients  
 ( 
   Id  varchar(20) PRIMARY KEY NOT NULL, 
@@ -47,7 +48,7 @@ CREATE TABLE IF NOT EXISTS Patients
 )
 `;
 
-const createTable_Medicins = `
+  createTable_Medicins = `
 CREATE TABLE IF NOT EXISTS Medicins 
 ( 
   Id  INTEGER PRIMARY KEY, 
@@ -55,7 +56,7 @@ CREATE TABLE IF NOT EXISTS Medicins
 );
 `;
 
-const createTable_Classifications = `
+  createTable_Classifications = `
 CREATE TABLE IF NOT EXISTS Classifications  
 ( 
   Id  INTEGER PRIMARY KEY, 
@@ -63,7 +64,7 @@ CREATE TABLE IF NOT EXISTS Classifications
   ImageUrl VARCHAR(100)
 ); `;
 
-const createTable_Prescriptions = `
+  createTable_Prescriptions = `
 CREATE TABLE IF NOT EXISTS Prescriptions 
 ( 
   Id  INTEGER PRIMARY KEY, 
@@ -77,7 +78,7 @@ CREATE TABLE IF NOT EXISTS Prescriptions
   FOREIGN KEY (Classification_Id) REFERENCES CLASSIFICATIONS (ID)
 ); `;
 
-const createTable_MedicinePrescription = `
+  createTable_MedicinePrescription = `
 CREATE TABLE IF NOT EXISTS Medicine_Prescription  
 ( 
   Medicine_Id  INTEGER , 
@@ -92,187 +93,189 @@ CREATE TABLE IF NOT EXISTS Medicine_Prescription
 
 );`;
 
-const insert_UserType = `
+  createTable_AccountRequests = `
+CREATE TABLE IF NOT EXISTS AccountRequests  
+( 
+  Id  INTEGER PRIMARY KEY, 
+  Name VARCHAR(25) NOT NULL ,
+  Type VARCHAR(25) NOT NULL ,
+  Phone VARCHAR(25) NOT NULL ,
+  Email VARCHAR(25)  ,
+  IsNew CHAR(1) NOT NULL
+);`;
+
+  createTable_MessageCategories = `
+CREATE TABLE IF NOT EXISTS MessagesCategories  
+( 
+  Id  INTEGER PRIMARY KEY, 
+  Name VARCHAR(25) NOT NULL UNIQUE
+);`;
+
+  createTable_Messages = `
+CREATE TABLE IF NOT EXISTS Messages  
+( 
+  Id  INTEGER PRIMARY KEY, 
+  User_Id INTEGER,
+  Category_Id Integer,
+  Content VARCHAR(50) NOT NULL,
+  FOREIGN KEY (User_Id) REFERENCES USERS (ID) ON DELETE CASCADE ,
+  FOREIGN KEY (Category_Id) REFERENCES MessagesCategories (ID) ON DELETE CASCADE 
+);`;
+
+  insert_UserType = `
 INSERT INTO UsersTypes (type) VALUES (?);
 `;
 
-const insert_User = `
+  insert_MessagesCategories = `
+INSERT INTO MessagesCategories (Name) VALUES (?);
+`;
+
+  insert_User = `
 INSERT INTO USERS (UserType_Id,username,password) VALUES (?,?,?) ;
 `;
 
-const insert_Doctor = `
+  insert_Doctor = `
 INSERT INTO Doctors (Name,User_Id) VALUES (?,?);
 `;
 
-const insert_Pharmacy = `
+  insert_Pharmacy = `
 INSERT INTO Pharmacies (Name,Location,User_Id) VALUES (?,?,?);
 `;
 
-const insert_Patient = `
+  insert_Patient = `
 INSERT INTO Patients (ID,Name) VALUES (?,?);
 `;
 
-const insert_Medicine = `
+  insert_Medicine = `
 INSERT INTO Medicins (Name) VALUES (?);
 `;
 
-const insert_Classification = `
+  insert_Classification = `
 INSERT INTO Classifications (Name,ImageUrl) VALUES (?,?);
 `;
 
-const insert_Prescription = `
+  insert_Prescription = `
 INSERT INTO Prescriptions (Doctor_Id,Patient_Id,Classification_Id,Pre_Date,Description) VALUES (?,?,?,datetime('now'),?);
 `;
 
-const insert_MedicinePrescription = `
+  insert_MedicinePrescription = `
 INSERT INTO Medicine_Prescription (Medicine_ID,Prescription_ID,isBold,isChronic) VALUES (?,?,?,?);
 `;
 
-const getUserTypeId = `
+  insert_AccountRequest = `
+INSERT INTO AccountRequests ( Name, Type, Phone, Email, IsNew ) VALUES (?,?,?,?,'1');
+`;
+
+  getUserTypeId = `
 select * from UsersTypes where lower(type) == lower(?)
 `;
 
-const getUserTypeById = `
+  getUserTypeById = `
 select * from UsersTypes where id == ?
 `;
 
-const getPatientById = `
+  getPatientById = `
 select * from Patients where lower(id) = lower(?)
 `;
 
-const getDoctorIdByUsername = `
+  getDoctorIdByUsername = `
 SELECT d.id 
 from doctors d , users u
 where d.USER_ID = u.ID and lower(u.username) = lower(?)`;
 
-const getPharmacyIdByUsername = `
+  getPharmacyIdByUsername = `
 SELECT p.id 
 from Pharmacies p , users u
 where p.USER_ID = u.ID and lower(u.username) = lower(?)
 `;
 
-const getMedicinsByName = `
+  getMedicinsByName = `
 Select * from Medicins where lower(Name) Like lower( ? )
 `;
 
-const medicineExist = `
+  medicineExist = `
 Select * from Medicins where lower(Name) = lower( ? )
 `;
 
-const getUser = `
+  getUser = `
 select * from Users where username=? 
 `;
 
-const getPatientPrescriptions = `
+  getPatientPrescriptions = `
 select p.Id , p.Doctor_Id , p.Description as Note, p.Pre_Date as Prescription_Date ,  c.Name as Classification_Name , c.ImageUrl as ClassificationIconUrl , patients.Name as Patient_Name 
 from prescriptions p , Classifications c , Patients patients
  where patient_id = ? and p.Classification_Id = c.id and p.Patient_Id = patients.Id
 `;
 
-const getPatientPrescriptionsByClassification = `
+  getPatientPrescriptionsByClassification = `
 select p.Id , p.Doctor_Id , p.Description as Note, p.Pre_Date as Prescription_Date ,  c.Name as Classification_Name , c.ImageUrl as ClassificationIconUrl , patients.Name as Patient_Name 
 from prescriptions p , Classifications c , Patients patients
  where patient_id = ? and p.Classification_Id = c.id and p.Patient_Id = patients.Id and classification_Id = ?
 `;
 
-const getPrescriptionMedicins = `
+  getPrescriptionMedicins = `
 select m.name , mp.isBold,mp.IsChronic,mp.Pharmacy_Id
 from Medicine_Prescription mp , Medicins m
 where prescription_ID = ? and mp.Medicine_Id = m.Id
 `;
 
-const getPrescriptionMedicinsToDispense = `
+  getPrescriptionMedicinsToDispense = `
 select m.Id, m.name , mp.isBold,mp.IsChronic,mp.Pharmacy_Id
 from Medicine_Prescription mp , Medicins m
 where prescription_ID = ? and mp.Medicine_Id = m.Id and mp.Pharmacy_Id is NULL
 `;
 
-const getClassificationsAll = `
+  getClassificationsAll = `
 select * from Classifications ;
 `;
 
-const dispenseMedicine = `
+  dispenseMedicine = `
 update Medicine_Prescription 
 set Pharmacy_Id = ?
 where medicine_Id = ? and prescription_Id = ?
 `;
 
-const stopChronincMedicine = `
+  stopChronincMedicine = `
 update Medicine_Prescription 
 set isChronic = '0'
 where medicine_Id = ? and prescription_Id = ?
 `;
 
-const createMedicinsIndex = `CREATE INDEX IF NOT EXISTS medicine_name_idx ON Medicins(Name);`;
+  createMedicinsIndex = `CREATE INDEX IF NOT EXISTS medicine_name_idx ON Medicins(Name);`;
 
-const createIndicesPatch = [createMedicinsIndex];
+  createIndicesPatch = [this.createMedicinsIndex];
 
-const emptyAllTablesPatch = [
-  "Delete from UsersTypes",
-  "Delete from Users",
-  "Delete from Pharmacies",
-  "Delete from Doctors",
-  "Delete from Patients",
-  "Delete from Medicins",
-  "Delete from Classifications",
-  "Delete from Prescriptions",
-  "Delete from Medicine_Prescription"
-];
+  emptyAllTablesPatch = [
+    "Delete from UsersTypes",
+    "Delete from Users",
+    "Delete from Pharmacies",
+    "Delete from Doctors",
+    "Delete from Patients",
+    "Delete from Medicins",
+    "Delete from Classifications",
+    "Delete from Prescriptions",
+    "Delete from Medicine_Prescription"
+  ];
 
-const dropAllTablesPatch = [
-  "Drop Table IF EXISTS Doctors",
-  "Drop Table IF EXISTS Pharmacies",
-  "Drop Table IF EXISTS UsersTypes",
-  "Drop Table IF EXISTS Users",
-  "Drop Table IF EXISTS Patients",
-  "Drop Table IF EXISTS Medicins",
-  "Drop Table IF EXISTS Classifications",
-  "Drop Table IF EXISTS Prescriptions",
-  "Drop Table IF EXISTS Medicine_Prescription"
-];
+  dropAllTabels = `
+  select 'drop table ' || name || ';' as query
+  from sqlite_master
+  where type = 'table';`;
 
-const createTablesPatch = [
-  createTable_Users,
-  createTable_UserTypes,
-  createTable_Pharmacies,
-  createTable_Doctors,
-  createTable_Patients,
-  createTable_Medicins,
-  createTable_Classifications,
-  createTable_Prescriptions,
-  createTable_MedicinePrescription
-];
+  createTablesPatch = [
+    this.createTable_Users,
+    this.createTable_UserTypes,
+    this.createTable_Pharmacies,
+    this.createTable_Doctors,
+    this.createTable_Patients,
+    this.createTable_Medicins,
+    this.createTable_Classifications,
+    this.createTable_Prescriptions,
+    this.createTable_MedicinePrescription,
+    this.createTable_MessageCategories,
+    this.createTable_Messages,
+    this.createTable_AccountRequests
+  ];
+}
 
-module.exports = {
-  createTablesPatch,
-  emptyAllTablesPatch,
-  dropAllTablesPatch,
-  createIndicesPatch,
-  transactionBegin,
-  transactionCommit,
-  transactionRollback,
-  insert_UserType,
-  insert_User,
-  insert_Doctor,
-  insert_Pharmacy,
-  insert_Patient,
-  insert_Medicine,
-  insert_Classification,
-  insert_Prescription,
-  insert_MedicinePrescription,
-  getMedicinsByName,
-  medicineExist,
-  getUserTypeId,
-  getUserTypeById,
-  getPatientById,
-  getDoctorIdByUsername,
-  getUser,
-  getPatientPrescriptions,
-  getPatientPrescriptionsByClassification,
-  getPrescriptionMedicins,
-  getPrescriptionMedicinsToDispense,
-  getClassificationsAll,
-  getPharmacyIdByUsername,
-  dispenseMedicine,
-  stopChronincMedicine
-};
+module.exports = new SqlQueries();

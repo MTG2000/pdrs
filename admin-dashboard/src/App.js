@@ -20,9 +20,7 @@ function App() {
           width: "100%"
         }}
       >
-        <Container>
-          <AppRouter />
-        </Container>
+        <AppRouter />
       </div>
       <Footer />
       {/* <Overlay /> */}

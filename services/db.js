@@ -19,9 +19,11 @@ const initializeTables = async (
 ) => {
   try {
     if (dropExisitingTables) {
-      for (const sql of sqlQueries.dropAllTablesPatch) {
-        await run(sql);
+      const dropQueries = await queryAll(sqlQueries.dropAllTabels);
+      for (const sql of dropQueries) {
+        await run(sql.query);
       }
+
       log && console.log("Tables Dropped Successfully");
     }
 

@@ -13,10 +13,10 @@ module.exports = async (run, get, log = false) => {
       await run(sql);
     }
 
-    const usersTypes = ["Master Admin", "Admin", "Doctor", "Pharmacy"];
     // Seed UserTypes
     //--------------
     log && console.log("Seeding UsersTypes");
+    const usersTypes = ["Master Admin", "Admin", "Doctor", "Pharmacy"];
     for (let ut of usersTypes) {
       ut = (await run(sqlQueries.insert_UserType, [ut])).lastID;
     }
@@ -59,6 +59,44 @@ module.exports = async (run, get, log = false) => {
           passwordHash
         ])
       ).lastID;
+    }
+
+    //Seed Msgs Categories
+    //--------------
+    log && console.log("Seeding Messages Categories");
+
+    const msgCategories = [
+      "Add Medinice",
+      "Add Classification",
+      "Report a Problem",
+      "Suggest a Feature",
+      "Something Else"
+    ];
+    for (let i = 0; i < msgCategories.length; i++) {
+      const mc = msgCategories[i];
+      console.log(mc);
+      await run(sqlQueries.insert_MessagesCategories, [mc]);
+    }
+
+    //Seed Requests
+    //--------------
+    log && console.log("Seeding Accounts Requsets");
+    const accountRequests = [
+      {
+        name: "Ahmad Abdullah",
+        type: "Mental Doctor",
+        phone: "0978647344",
+        email: "ahmadabd@gmail.com"
+      },
+      {
+        name: "Alaa Mouraoui",
+        type: "Pharmacian",
+        phone: "0978643114"
+      }
+    ];
+    for (let i = 0; i < accountRequests.length; i++) {
+      const { name, type, phone, email } = accountRequests[i];
+      await run(sqlQueries.insert_AccountRequest, [name, type, phone, email]);
     }
 
     //Seed Doctors

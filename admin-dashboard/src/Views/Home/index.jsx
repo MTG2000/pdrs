@@ -1,11 +1,8 @@
 import React from "react";
+import { Container } from "@material-ui/core";
 
 const Home = () => {
-  return (
-    <div>
-      <h2>Home Page</h2>
-    </div>
-  );
+  return <Container className="py-5"></Container>;
 };
 
 export default Home;
