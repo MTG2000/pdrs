@@ -14,9 +14,13 @@ const loginUser = async (req, res) => {
   const { username, password } = req.body;
 
   const user = await repository.getUser(username);
+
   if (!user || !(await bcrypt.compare(password, user.Password)))
     //User Doesn't exist or wrong credentials
-    return res.status(401).json("Incorrect Credentials");
+    return SendResponse.JsonFailed(res, "Invalid Credentials");
+
+  if (!user.IsActive)
+    return SendResponse.JsonFailed(res, "Account Has been de-activated");
 
   const role = await repository.getUserTypeById(user.UserType_Id);
   const token = authService.generateToken({

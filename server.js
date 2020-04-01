@@ -35,6 +35,8 @@ server.use(express.json());
 server.use("/api/patients", require("./routes/patients.route"));
 server.use("/api/medicins", require("./routes/medicins.route"));
 server.use("/api/users", require("./routes/users.route"));
+server.use("/api/admin", require("./routes/admin.route"));
+
 server.use(require("./middleware/sqlTransaction").transactionEnd);
 (async () => {
   if (server.get("env") === "test") return; //Initialize the db is done in the test setup file

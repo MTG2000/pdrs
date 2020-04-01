@@ -74,11 +74,10 @@ module.exports = async (run, get, log = false) => {
     ];
     for (let i = 0; i < msgCategories.length; i++) {
       const mc = msgCategories[i];
-      console.log(mc);
       await run(sqlQueries.insert_MessagesCategories, [mc]);
     }
 
-    //Seed Requests
+    //Seed Account Requests
     //--------------
     log && console.log("Seeding Accounts Requsets");
     const accountRequests = [
@@ -97,6 +96,26 @@ module.exports = async (run, get, log = false) => {
     for (let i = 0; i < accountRequests.length; i++) {
       const { name, type, phone, email } = accountRequests[i];
       await run(sqlQueries.insert_AccountRequest, [name, type, phone, email]);
+    }
+
+    //Seed Messages
+    //--------------
+    log && console.log("Seeding Messages");
+    const messages = [
+      {
+        userId: 3,
+        category: 2,
+        content: "Please add the classification 'Phsycology'"
+      },
+      {
+        userId: 4,
+        category: 1,
+        content: "Please Add 'Warfeen'"
+      }
+    ];
+    for (let i = 0; i < messages.length; i++) {
+      const { userId, category, content } = messages[i];
+      await run(sqlQueries.insert_Message, [userId, category, content]);
     }
 
     //Seed Doctors

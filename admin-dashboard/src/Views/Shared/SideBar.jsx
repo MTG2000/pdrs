@@ -29,6 +29,7 @@ const SideBar = () => {
         store.ChangeWidth(toggled);
       }}
       expanded={toggled}
+      style={{ position: "fixed" }}
     >
       <SideNav.Toggle />
       <SideNav.Nav
@@ -44,7 +45,7 @@ const SideBar = () => {
           <NavIcon>
             <Home style={{ fontSize: "1.75em" }} />
           </NavIcon>
-          <NavText>Home</NavText>
+          <NavText>Dashboard</NavText>
         </NavItem>
         <NavItem eventKey="add-user">
           <NavIcon>

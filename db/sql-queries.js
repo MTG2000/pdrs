@@ -16,6 +16,7 @@ Id INTEGER PRIMARY KEY,
 UserType_Id   INTEGER , 
 Username  VARCHAR(25) NOT NULL UNIQUE, 
 Password  VARCHAR(50) NOT NULL ,
+IsActive CHAR(1) ,
 FOREIGN KEY (UserType_Id) REFERENCES USERSTYPES(ID)
 )`;
 
@@ -101,7 +102,7 @@ CREATE TABLE IF NOT EXISTS AccountRequests
   Type VARCHAR(25) NOT NULL ,
   Phone VARCHAR(25) NOT NULL ,
   Email VARCHAR(25)  ,
-  IsNew CHAR(1) NOT NULL
+  IsRead CHAR(1)
 );`;
 
   createTable_MessageCategories = `
@@ -118,6 +119,7 @@ CREATE TABLE IF NOT EXISTS Messages
   User_Id INTEGER,
   Category_Id Integer,
   Content VARCHAR(50) NOT NULL,
+  IsRead CHAR(1) ,
   FOREIGN KEY (User_Id) REFERENCES USERS (ID) ON DELETE CASCADE ,
   FOREIGN KEY (Category_Id) REFERENCES MessagesCategories (ID) ON DELETE CASCADE 
 );`;
@@ -131,7 +133,7 @@ INSERT INTO MessagesCategories (Name) VALUES (?);
 `;
 
   insert_User = `
-INSERT INTO USERS (UserType_Id,username,password) VALUES (?,?,?) ;
+INSERT INTO USERS (UserType_Id,username,password,IsActive) VALUES (?,?,?,'1') ;
 `;
 
   insert_Doctor = `
@@ -163,11 +165,15 @@ INSERT INTO Medicine_Prescription (Medicine_ID,Prescription_ID,isBold,isChronic)
 `;
 
   insert_AccountRequest = `
-INSERT INTO AccountRequests ( Name, Type, Phone, Email, IsNew ) VALUES (?,?,?,?,'1');
+INSERT INTO AccountRequests ( Name, Type, Phone, Email ) VALUES (?,?,?,?);
+`;
+
+  insert_Message = `
+INSERT INTO Messages (User_Id,Category_Id,Content) VALUES (?,?,?);
 `;
 
   getUserTypeId = `
-select * from UsersTypes where lower(type) == lower(?)
+select Id from UsersTypes where lower(type) == lower(?)
 `;
 
   getUserTypeById = `
@@ -178,10 +184,31 @@ select * from UsersTypes where id == ?
 select * from Patients where lower(id) = lower(?)
 `;
 
+  getNewAccountRequests = `
+  Select Id, Name , Type,Phone,Email from AccountRequests 
+  where IsRead is NULL
+`;
+
+  getNewMessages = `
+  Select m.Id, m.User_Id , m.Content , c.Name as Category, u.UserType_Id
+  from Messages m, MessagesCategories c , Users u
+ where IsRead is NULL and m.Category_Id = c.id and u.Id = m.User_Id
+`;
+
   getDoctorIdByUsername = `
 SELECT d.id 
 from doctors d , users u
 where d.USER_ID = u.ID and lower(u.username) = lower(?)`;
+
+  getDoctorById = `
+SELECT * 
+from doctors 
+where User_Id = ?`;
+
+  getPharmacyById = `
+SELECT * 
+from Pharmacies 
+where User_Id = ?`;
 
   getPharmacyIdByUsername = `
 SELECT p.id 
@@ -239,6 +266,18 @@ where medicine_Id = ? and prescription_Id = ?
 update Medicine_Prescription 
 set isChronic = '0'
 where medicine_Id = ? and prescription_Id = ?
+`;
+
+  markMessageRead = `
+  update Messages 
+  set IsRead = '1'
+  where Id = ?
+`;
+
+  markAccountRequestRead = `
+update AccountRequests 
+set IsRead = '1'
+where Id = ?
 `;
 
   createMedicinsIndex = `CREATE INDEX IF NOT EXISTS medicine_name_idx ON Medicins(Name);`;

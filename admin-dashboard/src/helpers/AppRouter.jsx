@@ -2,7 +2,7 @@ import React from "react";
 import { Route, Switch } from "react-router-dom";
 
 import { observer } from "mobx-react";
-import Home from "../Views/Home";
+import Home from "../Views/Dashboard";
 import AddUser from "../Views/AddUser";
 
 const AppRouter = ({ store }) => {
