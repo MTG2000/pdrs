@@ -82,6 +82,15 @@ class Controller {
       next();
     }
   };
+  toggleUserActiveState = async (req, res, next) => {
+    try {
+      const { id } = req.body;
+      await repository.toggleUserActiveState(id);
+      SendResponse.JsonSuccess(res, "User Active state change successfully");
+    } catch (error) {
+      SendResponse.JsonFailed(res, "Something Wrong Happened");
+    }
+  };
 }
 
 module.exports = new Controller();

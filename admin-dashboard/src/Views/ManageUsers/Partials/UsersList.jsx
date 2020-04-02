@@ -9,8 +9,12 @@ const UsersList = ({ store }) => {
 
   return (
     <div style={{ maxWidth: 600 }} className="mx-auto py-5">
-      {store.allUsers.map(u => (
-        <UserCard key={u.Id} user={u} />
+      {store.users.map(u => (
+        <UserCard
+          key={u.Id}
+          user={u}
+          onToggleActive={() => store.ToggleActive(u.Id)}
+        />
       ))}
     </div>
   );

@@ -4,8 +4,10 @@ add validation
 add a 'All' Classification
 
 Add loading icons to the btns
-Admin Page 
+add 'new User'
 
+
+refaactor Input Style
 Replace every: 'import {} from '*/*' with import * from '*/*/*' '
 Add Lazy Loading
 add AOS

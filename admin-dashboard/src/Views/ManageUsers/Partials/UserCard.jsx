@@ -2,19 +2,24 @@ import React from "react";
 import { makeStyles } from "@material-ui/core";
 import { toJS } from "mobx";
 import Clear from "@material-ui/icons/Clear";
+import Check from "@material-ui/icons/Check";
 
 const useStyle = makeStyles({
   card: {
     backgroundColor: "#FFF",
     boxShadow: "3px 5px 10px #333"
   },
-  removeIcon: {
+  activeIcon: {
+    color: "green",
+    cursor: "pointer"
+  },
+  deactiveIcon: {
     color: "red",
     cursor: "pointer"
   }
 });
 
-const UserCard = ({ user, onRead }) => {
+const UserCard = ({ user, onToggleActive }) => {
   const classes = useStyle();
   console.log(toJS(user));
   return (
@@ -30,10 +35,17 @@ const UserCard = ({ user, onRead }) => {
           </span>
         </div>
       </div>
-      <Clear
-        className={`${classes.removeIcon} align-self-center`}
-        onClick={onRead}
-      />
+      {user.IsActive ? (
+        <Check
+          className={`${classes.activeIcon} align-self-center`}
+          onClick={onToggleActive}
+        />
+      ) : (
+        <Clear
+          className={`${classes.deactiveIcon} align-self-center`}
+          onClick={onToggleActive}
+        />
+      )}
     </div>
   );
 };

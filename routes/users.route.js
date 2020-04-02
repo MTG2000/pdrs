@@ -7,6 +7,12 @@ const transactionBeginMiddleware = require("../middleware/sqlTransaction")
 router.post("/login", controller.loginUser);
 
 router.post(
+  "/toggle-active-state",
+  authMiddleware(["Admin"]),
+  controller.toggleUserActiveState
+);
+
+router.post(
   "/register",
   authMiddleware(["Admin"]),
   transactionBeginMiddleware,

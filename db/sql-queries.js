@@ -228,6 +228,10 @@ Select * from Medicins where lower(Name) = lower( ? )
 select * from Users where username=? 
 `;
 
+  getUserById = `
+select * from Users where Id=? 
+`;
+
   getAllUsers = `
 select * from Users  
 `;
@@ -282,6 +286,18 @@ where medicine_Id = ? and prescription_Id = ?
 update AccountRequests 
 set IsRead = '1'
 where Id = ?
+`;
+
+  toggleUserActive = `
+update users 
+set IsActive = '1'
+where id = ? and IsActive is  Null
+`;
+
+  toggleUserInActive = `
+update users 
+set IsActive = null
+where id = ? and IsActive is not Null
 `;
 
   createMedicinsIndex = `CREATE INDEX IF NOT EXISTS medicine_name_idx ON Medicins(Name);`;

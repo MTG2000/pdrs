@@ -6,6 +6,12 @@ class Repository {
     return await DB.get(sqlQueries.getUser, [username]);
   };
 
+  toggleUserActiveState = async id => {
+    const isActive = (await DB.get(sqlQueries.getUserById, [id])).IsActive;
+    if (isActive) await DB.run(sqlQueries.toggleUserInActive, [id]);
+    else await DB.run(sqlQueries.toggleUserActive, [id]);
+  };
+
   getAllUsers = async () => {
     let users = await DB.queryAll(sqlQueries.getAllUsers);
     //Add the actual name of the user  by looking his type first then looking up his name in the appropriate table
