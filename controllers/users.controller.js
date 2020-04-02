@@ -3,6 +3,8 @@ const authService = require("../services/auth");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 const SendResponse = require("../Utils/SendResponse");
+const Validation = require("../services/Validation");
+
 class Controller {
   getAllUsers = async (req, res) => {
     const users = await repository.getAllUsers();
@@ -49,6 +51,10 @@ class Controller {
   registerUser = async (req, res, next) => {
     try {
       const { username, password: passwordRaw, type, contact } = req.body;
+      const isValid = await Validation.registerUser(req.body);
+
+      if (isValid) return SendResponse.JsonFailed(res, "Invalid Credentials");
+
       const password = await bcrypt.hash(passwordRaw, saltRounds);
       if (type === "Doctor") {
         const { doctorName } = req.body;
@@ -74,7 +80,9 @@ class Controller {
         next();
         return;
       }
+      res.failed = true;
       SendResponse.JsonFailed(res, "Type Not Valid");
+      next();
     } catch (error) {
       console.error(error);
       res.failed = true;
