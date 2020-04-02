@@ -45,23 +45,34 @@ class Repository {
     return (await DB.get(sqlQueries.getUserTypeById, [id])).Type;
   };
 
-  insertUser = async (username, password, type = "pharmacy") => {
-    const userTypeId = await getUserTypeId(type);
+  insertUser = async (username, password, type = "pharmacy", contact) => {
+    const userTypeId = await this.getUserTypeId(type);
     return (
-      await DB.run(sqlQueries.insert_User, [userTypeId, username, password])
+      await DB.run(sqlQueries.insert_User, [
+        userTypeId,
+        username,
+        password,
+        contact
+      ])
     ).lastID;
   };
 
-  insertDoctor = async (username, password, doctorName) => {
-    const userId = await insertUser(username, password, "doctor");
+  insertDoctor = async (username, password, doctorName, contact) => {
+    const userId = await this.insertUser(username, password, "doctor", contact);
     const doctorId = (
       await DB.run(sqlQueries.insert_Doctor, [doctorName, userId])
     ).lastID;
     return doctorId;
   };
 
-  insertPharmacy = async (username, password, pharmacyName, address) => {
-    const userId = await insertUser(username, password, "pharmacy");
+  insertPharmacy = async (
+    username,
+    password,
+    pharmacyName,
+    address,
+    contact
+  ) => {
+    const userId = await insertUser(username, password, "pharmacy", contact);
     const pharmacyId = (
       await DB.run(sqlQueries.insert_Pharmacy, [pharmacyName, address, userId])
     ).lastID;

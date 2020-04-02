@@ -48,14 +48,15 @@ class Controller {
 
   registerUser = async (req, res, next) => {
     try {
-      const { username, password: passwordRaw, type } = req.body;
+      const { username, password: passwordRaw, type, contact } = req.body;
       const password = await bcrypt.hash(passwordRaw, saltRounds);
       if (type === "Doctor") {
         const { doctorName } = req.body;
         const doctorId = await repository.insertDoctor(
           username,
           password,
-          doctorName
+          doctorName,
+          contact
         );
         SendResponse.JsonCreated(res, "Doctor Created Successfully");
         next();
@@ -66,7 +67,8 @@ class Controller {
           username,
           password,
           pharmacyName,
-          address
+          address,
+          contact
         );
         SendResponse.JsonCreated(res, "Pharmacy Created Successfully");
         next();

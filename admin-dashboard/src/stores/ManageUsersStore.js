@@ -29,6 +29,52 @@ class ManageUsersStore {
     });
   }
 
+  async RegisterUser(
+    username,
+    contact,
+    password,
+    type,
+    doctorName,
+    pharmacyName,
+    pharmacyAddress
+  ) {
+    try {
+      // console.log({
+      //   username,
+      //   contact,
+      //   password,
+      //   type,
+      //   doctorName,
+      //   pharmacyName,
+      //   pharmacyAddress
+      // });
+      // // return;
+      const res = await fetch("/api/users/register", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          username,
+          contact,
+          password,
+          type,
+          doctorName,
+          pharmacyName,
+          address: pharmacyAddress
+        })
+      });
+
+      if (!res.ok) throw Error();
+      await res.json();
+      NotificationManager.success("User Registered Successfully");
+      runInAction(() => {});
+    } catch (error) {
+      NotificationManager.error("User Registereation Failed");
+    }
+  }
+
   async ToggleActive(id) {
     try {
       this.users = this.users.map(u => {
@@ -63,7 +109,8 @@ decorate(ManageUsersStore, {
   users: observable,
   allUsers: observable,
   FetchAllUsers: action,
-  SearchUsers: action
+  SearchUsers: action,
+  RegisterUser: action
 });
 
 export default new ManageUsersStore();

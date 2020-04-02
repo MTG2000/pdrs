@@ -91,6 +91,8 @@ class NewPrescriptionStore {
         },
         body: JSON.stringify(prescription)
       });
+      if (!res.ok) throw Error();
+
       await response.json();
       NotificationManager.success("Prescription Created Successfully");
       setTimeout(() => {
@@ -98,7 +100,9 @@ class NewPrescriptionStore {
           this.redirect = true;
         });
       }, 3000);
-    } catch (error) {}
+    } catch (error) {
+      NotificationManager.error("Prescription couldn't be created");
+    }
   }
 }
 

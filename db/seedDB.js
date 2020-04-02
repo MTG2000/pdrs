@@ -56,20 +56,23 @@ let seedData = {
       userType: 2,
       username: "ahmad",
       password: "123",
-      doctorName: "Ahmad Ghazal"
+      doctorName: "Ahmad Ghazal",
+      contact: "0983663451"
     },
     {
       userType: 2,
       username: "morad",
       password: "123",
-      doctorName: "Morad Nabeel"
+      doctorName: "Morad Nabeel",
+      contact: "0931163451"
     },
     {
       userType: 3,
       username: "samer",
       password: "123",
       pharmacyName: "Al-Fateh",
-      pharmacyLocation: "Aleppo Al-Jamelia"
+      pharmacyLocation: "Aleppo Al-Jamelia",
+      contact: "fatehpharm@gmail.com"
     }
   ],
   msgCategories: [
@@ -158,7 +161,12 @@ const users = async () => {
     ).Id;
     const passwordHash = await bcrypt.hash(u.password, saltRounds);
     u.id = (
-      await run(sqlQueries.insert_User, [userTypeId, u.username, passwordHash])
+      await run(sqlQueries.insert_User, [
+        userTypeId,
+        u.username,
+        passwordHash,
+        u.contact
+      ])
     ).lastID;
   }
 };

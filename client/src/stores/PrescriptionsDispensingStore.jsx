@@ -40,6 +40,8 @@ class PrescriptionsDispensingStore {
         },
         body: JSON.stringify({ prescriptionId, medicins })
       });
+      if (!res.ok) throw Error();
+
       await response.json();
       NotificationManager.success("Prescription Dispensed Successfully");
       this.FetchPrescriptions();
@@ -62,6 +64,8 @@ class PrescriptionsDispensingStore {
       this.abortController = new AbortController();
       this.signal = this.abortController.signal;
       const res = await fetch(fetchUrl, { signal: this.signal });
+      if (!res.ok) throw Error();
+
       const { data } = await res.json();
       runInAction(() => {
         this.prescriptions = data.prescriptions;

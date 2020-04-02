@@ -17,6 +17,7 @@ UserType_Id   INTEGER ,
 Username  VARCHAR(25) NOT NULL UNIQUE, 
 Password  VARCHAR(50) NOT NULL ,
 IsActive CHAR(1) ,
+Contact VARCHAR(50),
 FOREIGN KEY (UserType_Id) REFERENCES USERSTYPES(ID)
 )`;
 
@@ -133,7 +134,7 @@ INSERT INTO MessagesCategories (Name) VALUES (?);
 `;
 
   insert_User = `
-INSERT INTO USERS (UserType_Id,username,password,IsActive) VALUES (?,?,?,'1') ;
+INSERT INTO USERS (UserType_Id,username,password,IsActive,Contact) VALUES (?,?,?,'1',?) ;
 `;
 
   insert_Doctor = `
