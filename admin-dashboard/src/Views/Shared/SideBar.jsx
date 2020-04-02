@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import SideNav, { NavItem, NavIcon, NavText } from "@trendmicro/react-sidenav";
-import PersonAdd from "@material-ui/icons/PersonAdd";
+import People from "@material-ui/icons/People";
 import BarChart from "@material-ui/icons/BarChart";
 import Home from "@material-ui/icons/Home";
 import { withRouter, useHistory } from "react-router-dom";
@@ -49,7 +49,7 @@ const SideBar = () => {
         </NavItem>
         <NavItem eventKey="add-user">
           <NavIcon>
-            <PersonAdd style={{ fontSize: "1.75em" }} />
+            <People style={{ fontSize: "1.75em" }} />
           </NavIcon>
           <NavText>Manage Users</NavText>
         </NavItem>

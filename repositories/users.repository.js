@@ -72,7 +72,12 @@ class Repository {
     address,
     contact
   ) => {
-    const userId = await insertUser(username, password, "pharmacy", contact);
+    const userId = await this.insertUser(
+      username,
+      password,
+      "pharmacy",
+      contact
+    );
     const pharmacyId = (
       await DB.run(sqlQueries.insert_Pharmacy, [pharmacyName, address, userId])
     ).lastID;

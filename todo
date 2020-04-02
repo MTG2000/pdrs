@@ -14,12 +14,14 @@ add AOS
 Create a Main Page
 change the navbar
 Improve The Overall UI
+Client Side Validation
 
 
 
 -- BackEnd
 Maybe add some Dependency Injection
 Refactor the sql Queries by table
+Server Side Validation
 
 set cookies security to true
 remove token from response

@@ -43,7 +43,6 @@ class DashboardStore {
       const res = await fetch("/api/admin/new-account-requests");
       const { data } = await res.json();
       runInAction(() => {
-        console.log(data);
         this.newAccountRequests = data;
         this.loadingNewAccountRequests = false;
         // if(this.)
