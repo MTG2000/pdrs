@@ -3,6 +3,9 @@ import { makeStyles } from "@material-ui/core";
 import { toJS } from "mobx";
 import Clear from "@material-ui/icons/Clear";
 import Check from "@material-ui/icons/Check";
+import Settings from "@material-ui/icons/Settings";
+import Loading from "../../Shared/LoadingMini";
+import ActionBtn from "../../Shared/ActionBtn";
 
 const useStyle = makeStyles({
   card: {
@@ -35,17 +38,21 @@ const UserCard = ({ user, onToggleActive }) => {
           </span>
         </div>
       </div>
-      {user.IsActive ? (
-        <Check
-          className={`${classes.activeIcon} align-self-center`}
-          onClick={onToggleActive}
-        />
-      ) : (
-        <Clear
-          className={`${classes.deactiveIcon} align-self-center`}
-          onClick={onToggleActive}
-        />
-      )}
+      <ActionBtn loading={user.loadingToggleActive}>
+        <div>
+          {user.IsActive ? (
+            <Check
+              className={`${classes.activeIcon} align-self-center`}
+              onClick={onToggleActive}
+            />
+          ) : (
+            <Clear
+              className={`${classes.deactiveIcon} align-self-center`}
+              onClick={onToggleActive}
+            />
+          )}
+        </div>
+      </ActionBtn>
     </div>
   );
 };

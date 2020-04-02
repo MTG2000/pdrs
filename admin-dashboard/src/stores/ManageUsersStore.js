@@ -17,7 +17,6 @@ class ManageUsersStore {
   }
 
   SearchUsers(value) {
-    console.log(value);
     this.users = this.allUsers.filter(u => {
       if (u.Username.toLowerCase().indexOf(value.toLowerCase()) !== -1)
         return true;
@@ -32,6 +31,11 @@ class ManageUsersStore {
 
   async ToggleActive(id) {
     try {
+      this.users = this.users.map(u => {
+        if (u.Id === id) u.loadingToggleActive = true;
+        return u;
+      });
+      this.loadingToggleActive = true;
       const res = await fetch("/api/users/toggle-active-state", {
         method: "POST",
         headers: {
@@ -41,9 +45,15 @@ class ManageUsersStore {
         body: JSON.stringify({ id })
       });
       await res.json();
-      this.users = this.users.map(u => {
-        if (u.Id === id) u.IsActive = !u.IsActive;
-        return u;
+      runInAction(() => {
+        this.users = this.users.map(u => {
+          if (u.Id === id) u.loadingToggleActive = false;
+          return u;
+        });
+        this.users = this.users.map(u => {
+          if (u.Id === id) u.IsActive = !u.IsActive;
+          return u;
+        });
       });
     } catch (error) {}
   }
