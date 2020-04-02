@@ -19,9 +19,7 @@ Improve The Overall UI
 
 -- BackEnd
 Maybe add some Dependency Injection
-create a proper seeding mechanism
 Refactor the sql Queries by table
-Add User Removing
 
 set cookies security to true
 remove token from response

@@ -19,6 +19,8 @@ class ManageUsersStore {
   SearchUsers(value) {
     console.log(value);
     this.users = this.allUsers.filter(u => {
+      if (u.Username.toLowerCase().indexOf(value.toLowerCase()) !== -1)
+        return true;
       if (u.DoctorName) {
         return u.DoctorName.toLowerCase().indexOf(value.toLowerCase()) !== -1;
       }

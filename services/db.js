@@ -1,6 +1,6 @@
 const sql = require("sqlite");
 const sqlQueries = require("../db/sql-queries");
-const seedTables = require("../db/sql-db-seed");
+const seedTables = require("../db/seedDB");
 let db;
 
 const initializeConnection = async path => {

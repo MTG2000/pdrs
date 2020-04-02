@@ -48,10 +48,9 @@ class Controller {
 
   registerUser = async (req, res, next) => {
     try {
-      const type = req.body.type;
-      const { username, password: passwordRaw } = req.body;
+      const { username, password: passwordRaw, type } = req.body;
       const password = await bcrypt.hash(passwordRaw, saltRounds);
-      if (type === "doctor") {
+      if (type === "Doctor") {
         const { doctorName } = req.body;
         const doctorId = await repository.insertDoctor(
           username,
@@ -61,7 +60,7 @@ class Controller {
         SendResponse.JsonCreated(res, "Doctor Created Successfully");
         next();
         return;
-      } else if (type === "pharmacy") {
+      } else if (type === "Pharmacy") {
         const { pharmacyName, address } = req.body;
         const pharmacyId = await repository.insertPharmacy(
           username,
@@ -82,6 +81,7 @@ class Controller {
       next();
     }
   };
+
   toggleUserActiveState = async (req, res, next) => {
     try {
       const { id } = req.body;

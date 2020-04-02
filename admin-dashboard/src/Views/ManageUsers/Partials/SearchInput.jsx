@@ -16,7 +16,7 @@ const SearchInput = ({ store }) => {
   const [search, setSearch] = useState("");
 
   return (
-    <div className="row justify-content-center">
+    <div className="row mx-0 justify-content-center">
       <TextField
         id="search-users"
         label="Search Users"
