@@ -3,12 +3,28 @@ class SqlQueries {
   transactionCommit = `COMMIT;`;
   transactionRollback = `ROLLBACK;`;
 
+  //UserTypes
+  //---------
   createTable_UserTypes = `
-CREATE TABLE IF NOT EXISTS UsersTypes ( 
-    Id   INTEGER PRIMARY KEY, 
-    Type   VARCHAR(30) NOT NULL UNIQUE
-);`;
+  CREATE TABLE IF NOT EXISTS UsersTypes ( 
+      Id   INTEGER PRIMARY KEY, 
+      Type   VARCHAR(30) NOT NULL UNIQUE
+  );`;
 
+  insert_UserType = `
+  INSERT INTO UsersTypes (type) VALUES (?);
+  `;
+
+  getUserTypeId = `
+  select Id from UsersTypes where lower(type) == lower(?)
+  `;
+
+  getUserTypeById = `
+  select * from UsersTypes where id == ?
+  `;
+
+  //Users
+  //---------
   createTable_Users = `
 CREATE TABLE IF NOT EXISTS Users 
 ( 
@@ -21,6 +37,36 @@ Contact VARCHAR(50),
 FOREIGN KEY (UserType_Id) REFERENCES USERSTYPES(ID)
 )`;
 
+  insert_User = `
+INSERT INTO USERS (UserType_Id,username,password,IsActive,Contact) VALUES (?,?,?,'1',?) ;
+`;
+
+  getUser = `
+select * from Users where username=? 
+`;
+
+  getUserById = `
+select * from Users where Id=? 
+`;
+
+  getAllUsers = `
+select * from Users  
+`;
+
+  toggleUserActive = `
+update users 
+set IsActive = '1'
+where id = ? and IsActive is  Null
+`;
+
+  toggleUserInActive = `
+update users 
+set IsActive = null
+where id = ? and IsActive is not Null
+`;
+
+  //Pharmacies
+  //---------
   createTable_Pharmacies = `
 CREATE TABLE IF NOT EXISTS Pharmacies 
 ( 
@@ -32,15 +78,50 @@ CREATE TABLE IF NOT EXISTS Pharmacies
 
 );`;
 
-  createTable_Doctors = `
-CREATE TABLE IF NOT EXISTS Doctors  
-( 
-  Id   INTEGER PRIMARY KEY, 
-  Name  VARCHAR(30) NOT NULL, 
-  User_Id  INTEGER,
-  FOREIGN KEY (User_Id) REFERENCES USERS(ID)
+  insert_Pharmacy = `
+INSERT INTO Pharmacies (Name,Location,User_Id) VALUES (?,?,?);
+`;
 
-);`;
+  getPharmacyById = `
+SELECT * 
+from Pharmacies 
+where User_Id = ?`;
+
+  getPharmacyIdByUsername = `
+SELECT p.id 
+from Pharmacies p , users u
+where p.USER_ID = u.ID and lower(u.username) = lower(?)
+`;
+
+  //Doctors
+  //---------
+
+  createTable_Doctors = `
+  CREATE TABLE IF NOT EXISTS Doctors  
+  ( 
+    Id   INTEGER PRIMARY KEY, 
+    Name  VARCHAR(30) NOT NULL, 
+    User_Id  INTEGER,
+    FOREIGN KEY (User_Id) REFERENCES USERS(ID)
+  
+  );`;
+
+  insert_Doctor = `
+  INSERT INTO Doctors (Name,User_Id) VALUES (?,?);
+  `;
+
+  getDoctorIdByUsername = `
+  SELECT d.id 
+  from doctors d , users u
+  where d.USER_ID = u.ID and lower(u.username) = lower(?)`;
+
+  getDoctorById = `
+  SELECT * 
+  from doctors 
+  where User_Id = ?`;
+
+  //Patients
+  //---------
 
   createTable_Patients = `
 CREATE TABLE IF NOT EXISTS Patients  
@@ -50,14 +131,61 @@ CREATE TABLE IF NOT EXISTS Patients
 )
 `;
 
-  createTable_Medicins = `
-CREATE TABLE IF NOT EXISTS Medicins 
-( 
-  Id  INTEGER PRIMARY KEY, 
-  Name  VARCHAR(100) NOT NULL UNIQUE
-);
+  insert_Patient = `
+INSERT INTO Patients (ID,Name) VALUES (?,?);
+`;
+  getPatientById = `
+select * from Patients where lower(id) = lower(?)
 `;
 
+  //Medicins
+  //---------
+
+  createTable_Medicins = `
+  CREATE TABLE IF NOT EXISTS Medicins 
+  ( 
+    Id  INTEGER PRIMARY KEY, 
+    Name  VARCHAR(100) NOT NULL UNIQUE
+  );`;
+
+  insert_Medicine = `
+  INSERT INTO Medicins (Name) VALUES (?);
+  `;
+
+  getMedicinsByName = `
+Select * from Medicins where lower(Name) Like lower( ? )
+`;
+
+  medicineExist = `
+Select * from Medicins where lower(Name) = lower( ? )
+`;
+
+  getPrescriptionMedicins = `
+select m.name , mp.isBold,mp.IsChronic,mp.Pharmacy_Id
+from Medicine_Prescription mp , Medicins m
+where prescription_ID = ? and mp.Medicine_Id = m.Id
+`;
+
+  getPrescriptionMedicinsToDispense = `
+select m.Id, m.name , mp.isBold,mp.IsChronic,mp.Pharmacy_Id
+from Medicine_Prescription mp , Medicins m
+where prescription_ID = ? and mp.Medicine_Id = m.Id and mp.Pharmacy_Id is NULL
+`;
+
+  dispenseMedicine = `
+update Medicine_Prescription 
+set Pharmacy_Id = ?
+where medicine_Id = ? and prescription_Id = ?
+`;
+
+  stopChronincMedicine = `
+update Medicine_Prescription 
+set isChronic = '0'
+where medicine_Id = ? and prescription_Id = ?
+`;
+
+  //Classifications
+  //--------------
   createTable_Classifications = `
 CREATE TABLE IF NOT EXISTS Classifications  
 ( 
@@ -65,6 +193,17 @@ CREATE TABLE IF NOT EXISTS Classifications
   Name VARCHAR(25) NOT NULL UNIQUE,
   ImageUrl VARCHAR(100)
 ); `;
+
+  insert_Classification = `
+INSERT INTO Classifications (Name,ImageUrl) VALUES (?,?);
+`;
+
+  getClassificationsAll = `
+select * from Classifications ;
+`;
+
+  //Prescriptions
+  //------------
 
   createTable_Prescriptions = `
 CREATE TABLE IF NOT EXISTS Prescriptions 
@@ -95,146 +234,12 @@ CREATE TABLE IF NOT EXISTS Medicine_Prescription
 
 );`;
 
-  createTable_AccountRequests = `
-CREATE TABLE IF NOT EXISTS AccountRequests  
-( 
-  Id  INTEGER PRIMARY KEY, 
-  Name VARCHAR(25) NOT NULL ,
-  Type VARCHAR(25) NOT NULL ,
-  Phone VARCHAR(25) NOT NULL ,
-  Email VARCHAR(25)  ,
-  IsRead CHAR(1)
-);`;
-
-  createTable_MessageCategories = `
-CREATE TABLE IF NOT EXISTS MessagesCategories  
-( 
-  Id  INTEGER PRIMARY KEY, 
-  Name VARCHAR(25) NOT NULL UNIQUE
-);`;
-
-  createTable_Messages = `
-CREATE TABLE IF NOT EXISTS Messages  
-( 
-  Id  INTEGER PRIMARY KEY, 
-  User_Id INTEGER,
-  Category_Id Integer,
-  Content VARCHAR(50) NOT NULL,
-  IsRead CHAR(1) ,
-  FOREIGN KEY (User_Id) REFERENCES USERS (ID) ON DELETE CASCADE ,
-  FOREIGN KEY (Category_Id) REFERENCES MessagesCategories (ID) ON DELETE CASCADE 
-);`;
-
-  insert_UserType = `
-INSERT INTO UsersTypes (type) VALUES (?);
-`;
-
-  insert_MessagesCategories = `
-INSERT INTO MessagesCategories (Name) VALUES (?);
-`;
-
-  insert_User = `
-INSERT INTO USERS (UserType_Id,username,password,IsActive,Contact) VALUES (?,?,?,'1',?) ;
-`;
-
-  insert_Doctor = `
-INSERT INTO Doctors (Name,User_Id) VALUES (?,?);
-`;
-
-  insert_Pharmacy = `
-INSERT INTO Pharmacies (Name,Location,User_Id) VALUES (?,?,?);
-`;
-
-  insert_Patient = `
-INSERT INTO Patients (ID,Name) VALUES (?,?);
-`;
-
-  insert_Medicine = `
-INSERT INTO Medicins (Name) VALUES (?);
-`;
-
-  insert_Classification = `
-INSERT INTO Classifications (Name,ImageUrl) VALUES (?,?);
-`;
-
   insert_Prescription = `
 INSERT INTO Prescriptions (Doctor_Id,Patient_Id,Classification_Id,Pre_Date,Description) VALUES (?,?,?,datetime('now'),?);
 `;
 
   insert_MedicinePrescription = `
 INSERT INTO Medicine_Prescription (Medicine_ID,Prescription_ID,isBold,isChronic) VALUES (?,?,?,?);
-`;
-
-  insert_AccountRequest = `
-INSERT INTO AccountRequests ( Name, Type, Phone, Email ) VALUES (?,?,?,?);
-`;
-
-  insert_Message = `
-INSERT INTO Messages (User_Id,Category_Id,Content) VALUES (?,?,?);
-`;
-
-  getUserTypeId = `
-select Id from UsersTypes where lower(type) == lower(?)
-`;
-
-  getUserTypeById = `
-select * from UsersTypes where id == ?
-`;
-
-  getPatientById = `
-select * from Patients where lower(id) = lower(?)
-`;
-
-  getNewAccountRequests = `
-  Select Id, Name , Type,Phone,Email from AccountRequests 
-  where IsRead is NULL
-`;
-
-  getNewMessages = `
-  Select m.Id, m.User_Id , m.Content , c.Name as Category, u.UserType_Id
-  from Messages m, MessagesCategories c , Users u
- where IsRead is NULL and m.Category_Id = c.id and u.Id = m.User_Id
-`;
-
-  getDoctorIdByUsername = `
-SELECT d.id 
-from doctors d , users u
-where d.USER_ID = u.ID and lower(u.username) = lower(?)`;
-
-  getDoctorById = `
-SELECT * 
-from doctors 
-where User_Id = ?`;
-
-  getPharmacyById = `
-SELECT * 
-from Pharmacies 
-where User_Id = ?`;
-
-  getPharmacyIdByUsername = `
-SELECT p.id 
-from Pharmacies p , users u
-where p.USER_ID = u.ID and lower(u.username) = lower(?)
-`;
-
-  getMedicinsByName = `
-Select * from Medicins where lower(Name) Like lower( ? )
-`;
-
-  medicineExist = `
-Select * from Medicins where lower(Name) = lower( ? )
-`;
-
-  getUser = `
-select * from Users where username=? 
-`;
-
-  getUserById = `
-select * from Users where Id=? 
-`;
-
-  getAllUsers = `
-select * from Users  
 `;
 
   getPatientPrescriptions = `
@@ -249,38 +254,27 @@ from prescriptions p , Classifications c , Patients patients
  where patient_id = ? and p.Classification_Id = c.id and p.Patient_Id = patients.Id and classification_Id = ?
 `;
 
-  getPrescriptionMedicins = `
-select m.name , mp.isBold,mp.IsChronic,mp.Pharmacy_Id
-from Medicine_Prescription mp , Medicins m
-where prescription_ID = ? and mp.Medicine_Id = m.Id
+  //AccountRequests
+  //---------------
+
+  createTable_AccountRequests = `
+CREATE TABLE IF NOT EXISTS AccountRequests  
+( 
+  Id  INTEGER PRIMARY KEY, 
+  Name VARCHAR(25) NOT NULL ,
+  Type VARCHAR(25) NOT NULL ,
+  Phone VARCHAR(25) NOT NULL ,
+  Email VARCHAR(25)  ,
+  IsRead CHAR(1)
+);`;
+
+  insert_AccountRequest = `
+INSERT INTO AccountRequests ( Name, Type, Phone, Email ) VALUES (?,?,?,?);
 `;
 
-  getPrescriptionMedicinsToDispense = `
-select m.Id, m.name , mp.isBold,mp.IsChronic,mp.Pharmacy_Id
-from Medicine_Prescription mp , Medicins m
-where prescription_ID = ? and mp.Medicine_Id = m.Id and mp.Pharmacy_Id is NULL
-`;
-
-  getClassificationsAll = `
-select * from Classifications ;
-`;
-
-  dispenseMedicine = `
-update Medicine_Prescription 
-set Pharmacy_Id = ?
-where medicine_Id = ? and prescription_Id = ?
-`;
-
-  stopChronincMedicine = `
-update Medicine_Prescription 
-set isChronic = '0'
-where medicine_Id = ? and prescription_Id = ?
-`;
-
-  markMessageRead = `
-  update Messages 
-  set IsRead = '1'
-  where Id = ?
+  getNewAccountRequests = `
+Select Id, Name , Type,Phone,Email from AccountRequests 
+where IsRead is NULL
 `;
 
   markAccountRequestRead = `
@@ -289,20 +283,51 @@ set IsRead = '1'
 where Id = ?
 `;
 
-  toggleUserActive = `
-update users 
-set IsActive = '1'
-where id = ? and IsActive is  Null
+  //MessagesCategories
+  //-----------------
+  createTable_MessageCategories = `
+CREATE TABLE IF NOT EXISTS MessagesCategories  
+( 
+  Id  INTEGER PRIMARY KEY, 
+  Name VARCHAR(25) NOT NULL UNIQUE
+);`;
+
+  insert_MessagesCategories = `
+INSERT INTO MessagesCategories (Name) VALUES (?);
 `;
 
-  toggleUserInActive = `
-update users 
-set IsActive = null
-where id = ? and IsActive is not Null
+  //Messages
+  //--------
+
+  createTable_Messages = `
+CREATE TABLE IF NOT EXISTS Messages  
+( 
+  Id  INTEGER PRIMARY KEY, 
+  User_Id INTEGER,
+  Category_Id Integer,
+  Content VARCHAR(50) NOT NULL,
+  IsRead CHAR(1) ,
+  FOREIGN KEY (User_Id) REFERENCES USERS (ID) ON DELETE CASCADE ,
+  FOREIGN KEY (Category_Id) REFERENCES MessagesCategories (ID) ON DELETE CASCADE 
+);`;
+
+  insert_Message = `
+INSERT INTO Messages (User_Id,Category_Id,Content) VALUES (?,?,?);
+`;
+
+  getNewMessages = `
+Select m.Id, m.User_Id , m.Content , c.Name as Category, u.UserType_Id
+from Messages m, MessagesCategories c , Users u
+where IsRead is NULL and m.Category_Id = c.id and u.Id = m.User_Id
+`;
+
+  markMessageRead = `
+update Messages 
+set IsRead = '1'
+where Id = ?
 `;
 
   createMedicinsIndex = `CREATE INDEX IF NOT EXISTS medicine_name_idx ON Medicins(Name);`;
-
   createIndicesPatch = [this.createMedicinsIndex];
 
   emptyAllTablesPatch = [

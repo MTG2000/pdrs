@@ -155,7 +155,7 @@ const users = async () => {
   log && console.log("Seeding Users");
   for (let i = 0; i < users.length; i++) {
     const u = users[i];
-    console.log(usersTypes[u.userType]);
+    // console.log(usersTypes[u.userType]);
     const userTypeId = (
       await get(sqlQueries.getUserTypeId, [usersTypes[u.userType]])
     ).Id;
