@@ -8,6 +8,8 @@ class AppStore {
   constructor() {
     this.username = localStorage.getItem("username");
     this.role = localStorage.getItem("user-role");
+    this.doctorName = localStorage.getItem("doctorName") || undefined;
+    this.pharmacyName = localStorage.getItem("pharmacyName") || undefined;
   }
 
   async Login(username, password) {
@@ -31,6 +33,15 @@ class AppStore {
         this.role = data.role;
         localStorage.setItem("username", this.username);
         localStorage.setItem("user-role", this.role);
+
+        if (data.DoctorName) {
+          this.doctorName = data.DoctorName;
+          localStorage.setItem("doctorName", this.doctorName);
+        }
+        if (data.PharmacyName) {
+          this.pharmacyName = data.PharmacyName;
+          localStorage.setItem("doctorName", this.doctorName);
+        }
       });
     } catch (error) {
       NotificationManager.error("Couldn't Login with the provided credentials");
@@ -48,6 +59,8 @@ class AppStore {
 decorate(AppStore, {
   username: observable,
   role: observable,
+  doctorName: observable,
+  pharmacyName: observable,
   Login: action,
   Logout: action
 });

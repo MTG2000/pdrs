@@ -41,7 +41,7 @@ class Controller {
       username: user.Username,
       role: role,
       token,
-      name
+      ...name
     });
   };
 
