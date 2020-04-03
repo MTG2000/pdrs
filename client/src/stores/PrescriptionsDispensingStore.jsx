@@ -40,7 +40,7 @@ class PrescriptionsDispensingStore {
         },
         body: JSON.stringify({ prescriptionId, medicins })
       });
-      if (!res.ok) throw Error();
+      if (!response.ok) throw Error();
 
       await response.json();
       NotificationManager.success("Prescription Dispensed Successfully");

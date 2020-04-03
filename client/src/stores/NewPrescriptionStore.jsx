@@ -23,7 +23,7 @@ class NewPrescriptionStore {
 
   async FetchPatientName() {
     try {
-      const res = await fetch(`/api/users/patients?id=${this.patientId}`);
+      const res = await fetch(`/api/users/patient?id=${this.patientId}`);
       const { data } = await res.json();
       runInAction(() => {
         if (data.Name) {
@@ -91,7 +91,7 @@ class NewPrescriptionStore {
         },
         body: JSON.stringify(prescription)
       });
-      if (!res.ok) throw Error();
+      if (!response.ok) throw Error();
 
       await response.json();
       NotificationManager.success("Prescription Created Successfully");

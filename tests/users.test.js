@@ -14,7 +14,9 @@ describe("Testing Users Api", () => {
   const agent = chai.request.agent(server);
 
   it("it should GET  patient", async () => {
-    const res = await agent.get("/api/users/patient?id=02227779988");
+    const res = await agent
+      .get("/api/users/patient")
+      .query({ id: "02227779988" });
     res.should.have.status(200);
   });
 

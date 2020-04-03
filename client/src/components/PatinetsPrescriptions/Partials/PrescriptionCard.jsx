@@ -3,6 +3,7 @@ import date from "date-and-time";
 import Check from "@material-ui/icons/Check";
 import Close from "@material-ui/icons/Close";
 import { Tooltip } from "@material-ui/core";
+import { toJS } from "mobx";
 
 /*{
             "Id": 1,
@@ -41,7 +42,7 @@ const PrescriptionCard = ({ prescription }) => {
 
   const note = prescription.Note;
   const allowedNoteLength = 60;
-
+  console.log(toJS(prescription));
   return (
     <div className="prescription-card mx-auto py-5">
       <Tooltip title={<h6>{note}</h6>}>

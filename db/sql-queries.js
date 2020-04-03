@@ -243,7 +243,7 @@ INSERT INTO Medicine_Prescription (Medicine_ID,Prescription_ID,isBold,isChronic)
 `;
 
   getPatientPrescriptions = `
-select p.Id , p.Doctor_Id , p.Description as Note, p.Pre_Date as Prescription_Date ,  c.Name as Classification_Name , c.ImageUrl as ClassificationIconUrl , patients.Name as Patient_Name 
+select p.Id , p.Doctor_Id , p.Description as Note, p.Pre_Date as Prescription_Date , c.Id as Classification_Id , c.Name as Classification_Name , c.ImageUrl as ClassificationIconUrl , patients.Name as Patient_Name 
 from prescriptions p , Classifications c , Patients patients
  where patient_id = ? and p.Classification_Id = c.id and p.Patient_Id = patients.Id
 `;

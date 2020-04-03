@@ -6,6 +6,7 @@ class PatientPrescriptionsStore {
   patientId = "";
   patientName = "";
   classifications = [];
+  allPrescriptions = [];
   prescriptions = [];
   selectedClassification = 0;
   loading = true;
@@ -32,6 +33,16 @@ class PatientPrescriptionsStore {
     }
   }
 
+  FilterPrescriptions() {
+    console.log(this.selectedClassification);
+    if (!this.selectedClassification)
+      this.prescriptions = this.allPrescriptions;
+    else
+      this.prescriptions = this.allPrescriptions.filter(
+        p => p.Classification_Id === this.selectedClassification
+      );
+  }
+
   async FetchClassifications() {
     try {
       const res = await fetch("/api/medicins/classifications");
@@ -44,18 +55,18 @@ class PatientPrescriptionsStore {
   }
 
   async FetchPrescriptions() {
-    try {
-      if (this.loadingPrescriptions) this.abortController.abort();
-    } catch (error) {}
+    if (this.loadingPrescriptions) {
+      this.abortController.abort();
+    }
 
     try {
       this.loadingPrescriptions = true;
       let fetchUrl = "/api/patients/prescriptions?";
       fetchUrl = fetchUrl.concat(`patientId=${this.patientId}`);
-      if (this.selectedClassification)
-        fetchUrl = fetchUrl.concat(
-          `&classification=${this.selectedClassification}`
-        );
+      // if (this.selectedClassification)
+      //   fetchUrl = fetchUrl.concat(
+      //     `&classification=${this.selectedClassification}`
+      //   );
 
       //These will be used to abort the request if different parameters are specified
       this.abortController = new AbortController();
@@ -63,10 +74,12 @@ class PatientPrescriptionsStore {
       const res = await fetch(fetchUrl, { signal: this.signal });
       const { data } = await res.json();
       runInAction(() => {
-        this.prescriptions = data.prescriptions;
+        this.allPrescriptions = data.prescriptions;
         this.loadingPrescriptions = false;
       });
+      this.FilterPrescriptions();
     } catch (error) {
+      if (error.name == "AbortError") return; //when we abort request the error gets thrown from where we called fetch() so we catch it and do nothing
       console.log(error);
       //Request cancelled so that a new one can be sent
       NotificationManager.error("Couldn't Get Prescriptions");
@@ -74,9 +87,12 @@ class PatientPrescriptionsStore {
     }
   }
 
-  SelectClassification(id) {
-    this.selectedClassification = id;
-    if (this.patientId) this.FetchPrescriptions();
+  async SelectClassification(id) {
+    if (id === this.selectedClassification) this.selectedClassification = 0;
+    else this.selectedClassification = id;
+    if (this.patientId && this.allPrescriptions.length === 0)
+      await this.FetchPrescriptions();
+    else this.FilterPrescriptions();
   }
 }
 
