@@ -2,9 +2,8 @@ add validation
 
 -- FrontEnd
 add a 'All' Classification
-
+add The chronic Medicins thing
 Add loading icons to the btns
-add 'new User'
 
 
 refaactor Input Style
@@ -20,7 +19,6 @@ Client Side Validation
 
 -- BackEnd
 Maybe add some Dependency Injection
-Refactor the sql Queries by table
 Server Side Validation
 
 set cookies security to true

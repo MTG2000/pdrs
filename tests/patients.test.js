@@ -18,8 +18,8 @@ describe("Testing Patients Api", () => {
       password: "123"
     });
     res.should.have.status(200);
-    res.body.should.be.a("object");
-    res.body.should.have.property("token");
+    res.body.data.should.be.a("object");
+    res.body.data.should.have.property("token");
   });
 
   it("it should add a new prescriptions", async () => {
@@ -30,25 +30,24 @@ describe("Testing Patients Api", () => {
       note: "A break in the knee",
       medicins: [
         {
-          id: 1,
+          value: 1,
           isBold: false,
           isChronic: false
         },
         {
-          id: 3,
+          value: 3,
           isBold: true,
           isChronic: false
         },
         {
-          id: 4,
+          value: 4,
           isBold: false,
           isChronic: true
         }
       ]
     });
     res.should.have.status(201);
-    res.body.should.be.a("object");
-    res.body.should.have.property("success");
+    res.body.data.should.be.a("object");
   });
 
   it("it should not add invalid prescriptions (invalid med id)", async () => {
@@ -59,17 +58,17 @@ describe("Testing Patients Api", () => {
       note: "A break in the knee",
       medicins: [
         {
-          id: 133,
+          value: 133,
           isBold: false,
           isChronic: false
         },
         {
-          id: 3,
+          value: 3,
           isBold: true,
           isChronic: false
         },
         {
-          id: 4,
+          value: 4,
           isBold: false,
           isChronic: true
         }
@@ -86,17 +85,17 @@ describe("Testing Patients Api", () => {
       note: "A break in the knee",
       medicins: [
         {
-          id: 1,
+          value: 1,
           isBold: false,
           isChronic: false
         },
         {
-          id: 3,
+          value: 3,
           isBold: true,
           isChronic: false
         },
         {
-          id: 4,
+          value: 4,
           isBold: false,
           isChronic: true
         }

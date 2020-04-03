@@ -21,7 +21,6 @@ const addMedicinsToPrescription = async (prescriptionId, medicins) => {
       m.isChronic || "0"
     ]);
   }
-  return true;
 };
 
 async function getPatientPrescriptions(patientId) {

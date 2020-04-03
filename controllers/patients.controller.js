@@ -36,7 +36,7 @@ const newPrescription = async (req, res, next) => {
       classificationId,
       note
     );
-    const result = await patientsRepository.addMedicinsToPrescription(
+    await patientsRepository.addMedicinsToPrescription(
       prescriptionId,
       medicins.map(m => ({ ...m, id: m.value }))
     );

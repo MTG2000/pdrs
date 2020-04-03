@@ -222,8 +222,8 @@ CREATE TABLE IF NOT EXISTS Prescriptions
   createTable_MedicinePrescription = `
 CREATE TABLE IF NOT EXISTS Medicine_Prescription  
 ( 
-  Medicine_Id  INTEGER , 
-  Prescription_Id  INTEGER , 
+  Medicine_Id  INTEGER NOT NULL, 
+  Prescription_Id  INTEGER NOT NULL, 
   IsBold CHAR(1) NOT NULL, 
   IsChronic CHAR(1) NOT NULL, 
   Pharmacy_Id   INTEGER , 

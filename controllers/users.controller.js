@@ -37,12 +37,14 @@ class Controller {
     });
     SendResponse.JsonSuccess(res, "Logged-In Successfully", "", {
       username: user.Username,
-      role: role
+      role: role,
+      token
     });
   };
 
   getPatient = async (req, res) => {
     const { id } = req.query;
+
     const patinet = await repository.getPatient(id);
     if (patinet) SendResponse.JsonData(res, patinet);
     else SendResponse.JsonNotFound(res);
@@ -51,9 +53,8 @@ class Controller {
   registerUser = async (req, res, next) => {
     try {
       const { username, password: passwordRaw, type, contact } = req.body;
-      const isValid = await Validation.registerUser(req.body);
-
-      if (isValid) return SendResponse.JsonFailed(res, "Invalid Credentials");
+      console.log(passwordRaw, type);
+      await Validation.registerUser(req.body);
 
       const password = await bcrypt.hash(passwordRaw, saltRounds);
       if (type === "Doctor") {

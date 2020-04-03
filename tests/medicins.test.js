@@ -15,7 +15,7 @@ describe("Testing Medicins api", () => {
   it("it should GET all the classificatinos", async () => {
     const res = await agent.get("/api/medicins/classifications");
     res.should.have.status(200);
-    res.body.should.be.a("array");
+    res.body.data.should.be.a("array");
   });
 
   it("it should deep equal", async () => {
@@ -34,8 +34,8 @@ describe("Testing Medicins api", () => {
       password: "123"
     });
     res.should.have.status(200);
-    res.body.should.be.a("object");
-    res.body.should.have.property("token");
+    res.body.data.should.be.a("object");
+    res.body.data.should.have.property("token");
     adminToken = res.body.token;
   });
 
@@ -44,7 +44,6 @@ describe("Testing Medicins api", () => {
       .post("/api/medicins/new")
       .send({ name: "Hydra-Vita 400" });
     res.should.have.status(201);
-    res.body.should.be.a("number");
   });
 
   it("it should not add duplicate medicine", async () => {
@@ -65,8 +64,8 @@ describe("Testing Medicins api", () => {
       password: "123"
     });
     res.should.have.status(200);
-    res.body.should.be.a("object");
-    res.body.should.have.property("token");
+    res.body.data.should.be.a("object");
+    res.body.data.should.have.property("token");
 
     const res2 = await agent
       .post("/api/medicins/new")
@@ -77,7 +76,7 @@ describe("Testing Medicins api", () => {
   it("it should get medicine", async () => {
     const res = await agent.get("/api/medicins").query({ name: "hydra" });
     res.should.have.status(200);
-    res.body[0].should.have.property("Name");
-    res.body[0].Name.should.be.equal("Hydra-Vita 400");
+    res.body.data[0].should.have.property("Name");
+    res.body.data[0].Name.should.be.equal("Hydra-Vita 400");
   });
 });

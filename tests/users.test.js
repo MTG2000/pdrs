@@ -13,10 +13,9 @@ describe("Testing Users Api", () => {
   //we use it like this so that it keeps the cookies between requests
   const agent = chai.request.agent(server);
 
-  it("it should GET all the patients", async () => {
-    const res = await agent.get("/api/users/patients");
+  it("it should GET  patient", async () => {
+    const res = await agent.get("/api/users/patient?id=02227779988");
     res.should.have.status(200);
-    res.body.should.be.a("array");
   });
 
   it("it should login as admin", async () => {
@@ -25,9 +24,9 @@ describe("Testing Users Api", () => {
       password: "123"
     });
     res.should.have.status(200);
-    res.body.should.be.a("object");
-    res.body.should.have.property("token");
-    adminToken = res.body.token;
+    res.body.data.should.be.a("object");
+    res.body.data.should.have.property("token");
+    adminToken = res.body.data.token;
   });
 
   it("it should register a new Doctor", async () => {
@@ -36,12 +35,12 @@ describe("Testing Users Api", () => {
 
       .send({
         username: "momo1",
-        password: "123",
-        type: "doctor",
-        doctorName: "Momo "
+        password: "123123",
+        type: "Doctor",
+        doctorName: "Momo",
+        contact: "098347238"
       });
     res.should.have.status(201);
-    res.body.should.be.a("number");
   });
 
   it("it should register a new Pharmacy", async () => {
@@ -50,13 +49,13 @@ describe("Testing Users Api", () => {
 
       .send({
         username: "momo2",
-        password: "123",
-        type: "pharmacy",
+        password: "123123",
+        type: "Pharmacy",
         pharmacyName: "Momo Pharmacian",
-        address: "Damascus City"
+        address: "Damascus City",
+        contact: "098311238"
       });
     res.should.have.status(201);
-    res.body.should.be.a("number");
   });
 
   it("it should not register duplicate username", async () => {
@@ -65,7 +64,7 @@ describe("Testing Users Api", () => {
 
       .send({
         username: "momo2",
-        type: "pharmacy",
+        type: "Pharmacy",
         pharmacyName: "Momo Pharmacian",
         address: "Damascus City"
       });
@@ -78,7 +77,7 @@ describe("Testing Users Api", () => {
 
       .send({
         username: "momo3",
-        type: "pharmacy",
+        type: "Pharmacy",
         pharmacyName: "Momo Pharmacian",
         address: "Damascus City"
       });
@@ -88,14 +87,7 @@ describe("Testing Users Api", () => {
   it("it should get all users", async () => {
     const res = await agent.get("/api/users");
     res.should.have.status(200);
-    res.body.should.be.a("array");
-    // console.log(res.body);
-  });
-
-  it("it should get all patients", async () => {
-    const res = await agent.get("/api/users/patients");
-    res.should.have.status(200);
-    res.body.should.be.a("array");
-    // console.log(res.body);
+    res.body.data.should.be.a("array");
+    // console.log(res.body.data);
   });
 });
