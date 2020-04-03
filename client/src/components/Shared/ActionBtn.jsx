@@ -10,11 +10,9 @@ const ActionBtn = props => {
   const toggleShowLoading = (show = false) => {
     if (!elem.current) return;
     if (show) {
-      elem.current.disabled = true;
       elem.current.querySelector(".loading").style.display = "block";
       elem.current.querySelector(".content").style.display = "none";
     } else {
-      elem.current.disabled = false;
       elem.current.querySelector(".loading").style.display = "none";
       elem.current.querySelector(".content").style.display = "block";
     }

@@ -6,6 +6,7 @@ import Check from "@material-ui/icons/Check";
 import Settings from "@material-ui/icons/Settings";
 import Loading from "../../Shared/LoadingMini";
 import ActionBtn from "../../Shared/ActionBtn";
+import LoadingMini from "../../Shared/LoadingMini";
 
 const useStyle = makeStyles({
   card: {
@@ -38,19 +39,24 @@ const UserCard = ({ user, onToggleActive }) => {
         </div>
       </div>
       <ActionBtn loading={user.loadingToggleActive}>
-        <div>
-          {user.IsActive ? (
-            <Check
-              className={`${classes.activeIcon} align-self-center`}
-              onClick={onToggleActive}
-            />
-          ) : (
-            <Clear
-              className={`${classes.deactiveIcon} align-self-center`}
-              onClick={onToggleActive}
-            />
-          )}
-        </div>
+        <button className="btn-none">
+          <span className="content">
+            {user.IsActive ? (
+              <Check
+                className={`${classes.activeIcon} align-self-center`}
+                onClick={onToggleActive}
+              />
+            ) : (
+              <Clear
+                className={`${classes.deactiveIcon} align-self-center`}
+                onClick={onToggleActive}
+              />
+            )}
+          </span>
+          <div className="loading">
+            <LoadingMini color={"#FFF"} />
+          </div>
+        </button>
       </ActionBtn>
     </div>
   );

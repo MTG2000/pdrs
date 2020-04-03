@@ -11,6 +11,8 @@ import { mainContext } from "../../stores/Context";
 import { observer } from "mobx-react";
 import { NotificationManager } from "react-notifications";
 import { Redirect } from "react-router-dom";
+import ActionBtn from "../Shared/ActionBtn";
+import LoadingMini from "../Shared/LoadingMini";
 
 const NewPrescription = () => {
   const { NewPrescriptionStore } = useContext(mainContext);
@@ -38,13 +40,18 @@ const NewPrescription = () => {
         <MedicinsList store={store} />
       </div>
       <div className="row justify-content-center py-3">
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => store.SubmitPrescription()}
-        >
-          Submit Prescription
-        </Button>
+        <ActionBtn loading={store.submitingPrescription}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => store.SubmitPrescription()}
+          >
+            <span className="content">Submit Prescription</span>
+            <div className="loading">
+              <LoadingMini color={"#FFF"} />
+            </div>
+          </Button>
+        </ActionBtn>
       </div>
     </Box>
   );

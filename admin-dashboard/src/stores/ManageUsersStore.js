@@ -8,8 +8,10 @@ class ManageUsersStore {
   async FetchAllUsers() {
     try {
       const res = await fetch("/api/users");
+      if (!res.ok) throw Error("Forbidden");
       const { data } = await res.json();
       runInAction(() => {
+        console.log(data);
         this.allUsers = data;
         this.users = this.allUsers;
       });

@@ -9,6 +9,7 @@ class NewPrescriptionStore {
   medicins = [];
   classifications = [];
   selectedClassification = -1;
+  submitingPrescription = false;
   loading = true;
   redirect = false;
 
@@ -76,6 +77,9 @@ class NewPrescriptionStore {
 
   async SubmitPrescription() {
     try {
+      if (this.submitingPrescription) return;
+
+      this.submitingPrescription = true;
       const prescription = {
         patientId: this.patientId,
         patientName: this.patientName,
@@ -95,6 +99,7 @@ class NewPrescriptionStore {
 
       await response.json();
       NotificationManager.success("Prescription Created Successfully");
+      this.submitingPrescription = false;
       setTimeout(() => {
         runInAction(() => {
           this.redirect = true;
@@ -102,6 +107,7 @@ class NewPrescriptionStore {
       }, 3000);
     } catch (error) {
       NotificationManager.error("Prescription couldn't be created");
+      this.submitingPrescription = false;
     }
   }
 }
@@ -112,6 +118,7 @@ decorate(NewPrescriptionStore, {
   selectedClassification: observable,
   patientId: observable,
   showPatientNameInput: observable,
+  submitingPrescription: observable,
   patientName: observable,
   note: observable,
   medicins: observable,
