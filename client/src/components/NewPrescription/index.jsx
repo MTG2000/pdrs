@@ -1,18 +1,17 @@
 import React, { useContext, useState, useEffect } from "react";
 import PatientIdInput from "./Partials/PatientIdInput";
 import { Box } from "@material-ui/core";
-import "./style/style.scss";
-import ClassificationsFilter from "./Partials/ClassificationsFilter";
 import PrescriptionNote from "./Partials/PrescriptionNote";
 import MedicinSelect from "./Partials/MedicinSelect";
 import MedicinsList from "./Partials/MedicinsList";
 import { Button } from "@material-ui/core";
 import { mainContext } from "../../stores/Context";
 import { observer } from "mobx-react";
-import { NotificationManager } from "react-notifications";
 import { Redirect } from "react-router-dom";
 import ActionBtn from "../Shared/ActionBtn";
 import LoadingMini from "../Shared/LoadingMini";
+import ClassificationsFilter from "../Shared/ClassificationsFilter";
+import LoadingPage from "../Shared/LoadingPage";
 
 const NewPrescription = () => {
   const { NewPrescriptionStore } = useContext(mainContext);
@@ -25,7 +24,7 @@ const NewPrescription = () => {
 
   if (store.redirect) return <Redirect to="/" />;
 
-  if (store.loading) return <h2 className="py-5 px-5 text-center">Loading</h2>;
+  if (store.loading) return <LoadingPage />;
 
   return (
     <Box pb={8}>

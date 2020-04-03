@@ -1,12 +1,10 @@
 add validation
 
 -- FrontEnd
-* add The chronic Medicins thing
-Add Lazy Loading
 Replace every: 'import {} from '*/*' with import * from '*/*/*' '
 
 
-refaactor Input Style
+refactor Input Style
 add AOS
 Create a Main Page
 change the navbar
