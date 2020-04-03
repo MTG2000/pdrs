@@ -12,23 +12,43 @@ class Repository {
     else await DB.run(sqlQueries.toggleUserActive, [id]);
   };
 
-  getAllUsers = async () => {
-    let users = await DB.queryAll(sqlQueries.getAllUsers);
-    //Add the actual name of the user  by looking his type first then looking up his name in the appropriate table
-    const DoctorTypeId = await DB.get(sqlQueries.getUserTypeId, ["Doctor"]);
-    const PharmacyTypeId = await DB.get(sqlQueries.getUserTypeId, ["Pharmacy"]);
-    for (const user of users) {
-      if (user.UserType_Id === DoctorTypeId.Id)
-        user.DoctorName = (
-          await DB.get(sqlQueries.getDoctorById, [user.Id])
-        ).Name;
-      else if (user.UserType_Id === PharmacyTypeId.Id) {
-        user.PharmacyName = (
-          await DB.get(sqlQueries.getPharmacyById, [user.Id])
-        ).Name;
-      }
+  //it either returns {DoctorName:'name'} or {PharmacyName:'name'}
+  getUserRealName = async id => {
+    if (!this.DoctorTypeId) {
+      this.DoctorTypeId = (
+        await DB.get(sqlQueries.getUserTypeId, ["Doctor"])
+      ).Id;
+      this.PharmacyTypeId = (
+        await DB.get(sqlQueries.getUserTypeId, ["Pharmacy"])
+      ).Id;
     }
-    return users;
+    const user = await DB.get(sqlQueries.getUserById, [id]);
+
+    if (user.UserType_Id === this.DoctorTypeId)
+      return {
+        DoctorName: (await DB.get(sqlQueries.getDoctorById, [id])).Name
+      };
+    else if (user.UserType_Id === this.PharmacyTypeId) {
+      return {
+        PharmacyName: (await DB.get(sqlQueries.getPharmacyById, [id])).Name
+      };
+    }
+  };
+  getAllUsers = async () => {
+    let usersRaw = await DB.queryAll(sqlQueries.getAllUsers);
+    //Add the actual name of the user  by looking his type first then looking up his name in the appropriate table
+    let usersDTO = [];
+    for (const user of usersRaw) {
+      const name = await this.getUserRealName(user.Id);
+      usersDTO.push({
+        Id: user.Id,
+        Username: user.Username,
+        IsActive: user.IsActive,
+        Contact: user.Contact,
+        ...name
+      });
+    }
+    return usersDTO;
   };
 
   getPatient = async (id = "") => {

@@ -8,8 +8,16 @@ const Header = ({ store }) => {
   const role = store.role;
 
   return (
-    <Navbar collapseOnSelect expand="lg" bg="primary" variant="dark">
-      <Navbar.Brand href="/">P.D.R</Navbar.Brand>
+    <Navbar
+      collapseOnSelect
+      expand="lg"
+      bg="primary"
+      variant="dark"
+      style={{ zIndex: 100 }}
+    >
+      <Navbar.Brand href="/">
+        <h4 className="no-gutters mb-0">P.D.R.S</h4>
+      </Navbar.Brand>
       <Navbar.Toggle aria-controls="responsive-navbar-nav" />
       <Navbar.Collapse id="responsive-navbar-nav">
         <Nav className="ml-auto text-white">

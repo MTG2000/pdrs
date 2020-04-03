@@ -22,6 +22,10 @@ class AppStore {
       });
       const { data } = await res.json();
       NotificationManager.success("Welcome Back");
+      console.log(data);
+      setTimeout(() => {
+        window.location = "/";
+      }, 30000);
       runInAction(() => {
         this.username = data.username;
         this.role = data.role;

@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
-import Header from "./components/Shared/Header";
-import Footer from "./components/Shared/Footer";
+import Header from "./Views/Shared/Header";
+import Footer from "./Views/Shared/Footer";
 import { NotificationContainer } from "react-notifications";
 import { Container } from "react-bootstrap";
 

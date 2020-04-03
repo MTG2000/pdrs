@@ -1,20 +1,18 @@
 import React from "react";
 import { Route, Switch } from "react-router-dom";
-import PrivateRoute from "../components/Shared/PrivateRoute";
+import PrivateRoute from "../Views/Shared/PrivateRoute";
 import { observer } from "mobx-react";
-import LoadingPage from "../components/Shared/LoadingPage";
+import LoadingPage from "../Views/Shared/LoadingPage";
 
 const PatientsPrescriptions = React.lazy(() =>
-  import("../components/PatinetsPrescriptions")
+  import("../Views/PatinetsPrescriptions")
 );
-const NewPrescription = React.lazy(() =>
-  import("../components/NewPrescription")
-);
-const LoginPage = React.lazy(() => import("../components/Login"));
-const Home = React.lazy(() => import("../components/Home"));
+const NewPrescription = React.lazy(() => import("../Views/NewPrescription"));
+const LoginPage = React.lazy(() => import("../Views/Login"));
+const Home = React.lazy(() => import("../Views/Home"));
 
 const DispensePrescription = React.lazy(() =>
-  import("../components/PrescriptionsDispensing")
+  import("../Views/PrescriptionsDispensing")
 );
 
 const AppRouter = ({ store }) => {

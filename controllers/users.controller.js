@@ -25,9 +25,11 @@ class Controller {
       return SendResponse.JsonFailed(res, "Account Has been de-activated");
 
     const role = await repository.getUserTypeById(user.UserType_Id);
+    const name = await repository.getUserRealName(user.Id);
+    console.log(name);
     const token = authService.generateToken({
       username: user.Username,
-      role: role
+      role
     });
 
     //set cookie with the token
@@ -38,7 +40,8 @@ class Controller {
     SendResponse.JsonSuccess(res, "Logged-In Successfully", "", {
       username: user.Username,
       role: role,
-      token
+      token,
+      name
     });
   };
 
