@@ -8,6 +8,7 @@ class PatientPrescriptionsStore {
   classifications = [];
   allPrescriptions = [];
   prescriptions = [];
+  chronicMedicins = [];
   selectedClassification = 0;
   loading = true;
   loadingPrescriptions = false;
@@ -63,18 +64,16 @@ class PatientPrescriptionsStore {
       this.loadingPrescriptions = true;
       let fetchUrl = "/api/patients/prescriptions?";
       fetchUrl = fetchUrl.concat(`patientId=${this.patientId}`);
-      // if (this.selectedClassification)
-      //   fetchUrl = fetchUrl.concat(
-      //     `&classification=${this.selectedClassification}`
-      //   );
 
       //These will be used to abort the request if different parameters are specified
       this.abortController = new AbortController();
       this.signal = this.abortController.signal;
       const res = await fetch(fetchUrl, { signal: this.signal });
       const { data } = await res.json();
+      console.log(data);
       runInAction(() => {
         this.allPrescriptions = data.prescriptions;
+        this.chronicMedicins = data.chronicMedicins;
         this.loadingPrescriptions = false;
       });
       this.FilterPrescriptions();
@@ -101,6 +100,7 @@ decorate(PatientPrescriptionsStore, {
   loadingPrescriptions: observable,
   selectedClassification: observable,
   prescriptions: observable,
+  chronicMedicins: observable,
   patientId: observable,
   patientName: observable,
   classifications: observable,

@@ -74,7 +74,7 @@ const getPrescriptions = async (req, res) => {
 
     chronicMedicins = [
       ...chronicMedicins,
-      ...medicins.filter(m => m.isChronic == true)
+      ...medicins.filter(m => m.IsChronic == true).map(m => m.Name)
     ];
   }
 

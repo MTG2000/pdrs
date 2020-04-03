@@ -53,7 +53,6 @@ class Controller {
   registerUser = async (req, res, next) => {
     try {
       const { username, password: passwordRaw, type, contact } = req.body;
-      console.log(passwordRaw, type);
       await Validation.registerUser(req.body);
 
       const password = await bcrypt.hash(passwordRaw, saltRounds);

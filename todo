@@ -1,13 +1,12 @@
 add validation
 
 -- FrontEnd
-add The chronic Medicins thing
-* Add loading icons to the btns
+* add The chronic Medicins thing
+Add Lazy Loading
+Replace every: 'import {} from '*/*' with import * from '*/*/*' '
 
 
 refaactor Input Style
-Replace every: 'import {} from '*/*' with import * from '*/*/*' '
-Add Lazy Loading
 add AOS
 Create a Main Page
 change the navbar
@@ -17,7 +16,6 @@ Client Side Validation
 
 
 -- BackEnd
-Maybe add some Dependency Injection
 Server Side Validation
 
 set cookies security to true
