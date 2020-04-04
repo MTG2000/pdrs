@@ -15,8 +15,8 @@ const getClassifications = async (req, res) => {
 const newMedicine = async (req, res, next) => {
   try {
     const { name } = req.body;
+    if (!name) throw Error();
     const medicineExist = await repository.medicineExist(name);
-
     if (!medicineExist) {
       const medicineId = await repository.addMedicine(name);
       res.status(201).json(medicineId);

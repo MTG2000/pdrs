@@ -140,7 +140,6 @@ select * from Patients where lower(id) = lower(?)
 
   //Medicins
   //---------
-
   createTable_Medicins = `
   CREATE TABLE IF NOT EXISTS Medicins 
   ( 

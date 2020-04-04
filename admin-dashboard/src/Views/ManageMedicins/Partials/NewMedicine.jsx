@@ -26,7 +26,7 @@ const NewMedicine = ({ store }) => {
 
   const handleClose = isSubmit => {
     setOpen(false);
-    if (isSubmit) {
+    if (isSubmit === true) {
       store.NewMedicine(name);
     }
   };

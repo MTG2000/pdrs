@@ -30,10 +30,10 @@ const MedicinsList = ({ store }) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {store.medicins.map(m => (
+          {store.medicins.map((m, i) => (
             <TableRow key={m.Id}>
               <TableCell component="th" scope="row">
-                {m.Id}
+                {i + 1}
               </TableCell>
               <TableCell>{m.Name}</TableCell>
             </TableRow>
