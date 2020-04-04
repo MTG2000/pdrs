@@ -15,6 +15,8 @@ Client Side Validation
 
 -- BackEnd
 Server Side Validation
+New Medicins
+New Classification
 
 set cookies security to true
 remove token from response

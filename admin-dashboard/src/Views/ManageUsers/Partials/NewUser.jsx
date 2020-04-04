@@ -34,6 +34,7 @@ const NewUser = ({ store }) => {
   const handleClose = isSubmit => {
     setOpen(false);
     if (isSubmit) {
+      console.log("ssss");
       store.RegisterUser(
         username,
         contact,
@@ -165,7 +166,7 @@ const NewUser = ({ store }) => {
           </div>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary">
+          <Button onClick={() => handleClose(false)} color="primary">
             Cancel
           </Button>
           <Button onClick={() => handleClose(true)} color="primary">

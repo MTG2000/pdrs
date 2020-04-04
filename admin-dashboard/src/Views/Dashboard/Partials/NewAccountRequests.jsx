@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { observer } from "mobx-react";
 import { toJS } from "mobx";
 import AccountRequestCard from "./AccountRequestCard";
-import PersonAdd from "@material-ui/icons/PersonAddOutlined";
+import PersonAdd from "@material-ui/icons/PersonAdd";
 
 const NewAccountRequests = ({ store }) => {
   useEffect(() => {

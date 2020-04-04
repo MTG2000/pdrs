@@ -1,0 +1,41 @@
+import React from "react";
+import { TextField, makeStyles, useTheme } from "@material-ui/core";
+import { useState } from "react";
+
+const useStyle = makeStyles({
+  input: theme => ({
+    borderColor: `${theme.palette.primary.main} !important`,
+    borderWidth: 2,
+    maxWidth: 280
+  })
+});
+
+const SearchInput = ({ store }) => {
+  const theme = useTheme();
+  const classes = useStyle({ ...theme });
+  const [search, setSearch] = useState("");
+
+  return (
+    <div className="row mx-0 justify-content-center">
+      <TextField
+        id="search-meds"
+        label="Search Medicins"
+        value={search}
+        onChange={e => {
+          setSearch(e.target.value);
+          store.SearchMedicins(e.target.value);
+        }}
+        variant="outlined"
+        color="primary"
+        className={`${classes.input} mx-auto mb-3 col-12 `}
+        InputProps={{
+          classes: {
+            notchedOutline: classes.input
+          }
+        }}
+      />
+    </div>
+  );
+};
+
+export default SearchInput;

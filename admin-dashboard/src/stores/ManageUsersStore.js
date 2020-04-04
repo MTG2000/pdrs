@@ -41,16 +41,6 @@ class ManageUsersStore {
     pharmacyAddress
   ) {
     try {
-      // console.log({
-      //   username,
-      //   contact,
-      //   password,
-      //   type,
-      //   doctorName,
-      //   pharmacyName,
-      //   pharmacyAddress
-      // });
-      // // return;
       const res = await fetch("/api/users/register", {
         method: "POST",
         headers: {
@@ -71,6 +61,7 @@ class ManageUsersStore {
       if (!res.ok) throw Error();
       await res.json();
       NotificationManager.success("User Registered Successfully");
+      this.FetchAllUsers();
       runInAction(() => {});
     } catch (error) {
       NotificationManager.error("User Registereation Failed");

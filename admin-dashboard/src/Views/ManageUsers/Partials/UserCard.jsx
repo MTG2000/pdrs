@@ -26,7 +26,6 @@ const useStyle = makeStyles({
 
 const UserCard = ({ user, onToggleActive }) => {
   const classes = useStyle();
-  console.log(toJS(user));
   return (
     <div
       className={`${classes.card} col-12 mb-2 py-3 row mx-0 justify-content-between`}

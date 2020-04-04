@@ -3,6 +3,8 @@ import SideNav, { NavItem, NavIcon, NavText } from "@trendmicro/react-sidenav";
 import People from "@material-ui/icons/People";
 import BarChart from "@material-ui/icons/BarChart";
 import Home from "@material-ui/icons/Home";
+import LocalHospital from "@material-ui/icons/LocalHospital";
+
 import { withRouter, useHistory } from "react-router-dom";
 import { mainContext } from "../../stores/Context";
 
@@ -47,11 +49,17 @@ const SideBar = () => {
           </NavIcon>
           <NavText>Dashboard</NavText>
         </NavItem>
-        <NavItem eventKey="add-user">
+        <NavItem eventKey="manage-users">
           <NavIcon>
             <People style={{ fontSize: "1.75em" }} />
           </NavIcon>
           <NavText>Manage Users</NavText>
+        </NavItem>
+        <NavItem eventKey="manage-medicins">
+          <NavIcon>
+            <LocalHospital style={{ fontSize: "1.75em" }} />
+          </NavIcon>
+          <NavText>Manage Medicins</NavText>
         </NavItem>
         <NavItem eventKey="statistics">
           <NavIcon>
