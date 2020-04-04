@@ -116,6 +116,10 @@ class Repository {
     ]);
     return pharmacyId.Id;
   };
+
+  addAccountRequest = async (name, type, phone, email) => {
+    await DB.run(sqlQueries.insert_AccountRequest, [name, type, phone, email]);
+  };
 }
 
 module.exports = new Repository();

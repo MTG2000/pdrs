@@ -4,6 +4,8 @@ import HeroImage from "./Partials/HeroImage";
 import BG from "./Partials/pdrs-bg.jpg";
 import { mainContext } from "../../stores/Context";
 import { observer } from "mobx-react";
+import { Container } from "@material-ui/core";
+import RequestAccount from "./Partials/RequestAccount";
 
 const Home = () => {
   const { AppStore } = useContext(mainContext);
@@ -28,6 +30,9 @@ const Home = () => {
           </p>
         )}
       </div>
+      <Container>
+        <RequestAccount store={store} />
+      </Container>
     </div>
   );
 };

@@ -56,6 +56,24 @@ class AppStore {
     }
   }
 
+  async SendRequest(name, type, phone, email) {
+    try {
+      const res = await fetch("/api/users/request-account", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ name, type, phone, email })
+      });
+      const data = await res.json();
+      console.log(data);
+      NotificationManager.success(" Your Request was sent successfuly");
+    } catch (error) {
+      NotificationManager.error("Couldn't Login with the provided credentials");
+    }
+  }
+
   Logout() {
     this.username = null;
     this.role = null;

@@ -2,7 +2,8 @@ add validation
 
 -- FrontEnd
 Replace every: 'import {} from '*/*' with import * from '*/*/*' '
-
+Contact Page 
+Account Request Section
 
 refactor Input Style
 add AOS
@@ -15,7 +16,6 @@ Client Side Validation
 
 -- BackEnd
 Server Side Validation
-New Medicins
 New Classification
 
 set cookies security to true

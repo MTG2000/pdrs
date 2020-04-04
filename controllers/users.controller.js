@@ -103,6 +103,16 @@ class Controller {
       SendResponse.JsonFailed(res, "Something Wrong Happened");
     }
   };
+
+  requestAccount = async (req, res, next) => {
+    try {
+      const { name, type, phone, email } = req.body;
+      await repository.addAccountRequest(name, type, phone, email);
+      SendResponse.JsonSuccess(res, "Your Request Was Sent Successfully");
+    } catch (error) {
+      SendResponse.JsonFailed(res, "Something Wrong Happened");
+    }
+  };
 }
 
 module.exports = new Controller();
