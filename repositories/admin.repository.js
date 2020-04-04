@@ -16,7 +16,7 @@ class Repository {
         msg.DoctorName = (
           await DB.get(sqlQueries.getDoctorById, [msg.User_Id])
         ).Name;
-      else {
+      else if (msg.UserType_Id === DoctorTypeId.Id) {
         msg.PharmacyName = (
           await DB.get(sqlQueries.getPharmacyById, [msg.User_Id])
         ).Name;

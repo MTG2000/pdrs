@@ -296,6 +296,10 @@ CREATE TABLE IF NOT EXISTS MessagesCategories
 INSERT INTO MessagesCategories (Name) VALUES (?);
 `;
 
+  get_MessagesCategories = `
+  Select * from MessagesCategories
+`;
+
   //Messages
   //--------
 

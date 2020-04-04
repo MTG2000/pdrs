@@ -113,6 +113,27 @@ class Controller {
       SendResponse.JsonFailed(res, "Something Wrong Happened");
     }
   };
+
+  getMessagesCategories = async (req, res, next) => {
+    try {
+      const msgsCategories = await repository.getMessagesCategories();
+      SendResponse.JsonData(res, msgsCategories);
+    } catch (error) {
+      SendResponse.JsonFailed(res, "Something Wrong Happened");
+    }
+  };
+
+  addNewMessage = async (req, res, next) => {
+    try {
+      const { category, content } = req.body;
+      const userId = (await repository.getUserByUsername(req.user.username)).Id;
+      await repository.addMessage(userId, category, content);
+      SendResponse.JsonSuccess(res, "Your Message was sent successfully");
+    } catch (error) {
+      console.log(error);
+      SendResponse.JsonFailed(res, "Something Wrong Happened");
+    }
+  };
 }
 
 module.exports = new Controller();

@@ -120,6 +120,14 @@ class Repository {
   addAccountRequest = async (name, type, phone, email) => {
     await DB.run(sqlQueries.insert_AccountRequest, [name, type, phone, email]);
   };
+
+  getMessagesCategories = async () => {
+    return await DB.queryAll(sqlQueries.get_MessagesCategories);
+  };
+
+  addMessage = async (userId, category_Id, content) => {
+    await DB.run(sqlQueries.insert_Message, [userId, category_Id, content]);
+  };
 }
 
 module.exports = new Repository();

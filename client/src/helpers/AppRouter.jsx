@@ -14,6 +14,7 @@ const Home = React.lazy(() => import("../Views/Home"));
 const DispensePrescription = React.lazy(() =>
   import("../Views/PrescriptionsDispensing")
 );
+const Contact = React.lazy(() => import("../Views/Contact"));
 
 const AppRouter = ({ store }) => {
   const { username, role } = store;
@@ -22,6 +23,7 @@ const AppRouter = ({ store }) => {
     <React.Suspense fallback={<LoadingPage fullPage={true} />}>
       <Switch>
         <Route path="/login" component={LoginPage} />
+        <PrivateRoute path="/contact" component={Contact} isAuth={username} />
         <PrivateRoute
           path="/new-prescription"
           component={NewPrescription}

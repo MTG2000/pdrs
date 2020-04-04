@@ -23,6 +23,10 @@ router.post(
 
 router.get("/", authMiddleware(["Admin"]), controller.getAllUsers);
 
+router.get("/messages-categories", controller.getMessagesCategories);
+
+router.post("/send-message", authMiddleware(), controller.addNewMessage);
+
 router.get("/patient", controller.getPatient);
 
 module.exports = router;

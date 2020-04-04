@@ -3,7 +3,6 @@ add validation
 -- FrontEnd
 Replace every: 'import {} from '*/*' with import * from '*/*/*' '
 Contact Page 
-Account Request Section
 
 refactor Input Style
 add AOS

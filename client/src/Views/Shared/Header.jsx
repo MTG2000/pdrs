@@ -36,9 +36,16 @@ const Header = ({ store }) => {
               Patinets Prescriptions
             </Link>
           )}
-          <Link className="nav-link text-white" to="/about">
-            About{" "}
-          </Link>
+          {username && (
+            <Link className="nav-link text-white" to="/contact">
+              Technical Support
+            </Link>
+          )}
+          {!username && (
+            <Link className="nav-link text-white" to="/about">
+              About{" "}
+            </Link>
+          )}
           {!username ? (
             <Link className="nav-link text-white" to="/login">
               Login

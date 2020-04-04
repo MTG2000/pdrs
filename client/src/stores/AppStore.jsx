@@ -5,6 +5,8 @@ class AppStore {
   username = "";
   role = "";
 
+  messagesCategories = [];
+
   constructor() {
     this.username = localStorage.getItem("username");
     this.role = localStorage.getItem("user-role");
@@ -82,15 +84,46 @@ class AppStore {
     localStorage.removeItem("username");
     localStorage.removeItem("user-role");
   }
+
+  async FetchMessagesCategories() {
+    try {
+      const res = await fetch("/api/users/messages-categories");
+      const { data } = await res.json();
+      runInAction(() => {
+        this.messagesCategories = data;
+      });
+    } catch (error) {}
+  }
+
+  async SendMessage(category, content) {
+    try {
+      const res = await fetch("/api/users/send-message", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ category, content })
+      });
+      if (!res.ok) throw Error("");
+      NotificationManager.success(" Your Message was sent successfuly");
+    } catch (error) {
+      NotificationManager.error(
+        "Something wrong happened while sending message"
+      );
+    }
+  }
 }
 
 decorate(AppStore, {
   username: observable,
   role: observable,
+  messagesCategories: observable,
   doctorName: observable,
   pharmacyName: observable,
   Login: action,
-  Logout: action
+  Logout: action,
+  FetchMessagesCategories: action
 });
 
 export default new AppStore();
