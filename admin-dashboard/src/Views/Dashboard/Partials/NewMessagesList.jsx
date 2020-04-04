@@ -16,7 +16,7 @@ const NewMessagesList = ({ store }) => {
 
   return (
     <div className="row py-5 mx-0">
-      <h2>You Have Some New Messages</h2>
+      <h5>You Have Some New Messages</h5>
       {store.newMessages.map(m => (
         <NewMessageCard
           key={m.Id}

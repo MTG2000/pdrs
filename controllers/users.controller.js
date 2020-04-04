@@ -15,7 +15,7 @@ class Controller {
     //Verify credentials
     const { username, password } = req.body;
 
-    const user = await repository.getUser(username);
+    const user = await repository.getUserByUsername(username);
 
     if (!user || !(await bcrypt.compare(password, user.Password)))
       //User Doesn't exist or wrong credentials

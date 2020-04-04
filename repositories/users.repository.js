@@ -2,7 +2,7 @@ const DB = require("../services/db").DB;
 const sqlQueries = require("../db/sql-queries");
 
 class Repository {
-  getUser = async username => {
+  getUserByUsername = async username => {
     return await DB.get(sqlQueries.getUser, [username]);
   };
 

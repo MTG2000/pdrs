@@ -6,7 +6,8 @@ import Clear from "@material-ui/icons/Clear";
 const useStyle = makeStyles({
   card: {
     backgroundColor: "#FFF",
-    boxShadow: "3px 5px 10px #333"
+    boxShadow: "3px 5px 10px #9b9b9b",
+    maxWidth: 700
   },
   removeIcon: {
     color: "red",
@@ -18,24 +19,26 @@ const NewMessageCard = ({ message, onRead }) => {
   const classes = useStyle();
 
   return (
-    <div
-      className={`${classes.card} col-12 mb-4 py-3 row mx-0 justify-content-between`}
-    >
-      <div>
+    <div className="col-12">
+      <div
+        className={`${classes.card}  px-3 mb-4 py-3 row mx-0 justify-content-between`}
+      >
         <div>
-          <span className="text-info ">{message.Category}</span>
-          <br />
-          <span className="text-dark ">
-            {message.DoctorName && `Doctor ${message.DoctorName}`}
-            {message.PharmacyName && `Pharmacy ${message.PharmacyName}`}
-          </span>
+          <div>
+            <span className="text-info ">{message.Category}</span>
+            <br />
+            <span className="text-dark ">
+              {message.DoctorName && `Doctor ${message.DoctorName}`}
+              {message.PharmacyName && `Pharmacy ${message.PharmacyName}`}
+            </span>
+          </div>
+          <h5>{message.Content}</h5>
         </div>
-        <h5>{message.Content}</h5>
+        <Clear
+          className={`${classes.removeIcon} align-self-center`}
+          onClick={onRead}
+        />
       </div>
-      <Clear
-        className={`${classes.removeIcon} align-self-center`}
-        onClick={onRead}
-      />
     </div>
   );
 };

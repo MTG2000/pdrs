@@ -10,8 +10,14 @@ const Dashboard = () => {
 
   return (
     <Container className="py-5">
-      <NewMessagesList store={store} />
-      <NewAccountRequests store={store} />
+      <div className="row">
+        <div className="col-12 col-lg-6">
+          <NewMessagesList store={store} />
+        </div>
+        <div className="col-12 col-lg-6">
+          <NewAccountRequests store={store} />
+        </div>
+      </div>
     </Container>
   );
 };

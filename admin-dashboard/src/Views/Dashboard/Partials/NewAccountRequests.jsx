@@ -16,7 +16,7 @@ const NewAccountRequests = ({ store }) => {
 
   return (
     <div className="row py-5 mx-0">
-      <h2>You have New Account Requests</h2>
+      <h5>You have New Account Requests</h5>
       {store.newAccountRequests.map(r => (
         <AccountRequestCard
           key={r.Id}
