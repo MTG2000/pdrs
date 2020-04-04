@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { observer } from "mobx-react";
 import { toJS } from "mobx";
 import NewMessageCard from "./NewMessageCard";
+import Message from "@material-ui/icons/MessageOutlined";
 
 const NewMessagesList = ({ store }) => {
   useEffect(() => {
@@ -16,7 +17,9 @@ const NewMessagesList = ({ store }) => {
 
   return (
     <div className="row py-5 mx-0">
-      <h5>You Have Some New Messages</h5>
+      <h5>
+        <Message /> You Have Some New Messages
+      </h5>
       {store.newMessages.map(m => (
         <NewMessageCard
           key={m.Id}

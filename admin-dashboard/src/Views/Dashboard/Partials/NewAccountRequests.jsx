@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { observer } from "mobx-react";
 import { toJS } from "mobx";
 import AccountRequestCard from "./AccountRequestCard";
+import PersonAdd from "@material-ui/icons/PersonAddOutlined";
 
 const NewAccountRequests = ({ store }) => {
   useEffect(() => {
@@ -16,7 +17,10 @@ const NewAccountRequests = ({ store }) => {
 
   return (
     <div className="row py-5 mx-0">
-      <h5>You have New Account Requests</h5>
+      <h5>
+        {" "}
+        <PersonAdd /> You have New Account Requests
+      </h5>
       {store.newAccountRequests.map(r => (
         <AccountRequestCard
           key={r.Id}
