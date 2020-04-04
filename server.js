@@ -18,6 +18,9 @@ if (!dev) {
 // support parsing of application/json type post data
 server.use(bodyParser.urlencoded({ extended: false }));
 server.use(express.static(path.join(__dirname, "static")));
+server.use(express.static(path.resolve(__dirname, "client", "build")));
+server.use(express.static(path.resolve(__dirname, "admin-dashboard", "build")));
+
 server.use(cookieParser());
 server.use(express.urlencoded({ extended: false }));
 server.use(express.json());
@@ -37,12 +40,26 @@ server.use("/api/medicins", require("./routes/medicins.route"));
 server.use("/api/users", require("./routes/users.route"));
 server.use("/api/admin", require("./routes/admin.route"));
 
-server.use(require("./middleware/sqlTransaction").transactionEnd);
 (async () => {
   if (server.get("env") === "test") return; //Initialize the db is done in the test setup file
   if (server.get("env") === "development")
     await DB.initializeDB(false, false, false);
   else await DB.initializeDB(false, false, false);
 })();
+
+server.get("/admin", (req, res) => {
+  console.log("Admin");
+
+  res.sendFile(
+    path.resolve(__dirname, "admin-dashboard", "build", "index.html")
+  );
+});
+server.get("*", (req, res) => {
+  console.log("Client");
+  res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
+});
+
+//REMEMBER TO KEEP THIS AT THE END (BECAUSE IT USES res.end())
+server.use(require("./middleware/sqlTransaction").transactionEnd);
 
 module.exports = server;

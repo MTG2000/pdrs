@@ -23,25 +23,33 @@ class AppStore {
         body: JSON.stringify({ username, password })
       });
       const { data } = await res.json();
-      NotificationManager.success("Welcome Back");
-      console.log(data);
-      setTimeout(() => {
-        window.location = "/";
-      }, 30000);
+
       runInAction(() => {
         this.username = data.username;
         this.role = data.role;
+
+        let redirectUrl = "/";
+        //Clear the storage
         localStorage.setItem("username", this.username);
         localStorage.setItem("user-role", this.role);
+        localStorage.removeItem("pharmacyName");
+        localStorage.removeItem("doctorName");
 
         if (data.DoctorName) {
           this.doctorName = data.DoctorName;
           localStorage.setItem("doctorName", this.doctorName);
-        }
-        if (data.PharmacyName) {
+          NotificationManager.success("Welcome Back Doctor " + this.doctorName);
+        } else if (data.PharmacyName) {
           this.pharmacyName = data.PharmacyName;
-          localStorage.setItem("doctorName", this.doctorName);
+          localStorage.setItem("pharmacyName", this.pharmacyName);
+          NotificationManager.success("Welcome Back  ");
+        } else {
+          NotificationManager.success("Welcome Back Admin ");
+          redirectUrl = "/admin";
         }
+        setTimeout(() => {
+          window.location = redirectUrl;
+        }, 3000);
       });
     } catch (error) {
       NotificationManager.error("Couldn't Login with the provided credentials");
@@ -51,6 +59,8 @@ class AppStore {
   Logout() {
     this.username = null;
     this.role = null;
+    localStorage.removeItem("pharmacyName");
+    localStorage.removeItem("doctorName");
     localStorage.removeItem("username");
     localStorage.removeItem("user-role");
   }

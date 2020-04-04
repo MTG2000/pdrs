@@ -26,7 +26,6 @@ class Controller {
 
     const role = await repository.getUserTypeById(user.UserType_Id);
     const name = await repository.getUserRealName(user.Id);
-    console.log(name);
     const token = authService.generateToken({
       username: user.Username,
       role
