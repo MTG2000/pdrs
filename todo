@@ -5,8 +5,8 @@ Create a Main Page
 change the navbar
 Improve The Overall UI
 Client Side Validation
-
-
+dont show "request account" if user logged in
+remove text from med search box
 
 -- BackEnd
 Server Side Validation

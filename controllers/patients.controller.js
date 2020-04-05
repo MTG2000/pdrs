@@ -29,7 +29,7 @@ const newPrescription = async (req, res, next) => {
       await usersRepository.newPatient(patientId, patientName);
     }
     const doctorId = await usersRepository.getDoctorId(req.user.username);
-    if (!doctorId) throw Error("Doctor Not Correct");
+    if (!doctorId || medicins.length === 0) throw Error("Doctor Not Correct");
     const prescriptionId = await patientsRepository.newPrescription(
       patientId,
       doctorId,

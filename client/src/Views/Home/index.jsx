@@ -29,9 +29,11 @@ const Home = () => {
           </p>
         )}
       </div>
-      <Container>
-        <RequestAccount store={store} />
-      </Container>
+      {!store.username && (
+        <Container>
+          <RequestAccount store={store} />
+        </Container>
+      )}
     </div>
   );
 };
