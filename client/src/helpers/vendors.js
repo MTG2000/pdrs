@@ -1,1 +1,2 @@
 import "./iconsLibrary";
+import "./aos";

@@ -5,7 +5,6 @@ import { ThemeProvider } from "@material-ui/core/styles";
 import { theme } from "./materialTheme";
 import ScrollToTop from "./ScrollToTopController";
 import { BrowserRouter } from "react-router-dom";
-import "./aos";
 import "react-notifications/lib/notifications.css";
 import { ContextProvider } from "../stores/Context";
 
