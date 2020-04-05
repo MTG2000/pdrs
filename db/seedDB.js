@@ -51,25 +51,25 @@ module.exports = async (_run, _get, _log = false) => {
 let seedData = {
   usersTypes: ["Master Admin", "Admin", "Doctor", "Pharmacy"],
   users: [
-    { userType: 1, username: "mtg", password: "123" },
+    { userType: 1, username: "mtg", password: "mtgmtgmtg" },
     {
       userType: 2,
       username: "ahmad",
-      password: "123",
+      password: "123123",
       doctorName: "Ahmad Ghazal",
       contact: "0983663451"
     },
     {
       userType: 2,
       username: "morad",
-      password: "123",
-      doctorName: "Morad Nabeel",
+      password: "123123",
+      doctorName: "Morad Niazi",
       contact: "0931163451"
     },
     {
       userType: 3,
       username: "samer",
-      password: "123",
+      password: "123123",
       pharmacyName: "Al-Fateh",
       pharmacyLocation: "Aleppo Al-Jamelia",
       contact: "fatehpharm@gmail.com"
@@ -103,8 +103,19 @@ let seedData = {
     },
     {
       userId: 4,
+      category: 3,
+      content: "Hello admin, please Improve the Overall UI"
+    },
+    {
+      userId: 3,
       category: 1,
-      content: "Please Add 'Warfeen'"
+      content: "Please Add Medicine 'Ativan'"
+    },
+    {
+      userId: 2,
+      category: 4,
+      content:
+        "If you can add a feature to enable us ot see some meds usage statistics"
     }
   ],
   patients: [
@@ -118,8 +129,16 @@ let seedData = {
     { name: "Panadol" },
     { name: "Profien" },
     { name: "Shfazien-Forte" },
-    { name: "Benzamien" },
-    { name: "Spizazol-Forte" }
+    { name: "Citalopram" },
+    { name: "Adderall" },
+    { name: "Trazodone" },
+    { name: "Metformin" },
+    { name: "Hydrochlorothiazide" },
+    { name: "Azithromycin" },
+    { name: "Ibuprofen" },
+    { name: "Cymbalta" },
+    { name: "Doxycycline" },
+    { name: "Lorazepam" }
   ],
   classifications: [
     { name: "Heart" },
@@ -132,6 +151,105 @@ let seedData = {
     { name: "Lungs" },
     { name: "Ear" },
     { name: "Sex" }
+  ],
+  prescriptions: [
+    {
+      doctorId: 1,
+      patientId: "02114432341",
+      classification: 1,
+      note: "The Patient sufferd from an Intense Heart Attack"
+    },
+    {
+      doctorId: 1,
+      patientId: "02114432341",
+      classification: 3,
+      note: "A car accident that cause a lot of damage to the head"
+    },
+    {
+      doctorId: 2,
+      patientId: "02114443115",
+      classification: 2,
+      note: "An accident that caused an arm break"
+    }
+  ],
+  medsPrescriptions: [
+    {
+      id: 1,
+      meds: [
+        {
+          id: 2,
+          bold: false,
+          chronic: false
+        },
+        {
+          id: 4,
+          bold: false,
+          chronic: false
+        },
+        {
+          id: 5,
+          bold: true,
+          chronic: true,
+          pharmacyId: 1
+        },
+        {
+          id: 7,
+          bold: false,
+          chronic: false,
+          pharmacyId: 1
+        }
+      ]
+    },
+    {
+      id: 2,
+      meds: [
+        {
+          id: 3,
+          bold: false,
+          chronic: false,
+          pharmacyId: 1
+        },
+        {
+          id: 5,
+          bold: false,
+          chronic: false,
+          pharmacyId: 1
+        },
+        {
+          id: 6,
+          bold: false,
+          chronic: false,
+          pharmacyId: 1
+        }
+      ]
+    },
+    {
+      id: 3,
+      meds: [
+        {
+          id: 5,
+          bold: false,
+          chronic: false
+        },
+        {
+          id: 1,
+          bold: false,
+          chronic: false,
+          pharmacyId: 1
+        },
+        {
+          id: 9,
+          bold: false,
+          chronic: false,
+          pharmacyId: 1
+        },
+        {
+          id: 8,
+          bold: false,
+          chronic: false
+        }
+      ]
+    }
   ]
 };
 
@@ -293,31 +411,37 @@ const prescriptions = async () => {
   if (!seedOptions.prescriptions) return;
   //Seed Prescriptions
   //--------------
-  const { users, patients, classifications } = seedData;
+
+  const { prescriptions } = seedData;
   log && console.log("Seeding Prescriptions");
-  const prescriptionId = (
+
+  for (const p of prescriptions) {
     await run(sqlQueries.insert_Prescription, [
-      users[1].doctorId,
-      patients[0].id,
-      classifications[0].id,
-      "The Patient sufferd from an intense injuery in his right arm"
-    ])
-  ).lastID;
+      p.doctorId,
+      p.patientId,
+      p.classification,
+      p.note
+    ]);
+  }
 };
 
 const medicinsPrescriptions = async () => {
   if (!seedOptions.medicinsPrescriptions) return;
+
   //Seed MedicinePrescription
   //--------------
-  const { medicins } = seedData;
-  log && console.log("Seeding MedicinePrescription");
-  const medsToTake = [0, 1, 4];
-  for (const medIndex of medsToTake) {
-    await run(sqlQueries.insert_MedicinePrescription, [
-      medicins[medIndex].id,
-      1,
-      medIndex === 4 ? "1" : "0",
-      medIndex === 4 ? "1" : "0"
-    ]);
+  const { medsPrescriptions } = seedData;
+  log && console.log("Seeding Medicins_Prescriptions");
+
+  for (const mp of medsPrescriptions) {
+    for (const m of mp.meds) {
+      await run(sqlQueries.insert_MedicinePrescription, [
+        m.id,
+        mp.id,
+        m.bold,
+        m.chronic,
+        m.pharmacyId
+      ]);
+    }
   }
 };

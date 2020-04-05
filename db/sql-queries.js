@@ -238,7 +238,7 @@ INSERT INTO Prescriptions (Doctor_Id,Patient_Id,Classification_Id,Pre_Date,Descr
 `;
 
   insert_MedicinePrescription = `
-INSERT INTO Medicine_Prescription (Medicine_ID,Prescription_ID,isBold,isChronic) VALUES (?,?,?,?);
+INSERT INTO Medicine_Prescription (Medicine_ID,Prescription_ID,isBold,isChronic,Pharmacy_Id) VALUES (?,?,?,?,?);
 `;
 
   getPatientPrescriptions = `

@@ -33,7 +33,7 @@ class Controller {
 
     //set cookie with the token
     res.cookie("token", token, {
-      secure: true, // set to true if your using https
+      secure: false, // set to true if your using https
       httpOnly: true
     });
     SendResponse.JsonSuccess(res, "Logged-In Successfully", "", {

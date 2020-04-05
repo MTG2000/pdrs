@@ -9,7 +9,7 @@ const PrescriptionsList = ({ store }) => {
     return <LoadingPage message="Getting Prescriptions" />;
 
   return (
-    <div>
+    <div className="pb-5">
       {store.chronicMedicins.length > 0 && (
         <ChronicMedicins medicins={store.chronicMedicins} />
       )}

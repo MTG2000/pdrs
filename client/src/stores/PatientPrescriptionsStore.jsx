@@ -24,7 +24,7 @@ class PatientPrescriptionsStore {
 
   async FetchPatientName() {
     try {
-      const res = await fetch(`/api/users/patients?id=${this.patientId}`);
+      const res = await fetch(`/api/users/patient?id=${this.patientId}`);
       const { data } = await res.json();
       runInAction(() => {
         this.patientName = data.Name;
