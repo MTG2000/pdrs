@@ -18,7 +18,7 @@ const SideBar = () => {
 
   useEffect(() => {
     store.ChangeWidth(toggled);
-  }, []);
+  }, [store, toggled]);
 
   return (
     <SideNav
@@ -28,7 +28,6 @@ const SideBar = () => {
       className="bg-primary"
       onToggle={toggled => {
         setToggled(toggled);
-        store.ChangeWidth(toggled);
       }}
       expanded={toggled}
       style={{ position: "fixed" }}

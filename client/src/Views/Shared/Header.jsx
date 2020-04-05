@@ -1,7 +1,6 @@
 import React from "react";
 import { Navbar, Nav, NavLink } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { observer } from "mobx-react";
 
 const Header = ({ store }) => {
   const username = store.username;

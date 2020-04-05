@@ -1,11 +1,9 @@
-import React, { useContext, useState } from "react";
+import React from "react";
 import Header from "./Views/Shared/Header";
 import Footer from "./Views/Shared/Footer";
 import { NotificationContainer } from "react-notifications";
 import AppRouter from "./helpers/AppRouter";
 import SideBar from "./Views/Shared/SideBar";
-import { Container } from "@material-ui/core";
-// import Overlay from "./components/Shared/Overlay";
 
 function App() {
   return (

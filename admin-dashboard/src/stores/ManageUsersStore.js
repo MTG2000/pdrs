@@ -1,4 +1,4 @@
-import { observable, action, decorate, runInAction, toJS, autorun } from "mobx";
+import { observable, action, decorate, runInAction } from "mobx";
 import { NotificationManager } from "react-notifications";
 
 class ManageUsersStore {
@@ -28,6 +28,7 @@ class ManageUsersStore {
       if (u.PharmacyName) {
         return u.PharmacyName.toLowerCase().indexOf(value.toLowerCase()) !== -1;
       }
+      return false;
     });
   }
 

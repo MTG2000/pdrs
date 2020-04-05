@@ -1,4 +1,4 @@
-import { observable, action, decorate, runInAction, toJS, autorun } from "mobx";
+import { observable, action, decorate, runInAction } from "mobx";
 import { NotificationManager } from "react-notifications";
 
 class ManageMedicinsStore {

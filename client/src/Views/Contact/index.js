@@ -22,7 +22,7 @@ const Contact = () => {
 
   useEffect(() => {
     store.FetchMessagesCategories();
-  }, []);
+  }, [store]);
 
   const onSubmit = e => {
     e.preventDefault();

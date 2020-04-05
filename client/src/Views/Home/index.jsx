@@ -1,5 +1,4 @@
 import React, { useContext, useState } from "react";
-import LoadingPage from "../Shared/LoadingPage";
 import HeroImage from "./Partials/HeroImage";
 import BG from "./Partials/pdrs-bg.jpg";
 import { mainContext } from "../../stores/Context";

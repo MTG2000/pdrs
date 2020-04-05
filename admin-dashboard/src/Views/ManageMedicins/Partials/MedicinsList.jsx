@@ -14,7 +14,7 @@ import {
 const MedicinsList = ({ store }) => {
   useEffect(() => {
     store.FetchMedicins();
-  }, []);
+  }, [store]);
 
   return (
     <TableContainer

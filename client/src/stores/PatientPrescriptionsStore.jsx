@@ -78,7 +78,7 @@ class PatientPrescriptionsStore {
       });
       this.FilterPrescriptions();
     } catch (error) {
-      if (error.name == "AbortError") return; //when we abort request the error gets thrown from where we called fetch() so we catch it and do nothing
+      if (error.name === "AbortError") return; //when we abort request the error gets thrown from where we called fetch() so we catch it and do nothing
       console.log(error);
       //Request cancelled so that a new one can be sent
       NotificationManager.error("Couldn't Get Prescriptions");

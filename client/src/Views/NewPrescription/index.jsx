@@ -15,7 +15,6 @@ import LoadingPage from "../Shared/LoadingPage";
 
 const NewPrescription = () => {
   const { NewPrescriptionStore } = useContext(mainContext);
-  const [redirect, setRedirect] = useState(false);
   const [store] = useState(new NewPrescriptionStore());
 
   useEffect(() => {

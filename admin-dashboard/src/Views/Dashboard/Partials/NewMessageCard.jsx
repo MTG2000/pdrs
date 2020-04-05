@@ -1,6 +1,5 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core";
-import { toJS } from "mobx";
 import Clear from "@material-ui/icons/Clear";
 
 const useStyle = makeStyles({

@@ -5,7 +5,7 @@ const ActionBtn = props => {
 
   useEffect(() => {
     toggleShowLoading(props.loading);
-  }, [props.loading, elem.current]);
+  }, [props.loading]);
 
   const toggleShowLoading = (show = false) => {
     if (!elem.current) return;

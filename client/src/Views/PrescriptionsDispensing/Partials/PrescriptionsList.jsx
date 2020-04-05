@@ -1,7 +1,6 @@
 import React from "react";
 import PrescriptionCard from "./PrescriptionCard";
 import { observer } from "mobx-react";
-import { toJS } from "mobx";
 
 const PrescriptionsList = ({ store }) => {
   if (store.loadingPrescriptions) return <h2>Loading Prescriptions</h2>;
