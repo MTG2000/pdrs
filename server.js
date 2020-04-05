@@ -4,6 +4,8 @@ const cookieParser = require("cookie-parser");
 const DB = require("./services/db");
 const path = require("path");
 const bodyParser = require("body-parser");
+const favicon = require("serve-favicon");
+
 require("dotenv").config();
 
 const dev = server.get("env") !== "production";
@@ -16,10 +18,12 @@ if (!dev) {
 
 // server.use(cors());
 // support parsing of application/json type post data
+
 server.use(bodyParser.urlencoded({ extended: false }));
 server.use(express.static(path.join(__dirname, "static")));
 server.use(express.static(path.resolve(__dirname, "client", "build")));
 server.use(express.static(path.resolve(__dirname, "admin-dashboard", "build")));
+server.use(favicon(path.resolve(__dirname, "client", "build", "favicon.ico")));
 
 server.use(cookieParser());
 server.use(express.urlencoded({ extended: false }));
