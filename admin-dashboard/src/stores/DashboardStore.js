@@ -12,13 +12,15 @@ class DashboardStore {
     try {
       this.loadingNewMessages = true;
       const res = await fetch("/api/admin/new-messages");
+      if (!res.ok) throw Error();
       const { data } = await res.json();
       runInAction(() => {
         this.newMessages = data;
         this.loadingNewMessages = false;
-        // if(this.)
       });
-    } catch (error) {}
+    } catch (error) {
+      this.loadingNewMessages = false;
+    }
   }
 
   async MarkMessageRead(id) {
@@ -40,13 +42,15 @@ class DashboardStore {
     try {
       this.loadingNewAccountRequests = true;
       const res = await fetch("/api/admin/new-account-requests");
+      if (!res.ok) throw Error();
       const { data } = await res.json();
       runInAction(() => {
         this.newAccountRequests = data;
         this.loadingNewAccountRequests = false;
-        // if(this.)
       });
-    } catch (error) {}
+    } catch (error) {
+      this.loadingNewAccountRequests = false;
+    }
   }
 
   async MarkAccountRequestRead(id) {

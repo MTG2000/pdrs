@@ -24,8 +24,6 @@ class AppState {
   }
 
   Logout() {
-    this.username = null;
-    this.role = null;
     localStorage.removeItem("username");
     localStorage.removeItem("user-role");
     window.location = "/";

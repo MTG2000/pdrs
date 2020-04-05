@@ -1,29 +1,23 @@
 const DB = require("../services/db").DB;
 const sqlQueries = require("../db/sql-queries");
+const usersRepository = require("./users.repository");
 
 class Repository {
   getNewAccountRequests = async () => {
-    return await DB.queryAll(sqlQueries.getNewAccountRequests);
+    return (await DB.queryAll(sqlQueries.getNewAccountRequests)).reverse();
   };
 
   getNewMessages = async () => {
     //get all messages
     let newMsgs = await DB.queryAll(sqlQueries.getNewMessages);
-    //Add the name of the message sender by looking his type first then looking up his name in the appropriate table
-    const DoctorTypeId = await DB.get(sqlQueries.getUserTypeId, ["Doctor"]);
-    for (const msg of newMsgs) {
-      if (msg.UserType_Id === DoctorTypeId.Id)
-        msg.DoctorName = (
-          await DB.get(sqlQueries.getDoctorById, [msg.User_Id])
-        ).Name;
-      else if (msg.UserType_Id === DoctorTypeId.Id) {
-        msg.PharmacyName = (
-          await DB.get(sqlQueries.getPharmacyById, [msg.User_Id])
-        ).Name;
-      }
+
+    let msgsDTO = [];
+    for (let msg of newMsgs) {
+      const userName = await usersRepository.getUserRealName(msg.User_Id);
+      msgsDTO.push({ ...msg, ...userName });
     }
 
-    return newMsgs;
+    return msgsDTO.reverse();
   };
 
   markMessageRead = async id => {

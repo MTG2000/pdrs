@@ -3,6 +3,7 @@ import SideNav, { NavItem, NavIcon, NavText } from "@trendmicro/react-sidenav";
 import People from "@material-ui/icons/People";
 import BarChart from "@material-ui/icons/BarChart";
 import Home from "@material-ui/icons/Home";
+import ArrowBack from "@material-ui/icons/ExitToApp";
 import LocalHospital from "@material-ui/icons/LocalHospital";
 
 import { withRouter, useHistory } from "react-router-dom";
@@ -65,6 +66,16 @@ const SideBar = () => {
             <BarChart style={{ fontSize: "1.75em" }} />
           </NavIcon>
           <NavText>Statistics & Reports</NavText>
+        </NavItem>
+        <NavItem
+          onClick={() => {
+            store.Logout();
+          }}
+        >
+          <NavIcon>
+            <ArrowBack style={{ fontSize: "1.75em" }} />
+          </NavIcon>
+          <NavText>Logout</NavText>
         </NavItem>
       </SideNav.Nav>
     </SideNav>
