@@ -48,14 +48,11 @@ server.use("/api/admin", require("./routes/admin.route"));
 })();
 
 server.get("/admin", (req, res) => {
-  console.log("Admin");
-
   res.sendFile(
     path.resolve(__dirname, "admin-dashboard", "build", "index.html")
   );
 });
 server.get("*", (req, res) => {
-  console.log("Client");
   res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
 });
 

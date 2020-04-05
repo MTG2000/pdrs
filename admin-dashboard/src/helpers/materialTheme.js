@@ -1,5 +1,7 @@
 import { createMuiTheme } from "@material-ui/core";
 
+const primaryColor = "#007ebe";
+
 export const theme = createMuiTheme({
   typography: {
     fontFamily: [
@@ -15,13 +17,9 @@ export const theme = createMuiTheme({
     ].join(",")
   },
   palette: {
-    text: {
-      primary: "#555",
-      secondary: "#03b7bf"
-    },
     primary: {
       // light: will be calculated from palette.primary.main,
-      main: "#007ebe"
+      main: primaryColor
       // dark: will be calculated from palette.primary.main,
       // contrastText: will be calculated to contrast with palette.primary.main
     },
@@ -30,5 +28,19 @@ export const theme = createMuiTheme({
       // dark: will be calculated from palette.secondary.main,
     }
     // error: will use the default color
+  },
+  overrides: {
+    MuiOutlinedInput: {
+      notchedOutline: {
+        borderColor: primaryColor,
+        borderWidth: 1
+      }
+    },
+    MuiInputLabel: {
+      root: {
+        // color: "red"
+        color: primaryColor
+      }
+    }
   }
 });

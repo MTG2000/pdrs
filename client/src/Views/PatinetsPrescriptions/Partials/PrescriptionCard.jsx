@@ -2,7 +2,7 @@ import React from "react";
 import date from "date-and-time";
 import Check from "@material-ui/icons/Check";
 import Close from "@material-ui/icons/Close";
-import { Tooltip } from "@material-ui/core";
+import Tooltip from "@material-ui/core/Tooltip";
 import { toJS } from "mobx";
 
 /*{

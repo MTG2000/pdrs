@@ -6,7 +6,10 @@
   "scripts": {
     "start": "node index",
     "dev": "nodemon index",
-    "test": "mocha 'tests/**/*.js' --recursive --timeout 60000 --exit"
+    "test": "mocha 'tests/**/*.js' --recursive --timeout 60000 --exit",
+    "b-client": "cd client && npm run build",
+    "b-admin": "cd admin-dashboard && npm run build",
+    "build-clients": "concurrently --kill-others \"npm run b-client\" \"npm run b-admin\""
   },
   "keywords": [],
   "author": "",
@@ -27,6 +30,7 @@
   "devDependencies": {
     "chai": "^4.2.0",
     "chai-http": "^4.3.0",
+    "concurrently": "^5.1.0",
     "cross-env": "^7.0.2",
     "jest": "^25.1.0",
     "mocha": "^7.1.1",

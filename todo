@@ -1,10 +1,8 @@
 add validation
 
 -- FrontEnd
-Replace every: 'import {} from '*/*' with import * from '*/*/*' '
-Contact Page 
+fix redirection bug
 
-refactor Input Style
 add AOS
 Create a Main Page
 change the navbar

@@ -1,14 +1,14 @@
 import React, { useContext, useState } from "react";
-import {
-  Container,
-  Typography,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  TextField,
-  Button
-} from "@material-ui/core";
+
+import Container from "@material-ui/core/Container";
+import Typography from "@material-ui/core/Typography";
+import FormControl from "@material-ui/core/FormControl";
+import InputLabel from "@material-ui/core/InputLabel";
+import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
+import TextField from "@material-ui/core/TextField";
+import Button from "@material-ui/core/Button";
+
 import { mainContext } from "../../stores/Context";
 import { useEffect } from "react";
 import { observer } from "mobx-react";

@@ -3,16 +3,8 @@ import TextField from "@material-ui/core/TextField";
 import { makeStyles, useTheme } from "@material-ui/core";
 import { observer } from "mobx-react";
 
-const useStyle = makeStyles({
-  input: theme => ({
-    borderColor: `${theme.palette.primary.main} !important`,
-    borderWidth: 2
-  })
-});
-
 const PatientIdInput = ({ store }) => {
   const theme = useTheme();
-  const classes = useStyle({ ...theme });
   const [id, setId] = useState("");
 
   return (
@@ -27,12 +19,7 @@ const PatientIdInput = ({ store }) => {
         onKeyUp={e => e.keyCode === 13 && e.target.blur()} //if Enter was pressed
         variant="outlined"
         color="primary"
-        className={`${classes.input} mb-3`}
-        InputProps={{
-          classes: {
-            notchedOutline: classes.input
-          }
-        }}
+        className="mb-3"
       />
       {!store.showPatientNameInput && (
         <h2 className="my-2">{store.patientName}</h2>
