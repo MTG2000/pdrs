@@ -5,6 +5,8 @@ const DB = require("./services/db");
 const path = require("path");
 const bodyParser = require("body-parser");
 const favicon = require("serve-favicon");
+const morgan = require("morgan");
+const compression = require("compression");
 
 require("dotenv").config();
 
