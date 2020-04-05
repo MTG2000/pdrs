@@ -1,5 +1,5 @@
 import React from "react";
-import { Navbar, Nav } from "react-bootstrap";
+import { Navbar, Nav, NavLink } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { observer } from "mobx-react";
 
@@ -36,7 +36,12 @@ const Header = ({ store }) => {
               Patinets Prescriptions
             </Link>
           )}
-          {username && (
+          {role === "Admin" && (
+            <NavLink className="nav-link text-white" href="/admin">
+              Admin Dashboard
+            </NavLink>
+          )}
+          {username && role !== "Admin" && (
             <Link className="nav-link text-white" to="/contact">
               Technical Support
             </Link>
@@ -68,4 +73,4 @@ const Header = ({ store }) => {
   );
 };
 
-export default observer(Header);
+export default Header;

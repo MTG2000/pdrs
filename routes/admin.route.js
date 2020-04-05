@@ -4,12 +4,28 @@ const transactionBeginMiddleware = require("../middleware/sqlTransaction")
   .transactionBegin;
 const controller = require("../controllers/admin.controller");
 
-router.get("/new-account-requests", controller.getNewAccountRequests);
+router.get(
+  "/new-account-requests",
+  authMiddleware(["Admin"]),
+  controller.getNewAccountRequests
+);
 
-router.get("/new-messages", controller.getNewMessages);
+router.get(
+  "/new-messages",
+  authMiddleware(["Admin"]),
+  controller.getNewMessages
+);
 
-router.post("/read-message", controller.markMessageRead);
+router.post(
+  "/read-message",
+  authMiddleware(["Admin"]),
+  controller.markMessageRead
+);
 
-router.post("/read-account-request", controller.markAccountRequestRead);
+router.post(
+  "/read-account-request",
+  authMiddleware(["Admin"]),
+  controller.markAccountRequestRead
+);
 
 module.exports = router;

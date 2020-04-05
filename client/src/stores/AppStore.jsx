@@ -32,10 +32,11 @@ class AppStore {
 
         let redirectUrl = "/";
         //Clear the storage
-        localStorage.setItem("username", this.username);
-        localStorage.setItem("user-role", this.role);
         localStorage.removeItem("pharmacyName");
         localStorage.removeItem("doctorName");
+
+        localStorage.setItem("username", this.username);
+        localStorage.setItem("user-role", this.role);
 
         if (data.DoctorName) {
           this.doctorName = data.DoctorName;
@@ -45,9 +46,9 @@ class AppStore {
           this.pharmacyName = data.PharmacyName;
           localStorage.setItem("pharmacyName", this.pharmacyName);
           NotificationManager.success("Welcome Back  ");
-        } else {
-          NotificationManager.success("Welcome Back Admin ");
+        } else if (data.IsAdmin) {
           redirectUrl = "/admin";
+          NotificationManager.success("Welcome Back Admin ");
         }
         setTimeout(() => {
           window.location = redirectUrl;

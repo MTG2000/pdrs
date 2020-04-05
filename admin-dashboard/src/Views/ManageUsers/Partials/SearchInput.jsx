@@ -6,7 +6,10 @@ const SearchInput = ({ store }) => {
   const [search, setSearch] = useState("");
 
   return (
-    <div className="row mx-0 justify-content-center">
+    <div
+      className="row mx-auto justify-content-center"
+      style={{ maxWidth: 280 }}
+    >
       <TextField
         id="search-users"
         label="Search Users"

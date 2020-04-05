@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import Box from "@material-ui/core/Box";
 import PatientIdInput from "./Partials/PatientIdInput";
-import "./style/style.scss";
 import PrescriptionsList from "./Partials/PrescriptionsList";
 import { observer } from "mobx-react";
 import { mainContext } from "../../stores/Context";

@@ -21,6 +21,8 @@ class Repository {
       this.PharmacyTypeId = (
         await DB.get(sqlQueries.getUserTypeId, ["Pharmacy"])
       ).Id;
+
+      this.AdminTypeId = (await DB.get(sqlQueries.getUserTypeId, ["Admin"])).Id;
     }
     const user = await DB.get(sqlQueries.getUserById, [id]);
 
@@ -31,6 +33,10 @@ class Repository {
     else if (user.UserType_Id === this.PharmacyTypeId) {
       return {
         PharmacyName: (await DB.get(sqlQueries.getPharmacyById, [id])).Name
+      };
+    } else if (user.UserType_Id === this.AdminTypeId) {
+      return {
+        IsAdmin: true
       };
     }
   };

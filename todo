@@ -1,8 +1,6 @@
 add validation
 
 -- FrontEnd
-fix redirection bug
-
 add AOS
 Create a Main Page
 change the navbar
@@ -14,6 +12,5 @@ Client Side Validation
 -- BackEnd
 Server Side Validation
 New Classification
-
 set cookies security to true
 remove token from response

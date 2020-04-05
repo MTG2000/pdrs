@@ -79,6 +79,7 @@ const NewUser = ({ store }) => {
               type="text"
               className="col-12 col-md-5 mb-3"
               color="primary"
+              required
               value={username}
               onChange={e => setUsername(e.target.value)}
             />
@@ -100,6 +101,7 @@ const NewUser = ({ store }) => {
                   readOnly: true
                 }}
                 color="primary"
+                required
               />
               <Button
                 variant="contained"
@@ -118,6 +120,7 @@ const NewUser = ({ store }) => {
                 value={userType}
                 onChange={e => setUserType(e.target.value)}
                 className="row mx-0 flex-row"
+                defaultChecked
               >
                 <FormControlLabel
                   value="Admin"
