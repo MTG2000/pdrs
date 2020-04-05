@@ -29,6 +29,8 @@ const LoginPage = () => {
     store.Login(username, password);
   };
 
+  if (store.username) window.location = "/";
+
   return (
     <div
       className="row justify-content-center flex-column align-items-center"

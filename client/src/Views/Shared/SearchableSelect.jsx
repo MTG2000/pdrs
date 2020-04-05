@@ -23,7 +23,7 @@ class SearchableSelect extends React.Component {
   handleChange = selectedOption => {
     this.props.handleSelect && this.props.handleSelect(selectedOption);
     this.setState({
-      selectedOption: selectedOption
+      selectedOption: ""
     });
     if (this.props.actionOnSelectedOption) {
       this.props.actionOnSelectedOption(selectedOption.value);

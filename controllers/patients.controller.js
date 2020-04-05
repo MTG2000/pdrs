@@ -26,6 +26,8 @@ const newPrescription = async (req, res, next) => {
     //!!! add validation !!!
     const patientExist = await usersRepository.getPatient(patientId);
     if (!patientExist) {
+      console.log(patientName);
+      if (patientName.length <= 4) throw Error();
       await usersRepository.newPatient(patientId, patientName);
     }
     const doctorId = await usersRepository.getDoctorId(req.user.username);

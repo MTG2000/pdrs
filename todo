@@ -5,13 +5,12 @@ Create a Main Page
 change the navbar
 Improve The Overall UI
 Client Side Validation
-dont show "request account" if user logged in
-remove text from med search box
 
 -- BackEnd
 Server Side Validation
 New Classification
 set cookies security to true
 remove token from response
+private prescriptions 
 
 try to get a working email service
