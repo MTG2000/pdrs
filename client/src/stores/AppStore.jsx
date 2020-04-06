@@ -27,7 +27,6 @@ class AppStore {
       const { data } = await res.json();
 
       runInAction(() => {
-        this.username = data.username;
         this.role = data.role;
 
         let redirectUrl = "/";
@@ -35,7 +34,7 @@ class AppStore {
         localStorage.removeItem("pharmacyName");
         localStorage.removeItem("doctorName");
 
-        localStorage.setItem("username", this.username);
+        localStorage.setItem("username", data.username);
         localStorage.setItem("user-role", this.role);
 
         if (data.DoctorName) {
@@ -51,7 +50,10 @@ class AppStore {
           NotificationManager.success("Welcome Back Admin ");
         }
         setTimeout(() => {
-          window.location = redirectUrl;
+          runInAction(() => {
+            this.username = data.username;
+            window.location = redirectUrl;
+          });
         }, 3000);
       });
     } catch (error) {

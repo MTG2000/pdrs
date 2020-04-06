@@ -1,4 +1,4 @@
-const jwt = require("jsonwebtoken");
+const authService = require("../services/auth");
 const userRepository = require("../repositories/users.repository");
 
 const isAuth = (allowedRoles = []) => {
@@ -9,7 +9,8 @@ const isAuth = (allowedRoles = []) => {
         return res.status(401).json("You need to Login");
       }
 
-      const userData = await jwt.verify(token, process.env.JWT_SECRET);
+      const userData = await authService.validateToken(token);
+      if (!userData) throw Error("invalid Token");
       const isActive = await checkUesrActive(userData.username);
       if (
         (allowedRoles.length > 0 &&

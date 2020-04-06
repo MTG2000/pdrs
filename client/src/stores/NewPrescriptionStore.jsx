@@ -24,6 +24,7 @@ class NewPrescriptionStore {
 
   async FetchPatientName() {
     try {
+      if (this.patientId.length < 6) return;
       const res = await fetch(`/api/users/patient?id=${this.patientId}`);
       const { data } = await res.json();
       runInAction(() => {

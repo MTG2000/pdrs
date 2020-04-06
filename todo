@@ -12,5 +12,6 @@ New Classification
 set cookies security to true
 remove token from response
 private prescriptions 
+check the concept of refresh tokens
 
 try to get a working email service

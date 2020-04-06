@@ -12,4 +12,18 @@ const generateToken = dataToInclude => {
   //     httpOnly: true,
   //   });
 };
-module.exports = { generateToken };
+
+const validateToken = async token => {
+  if (!token) return null;
+
+  jwt.verify(token, process.env.JWT_SECRET, (err, data) => {
+    if (err) {
+      console.log(err);
+
+      return null;
+    }
+    return data;
+  });
+  return true;
+};
+module.exports = { generateToken, validateToken };

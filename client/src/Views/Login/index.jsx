@@ -21,7 +21,6 @@ const LoginPage = () => {
   const [password, setPassword] = useState("");
 
   const { AppStore } = useContext(mainContext);
-
   const [store] = useState(AppStore);
 
   const handleSubmit = e => {
@@ -29,8 +28,9 @@ const LoginPage = () => {
     store.Login(username, password);
   };
 
-  if (store.username) window.location = "/";
-
+  if (store.username) {
+    window.location = "/";
+  }
   return (
     <div
       className="row justify-content-center flex-column align-items-center"

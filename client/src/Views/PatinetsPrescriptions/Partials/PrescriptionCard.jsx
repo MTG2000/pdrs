@@ -34,7 +34,12 @@ import Tooltip from "@material-ui/core/Tooltip";
         }
         */
 const PrescriptionCard = ({ prescription }) => {
-  const newDate = date.format(
+  const fullDate = date.format(
+    new Date(prescription.Prescription_Date),
+    "YYYY-MM-DD "
+  );
+
+  const miniDate = date.format(
     new Date(prescription.Prescription_Date),
     "DD MMM"
   );
@@ -73,10 +78,12 @@ const PrescriptionCard = ({ prescription }) => {
           </div>
         ))}
       </div>
-      <div className="date bg-primary">
-        <span className="h4 text-center">{newDate.split(" ")[0]}</span>
-        <span>{newDate.split(" ")[1]}</span>
-      </div>
+      <Tooltip title={fullDate}>
+        <div className="date bg-primary">
+          <span className="h4 text-center">{miniDate.split(" ")[0]}</span>
+          <span>{miniDate.split(" ")[1]}</span>
+        </div>
+      </Tooltip>
     </div>
   );
 };
