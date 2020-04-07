@@ -286,6 +286,7 @@ const users = async () => {
         u.contact
       ])
     ).lastID;
+    await run(sqlQueries.createUserTokenRow, [u.id]);
   }
 };
 

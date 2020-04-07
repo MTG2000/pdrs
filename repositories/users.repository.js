@@ -73,7 +73,7 @@ class Repository {
 
   insertUser = async (username, password, type = "pharmacy", contact) => {
     const userTypeId = await this.getUserTypeId(type);
-    return (
+    const newUserId = (
       await DB.run(sqlQueries.insert_User, [
         userTypeId,
         username,
@@ -81,6 +81,17 @@ class Repository {
         contact
       ])
     ).lastID;
+    await DB.run(sqlQueries.createUserTokenRow, [newUserId]);
+    return newUserId;
+  };
+
+  insertUserToke = async (id, token) => {
+    await DB.run(sqlQueries.setUserToken, [token, id]);
+  };
+
+  refreshTokenValid = async (token, username) => {
+    const row = await DB.get(sqlQueries.getUserToken, [username]);
+    if (row) return row.Token === token;
   };
 
   insertDoctor = async (username, password, doctorName, contact) => {

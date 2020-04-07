@@ -26,27 +26,35 @@ class Controller {
 
     const role = await repository.getUserTypeById(user.UserType_Id);
     const name = await repository.getUserRealName(user.Id);
-    const token = authService.generateToken({
+    const accessToken = authService.generateAccessToken({
       username: user.Username,
       role
     });
 
+    //update refresh token
+    const refreshToken = authService.generateRefreshToken({
+      username: user.Username
+    });
+    await repository.insertUserToke(user.Id, refreshToken);
     //set cookie with the token
-    res.cookie("token", token, {
+    res.cookie("accessToken", accessToken, {
+      secure: false, // set to true if your using https
+      httpOnly: true
+    });
+    res.cookie("refreshToken", refreshToken, {
       secure: false, // set to true if your using https
       httpOnly: true
     });
     SendResponse.JsonSuccess(res, "Logged-In Successfully", "", {
       username: user.Username,
       role: role,
-      token,
+      token: accessToken,
       ...name
     });
   };
 
   getPatient = async (req, res) => {
     const { id } = req.query;
-
     const patinet = await repository.getPatient(id);
     if (patinet) SendResponse.JsonData(res, patinet);
     else SendResponse.JsonNotFound(res);

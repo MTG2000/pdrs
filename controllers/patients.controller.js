@@ -26,12 +26,11 @@ const newPrescription = async (req, res, next) => {
     //!!! add validation !!!
     const patientExist = await usersRepository.getPatient(patientId);
     if (!patientExist) {
-      console.log(patientName);
-      if (patientName.length <= 4) throw Error();
+      if (patientName.trim().length <= 4) throw Error();
       await usersRepository.newPatient(patientId, patientName);
     }
     const doctorId = await usersRepository.getDoctorId(req.user.username);
-    if (!doctorId || medicins.length === 0 || note.length < 5)
+    if (!doctorId || medicins.length === 0 || note.trim().length < 5)
       throw Error("Values Not correct");
     const prescriptionId = await patientsRepository.newPrescription(
       patientId,

@@ -1,29 +1,30 @@
 const jwt = require("jsonwebtoken");
 //import jwt from 'jsonwebtoken';
 
-const generateToken = dataToInclude => {
+const generateAccessToken = dataToInclude => {
   const token = jwt.sign({ ...dataToInclude }, process.env.JWT_SECRET, {
+    expiresIn: "30s"
+  });
+  return token;
+};
+
+const generateRefreshToken = username => {
+  const token = jwt.sign({ username }, process.env.JWT_SECRET, {
     expiresIn: "30d"
   });
   return token;
-  //   return res.cookie('token', token, {
-  //     expires: new Date(Date.now() + expiration),
-  //     secure: false, // set to true if your using https
-  //     httpOnly: true,
-  //   });
 };
 
 const validateToken = async token => {
-  if (!token) return null;
-
-  jwt.verify(token, process.env.JWT_SECRET, (err, data) => {
-    if (err) {
-      console.log(err);
-
-      return null;
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    return { valid: true, data: decoded };
+  } catch (error) {
+    if (error.name === "TokenExpiredError") {
+      const data = jwt.decode(token);
+      return { valid: true, expired: true, data };
     }
-    return data;
-  });
-  return true;
+    return { valid: false };
+  }
 };
-module.exports = { generateToken, validateToken };
+module.exports = { generateAccessToken, validateToken, generateRefreshToken };

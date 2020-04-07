@@ -13,5 +13,8 @@ set cookies security to true
 remove token from response
 private prescriptions 
 check the concept of refresh tokens
+implement cookie removal
+
+add Promise thing to auth middleware and service
 
 try to get a working email service

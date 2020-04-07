@@ -37,6 +37,15 @@ Contact VARCHAR(50),
 FOREIGN KEY (UserType_Id) REFERENCES USERSTYPES(ID)
 )`;
 
+  createTable_UsersTokens = `
+CREATE TABLE IF NOT EXISTS UsersTokens (
+  Id INTEGER PRIMARY KEY, 
+  Token VARCHAR(50) ,
+  User_Id  INTEGER ,
+  FOREIGN KEY (User_Id) REFERENCES USERS(ID) ON DELETE CASCADE
+)
+`;
+
   insert_User = `
 INSERT INTO USERS (UserType_Id,username,password,IsActive,Contact) VALUES (?,?,?,'1',?) ;
 `;
@@ -63,6 +72,24 @@ where id = ? and IsActive is  Null
 update users 
 set IsActive = null
 where id = ? and IsActive is not Null
+`;
+
+  createUserTokenRow = `
+  insert into UsersTokens (User_Id) VALUES (?)
+`;
+
+  setUserToken = `
+  update UsersTokens 
+  set token = ?
+  where User_Id = ?
+`;
+
+  getUserToken = `
+  SELECT t.Token
+  from users u left join UsersTokens t 
+  on u.id = t.User_Id
+  where u.Username = ?
+  
 `;
 
   //Pharmacies
@@ -352,6 +379,7 @@ where Id = ?
 
   createTablesPatch = [
     this.createTable_Users,
+    this.createTable_UsersTokens,
     this.createTable_UserTypes,
     this.createTable_Pharmacies,
     this.createTable_Doctors,
