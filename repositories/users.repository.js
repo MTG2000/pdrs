@@ -8,8 +8,10 @@ class Repository {
 
   toggleUserActiveState = async id => {
     const isActive = (await DB.get(sqlQueries.getUserById, [id])).IsActive;
-    if (isActive) await DB.run(sqlQueries.toggleUserInActive, [id]);
-    else await DB.run(sqlQueries.toggleUserActive, [id]);
+    if (isActive) {
+      await DB.run(sqlQueries.toggleUserInActive, [id]);
+      await DB.run(sqlQueries.setUserToken, [null, id]);
+    } else await DB.run(sqlQueries.toggleUserActive, [id]);
   };
 
   //it either returns {DoctorName:'name'} or {PharmacyName:'name'}
