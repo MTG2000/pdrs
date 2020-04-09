@@ -26,13 +26,13 @@ class Controller {
 
     const role = await repository.getUserTypeById(user.UserType_Id);
     const name = await repository.getUserRealName(user.Id);
-    const accessToken = authService.generateAccessToken({
+    const accessToken = await authService.generateAccessToken({
       username: user.Username,
       role
     });
 
     //update refresh token
-    const refreshToken = authService.generateRefreshToken({
+    const refreshToken = await authService.generateRefreshToken({
       username: user.Username
     });
     await repository.insertUserToke(user.Id, refreshToken);
@@ -141,6 +141,12 @@ class Controller {
       console.log(error);
       SendResponse.JsonFailed(res, "Something Wrong Happened");
     }
+  };
+
+  logout = async (req, res) => {
+    res.clearCookie("accessToken");
+    res.clearCookie("refreshToken");
+    SendResponse.JsonSuccess(res, "Logged Out Successfully");
   };
 }
 

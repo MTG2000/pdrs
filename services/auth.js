@@ -2,29 +2,50 @@ const jwt = require("jsonwebtoken");
 //import jwt from 'jsonwebtoken';
 
 const generateAccessToken = dataToInclude => {
-  const token = jwt.sign({ ...dataToInclude }, process.env.JWT_SECRET, {
-    expiresIn: "15m"
+  return new Promise((res, rej) => {
+    jwt.sign(
+      { ...dataToInclude },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "15m"
+      },
+      (err, token) => {
+        if (err) rej(err);
+        res(token);
+      }
+    );
   });
-  return token;
 };
 
 const generateRefreshToken = username => {
-  const token = jwt.sign({ username }, process.env.JWT_SECRET, {
-    expiresIn: "30d"
+  return new Promise((res, rej) => {
+    jwt.sign(
+      { username },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "30d"
+      },
+      (err, token) => {
+        if (err) rej(err);
+        res(token);
+      }
+    );
   });
-  return token;
 };
 
-const validateToken = async token => {
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    return { valid: true, data: decoded };
-  } catch (error) {
-    if (error.name === "TokenExpiredError") {
-      const data = jwt.decode(token);
-      return { valid: true, expired: true, data };
-    }
-    return { valid: false };
-  }
+const validateToken = token => {
+  return new Promise((res, rej) => {
+    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+      if (err) {
+        if (err.name === "TokenExpiredError") {
+          const data = jwt.decode(token);
+          res({ valid: true, expired: true, data });
+        }
+        rej({ valid: false });
+      }
+
+      res({ valid: true, data: decoded });
+    });
+  });
 };
 module.exports = { generateAccessToken, validateToken, generateRefreshToken };

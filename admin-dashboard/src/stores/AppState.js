@@ -23,10 +23,15 @@ class AppState {
     appContainer.style.width = `${pageWidth - sidebarWidth}px`;
   }
 
-  Logout() {
-    localStorage.removeItem("username");
-    localStorage.removeItem("user-role");
-    window.location = "/";
+  async Logout() {
+    try {
+      const res = await fetch("/api/users/logout");
+      if (!res.ok) throw Error("couldn't logout");
+
+      localStorage.removeItem("username");
+      localStorage.removeItem("user-role");
+      window.location = "/";
+    } catch (error) {}
   }
 }
 

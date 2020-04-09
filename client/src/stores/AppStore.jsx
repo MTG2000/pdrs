@@ -79,13 +79,18 @@ class AppStore {
     }
   }
 
-  Logout() {
-    this.username = null;
-    this.role = null;
-    localStorage.removeItem("pharmacyName");
-    localStorage.removeItem("doctorName");
-    localStorage.removeItem("username");
-    localStorage.removeItem("user-role");
+  async Logout() {
+    try {
+      const res = await fetch("/api/users/logout");
+      if (!res.ok) throw Error("couldn't logout");
+
+      this.username = null;
+      this.role = null;
+      localStorage.removeItem("pharmacyName");
+      localStorage.removeItem("doctorName");
+      localStorage.removeItem("username");
+      localStorage.removeItem("user-role");
+    } catch (error) {}
   }
 
   async FetchMessagesCategories() {

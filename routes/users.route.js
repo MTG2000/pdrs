@@ -6,6 +6,8 @@ const transactionBeginMiddleware = require("../middleware/sqlTransaction")
 
 router.post("/login", controller.loginUser);
 
+router.get("/logout", controller.logout);
+
 router.post("/request-account", controller.requestAccount);
 
 router.post(

@@ -1,7 +1,6 @@
 import React from "react";
 import { makeStyles, Chip } from "@material-ui/core";
 import Clear from "@material-ui/icons/Clear";
-import { toJS } from "mobx";
 
 const useStyle = makeStyles({
   card: {

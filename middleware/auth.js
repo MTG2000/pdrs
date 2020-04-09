@@ -23,7 +23,7 @@ const isAuth = (allowedRoles = []) => {
           result.data.username
         );
         if (!isValid) throw Error("User Not Authenticated");
-        const accessToken = authService.generateAccessToken({
+        const accessToken = await authService.generateAccessToken({
           username: result.data.username,
           role: result.data.role
         });
