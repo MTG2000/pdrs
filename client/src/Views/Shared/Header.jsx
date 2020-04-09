@@ -58,9 +58,8 @@ const Header = ({ store }) => {
             <Link
               className="nav-link text-white"
               to="#"
-              onClick={() => {
-                store.Logout();
-                window.location = "/login";
+              onClick={async () => {
+                await store.Logout();
               }}
             >
               Logout

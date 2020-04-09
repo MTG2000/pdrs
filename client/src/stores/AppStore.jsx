@@ -90,6 +90,7 @@ class AppStore {
       localStorage.removeItem("doctorName");
       localStorage.removeItem("username");
       localStorage.removeItem("user-role");
+      window.location = "/login";
     } catch (error) {}
   }
 
