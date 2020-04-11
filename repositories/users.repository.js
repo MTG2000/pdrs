@@ -1,5 +1,8 @@
 const DB = require("../services/db").DB;
 const sqlQueries = require("../db/sql-queries");
+const CacheService = require("../services/cache");
+
+const cache = new CacheService(60 * 60);
 
 class Repository {
   getUserByUsername = async username => {
@@ -43,20 +46,22 @@ class Repository {
     }
   };
   getAllUsers = async () => {
-    let usersRaw = await DB.queryAll(sqlQueries.getAllUsers);
-    //Add the actual name of the user  by looking his type first then looking up his name in the appropriate table
-    let usersDTO = [];
-    for (const user of usersRaw) {
-      const name = await this.getUserRealName(user.Id);
-      usersDTO.push({
-        Id: user.Id,
-        Username: user.Username,
-        IsActive: user.IsActive,
-        Contact: user.Contact,
-        ...name
-      });
-    }
-    return usersDTO;
+    return await cache.get("getAllUsers", async () => {
+      let usersRaw = await DB.queryAll(sqlQueries.getAllUsers);
+      //Add the actual name of the user  by looking his type first then looking up his name in the appropriate table
+      let usersDTO = [];
+      for (const user of usersRaw) {
+        const name = await this.getUserRealName(user.Id);
+        usersDTO.push({
+          Id: user.Id,
+          Username: user.Username,
+          IsActive: user.IsActive,
+          Contact: user.Contact,
+          ...name
+        });
+      }
+      return usersDTO;
+    });
   };
 
   getPatient = async (id = "") => {
@@ -67,10 +72,14 @@ class Repository {
   };
 
   getUserTypeId = async name => {
-    return (await DB.get(sqlQueries.getUserTypeId, [name])).Id;
+    await cache.get(`getUserTypeId-${name}`, async () => {
+      return (await DB.get(sqlQueries.getUserTypeId, [name])).Id;
+    });
   };
   getUserTypeById = async id => {
-    return (await DB.get(sqlQueries.getUserTypeById, [id])).Type;
+    await cache.get(`getUserTypeById-${id}`, async () => {
+      return (await DB.get(sqlQueries.getUserTypeById, [id])).Type;
+    });
   };
 
   insertUser = async (username, password, type = "pharmacy", contact) => {
@@ -84,10 +93,11 @@ class Repository {
       ])
     ).lastID;
     await DB.run(sqlQueries.createUserTokenRow, [newUserId]);
+    cache.del("getAllUsers");
     return newUserId;
   };
 
-  insertUserToke = async (id, token) => {
+  insertUserToken = async (id, token) => {
     await DB.run(sqlQueries.setUserToken, [token, id]);
   };
 

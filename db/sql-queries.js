@@ -178,6 +178,10 @@ select * from Patients where lower(id) = lower(?)
   INSERT INTO Medicins (Name) VALUES (?);
   `;
 
+  getAllMedicins = `
+    SELECT * FROM MEDICINS;
+  `;
+
   getMedicinsByName = `
 Select * from Medicins where lower(Name) Like lower( ? )
 `;

@@ -29,12 +29,11 @@ class Controller {
       username: user.Username,
       role
     });
-
     //update refresh token
     const refreshToken = await authService.generateRefreshToken({
       username: user.Username
     });
-    await repository.insertUserToke(user.Id, refreshToken);
+    await repository.insertUserToken(user.Id, refreshToken);
     //set cookie with the token
     res.cookie("accessToken", accessToken, {
       secure: false, // set to true if your using https
