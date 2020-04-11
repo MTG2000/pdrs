@@ -1,8 +1,7 @@
 const sqlQueries = require("./sql-queries");
-const bcrypt = require("bcrypt");
+const argon = require("argon2");
 const path = require("path");
 const Constants = require("../Utils/Constants");
-const saltRounds = 10;
 
 const seedOptions = {
   usersTypes: true,
@@ -277,7 +276,7 @@ const users = async () => {
     const userTypeId = (
       await get(sqlQueries.getUserTypeId, [usersTypes[u.userType]])
     ).Id;
-    const passwordHash = await bcrypt.hash(u.password, saltRounds);
+    const passwordHash = await argon.hash(u.password);
     u.id = (
       await run(sqlQueries.insert_User, [
         userTypeId,

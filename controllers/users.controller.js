@@ -1,7 +1,6 @@
 const repository = require("../repositories/users.repository");
 const authService = require("../services/auth");
-const bcrypt = require("bcrypt");
-const saltRounds = 10;
+const argon = require("argon2");
 const SendResponse = require("../Utils/SendResponse");
 const Validation = require("../services/Validation");
 
@@ -17,7 +16,7 @@ class Controller {
 
     const user = await repository.getUserByUsername(username);
 
-    if (!user || !(await bcrypt.compare(password, user.Password)))
+    if (!user || !(await argon.verify(user.Password, password)))
       //User Doesn't exist or wrong credentials
       return SendResponse.JsonFailed(res, "Invalid Credentials");
 
@@ -65,7 +64,7 @@ class Controller {
       const { username, password: passwordRaw, type, contact } = req.body;
       await Validation.registerUser(req.body);
 
-      const password = await bcrypt.hash(passwordRaw, saltRounds);
+      const password = await argon.hash(passwordRaw);
       if (type === "Doctor") {
         const { doctorName } = req.body;
         const doctorId = await repository.insertDoctor(

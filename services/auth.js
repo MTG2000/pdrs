@@ -1,5 +1,4 @@
 const jwt = require("jsonwebtoken");
-//import jwt from 'jsonwebtoken';
 
 const generateAccessToken = dataToInclude => {
   return new Promise((res, rej) => {
