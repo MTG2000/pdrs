@@ -1,5 +1,6 @@
 import { observable, action, decorate, runInAction } from "mobx";
 import { NotificationManager } from "react-notifications";
+import axios from "axios";
 
 class ManageUsersStore {
   allUsers = [];
@@ -7,11 +8,9 @@ class ManageUsersStore {
 
   async FetchAllUsers() {
     try {
-      const res = await fetch("/api/users");
-      if (!res.ok) throw Error("Forbidden");
-      const { data } = await res.json();
+      const res = await axios.get("/api/users");
+      const { data } = res.data;
       runInAction(() => {
-        console.log(data);
         this.allUsers = data;
         this.users = this.allUsers;
       });
@@ -42,25 +41,16 @@ class ManageUsersStore {
     pharmacyAddress
   ) {
     try {
-      const res = await fetch("/api/users/register", {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          username,
-          contact,
-          password,
-          type,
-          doctorName,
-          pharmacyName,
-          address: pharmacyAddress
-        })
+      await axios.post("/api/users/register", {
+        username,
+        contact,
+        password,
+        type,
+        doctorName,
+        pharmacyName,
+        address: pharmacyAddress
       });
 
-      if (!res.ok) throw Error();
-      await res.json();
       NotificationManager.success("User Registered Successfully");
       this.FetchAllUsers();
       runInAction(() => {});
@@ -76,15 +66,9 @@ class ManageUsersStore {
         return u;
       });
       this.loadingToggleActive = true;
-      const res = await fetch("/api/users/toggle-active-state", {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ id })
+      await axios.post("/api/users/toggle-active-state", {
+        id
       });
-      await res.json();
       runInAction(() => {
         this.users = this.users.map(u => {
           if (u.Id === id) u.loadingToggleActive = false;

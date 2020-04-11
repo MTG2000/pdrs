@@ -1,4 +1,5 @@
 import { observable, action, decorate, runInAction } from "mobx";
+import axios from "axios";
 
 class DashboardStore {
   //Dashboard
@@ -11,9 +12,8 @@ class DashboardStore {
   async FetchNewMessages() {
     try {
       this.loadingNewMessages = true;
-      const res = await fetch("/api/admin/new-messages");
-      if (!res.ok) throw Error();
-      const { data } = await res.json();
+      const res = await axios.get("/api/admin/new-messages");
+      const { data } = res.data;
       runInAction(() => {
         this.newMessages = data;
         this.loadingNewMessages = false;
@@ -25,15 +25,7 @@ class DashboardStore {
 
   async MarkMessageRead(id) {
     try {
-      const res = await fetch("/api/admin/read-message", {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ id })
-      });
-      await res.json();
+      await axios.post("/api/admin/read-message", { id });
       this.FetchNewMessages();
     } catch (error) {}
   }
@@ -41,9 +33,8 @@ class DashboardStore {
   async FetchNewAccountRequests() {
     try {
       this.loadingNewAccountRequests = true;
-      const res = await fetch("/api/admin/new-account-requests");
-      if (!res.ok) throw Error();
-      const { data } = await res.json();
+      const res = await axios.get("/api/admin/new-account-requests");
+      const { data } = res.data;
       runInAction(() => {
         this.newAccountRequests = data;
         this.loadingNewAccountRequests = false;
@@ -55,15 +46,7 @@ class DashboardStore {
 
   async MarkAccountRequestRead(id) {
     try {
-      const res = await fetch("/api/admin/read-account-request", {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ id })
-      });
-      await res.json();
+      await axios.post("/api/admin/read-account-request", { id });
       this.FetchNewAccountRequests();
     } catch (error) {}
   }

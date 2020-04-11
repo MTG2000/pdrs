@@ -1,5 +1,6 @@
 import { observable, action, decorate, runInAction } from "mobx";
 import { NotificationManager } from "react-notifications";
+import axios from "axios";
 
 class ManageMedicinsStore {
   allMedicins = [];
@@ -7,9 +8,8 @@ class ManageMedicinsStore {
 
   async FetchMedicins() {
     try {
-      const res = await fetch("/api/medicins");
-      if (!res.ok) throw Error("Forbidden");
-      const { data } = await res.json();
+      const res = await axios.get("/api/medicins");
+      const { data } = res.data;
       runInAction(() => {
         this.allMedicins = data;
         this.medicins = data;
@@ -25,19 +25,10 @@ class ManageMedicinsStore {
 
   async NewMedicine(name) {
     try {
-      const res = await fetch("/api/medicins/new", {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          name
-        })
+      await axios.post("/api/medicins/new", {
+        name
       });
 
-      if (!res.ok) throw Error();
-      await res.json();
       NotificationManager.success("Medicine Added Successfully");
       this.FetchMedicins();
     } catch (error) {
@@ -52,5 +43,3 @@ decorate(ManageMedicinsStore, {
 });
 
 export default new ManageMedicinsStore();
-// const todoStoreInstance = new NewPrescription();
-// export default todoStoreInstance;

@@ -1,5 +1,6 @@
 import { observable, action, decorate, runInAction } from "mobx";
 import { NotificationManager } from "react-notifications";
+import axios from "axios";
 
 class PatientPrescriptionsStore {
   //Observables
@@ -24,8 +25,8 @@ class PatientPrescriptionsStore {
 
   async FetchPatientName() {
     try {
-      const res = await fetch(`/api/users/patient?id=${this.patientId}`);
-      const { data } = await res.json();
+      const res = await axios.get(`/api/users/patient?id=${this.patientId}`);
+      const { data } = res.data;
       runInAction(() => {
         this.patientName = data.Name;
       });
@@ -35,7 +36,6 @@ class PatientPrescriptionsStore {
   }
 
   FilterPrescriptions() {
-    console.log(this.selectedClassification);
     if (!this.selectedClassification)
       this.prescriptions = this.allPrescriptions;
     else
@@ -46,8 +46,8 @@ class PatientPrescriptionsStore {
 
   async FetchClassifications() {
     try {
-      const res = await fetch("/api/medicins/classifications");
-      const { data } = await res.json();
+      const res = await axios.get("/api/medicins/classifications");
+      const { data } = res.data;
       runInAction(() => {
         this.classifications = data;
         this.loading = false;
@@ -68,9 +68,8 @@ class PatientPrescriptionsStore {
       //These will be used to abort the request if different parameters are specified
       this.abortController = new AbortController();
       this.signal = this.abortController.signal;
-      const res = await fetch(fetchUrl, { signal: this.signal });
-      const { data } = await res.json();
-      console.log(data);
+      const res = await axios.get(fetchUrl);
+      const { data } = res.data;
       runInAction(() => {
         this.allPrescriptions = data.prescriptions;
         this.chronicMedicins = data.chronicMedicins;
@@ -78,7 +77,7 @@ class PatientPrescriptionsStore {
       });
       this.FilterPrescriptions();
     } catch (error) {
-      if (error.name === "AbortError") return; //when we abort request the error gets thrown from where we called fetch() so we catch it and do nothing
+      if (error.name === "AbortError") return; //when we abort request the error gets thrown from where we called axios.get() so we catch it and do nothing
       console.log(error);
       //Request cancelled so that a new one can be sent
       NotificationManager.error("Couldn't Get Prescriptions");

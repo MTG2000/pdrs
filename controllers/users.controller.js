@@ -40,14 +40,12 @@ class Controller {
       secure: false, // set to true if your using https
       httpOnly: true
     });
-    res.cookie("refreshToken", refreshToken, {
-      secure: false, // set to true if your using https
-      httpOnly: true
-    });
+
     SendResponse.JsonSuccess(res, "Logged-In Successfully", "", {
       username: user.Username,
       role: role,
       token: accessToken,
+      refreshToken,
       ...name
     });
   };
@@ -137,7 +135,6 @@ class Controller {
       await repository.addMessage(userId, category, content);
       SendResponse.JsonSuccess(res, "Your Message was sent successfully");
     } catch (error) {
-      console.log(error);
       SendResponse.JsonFailed(res, "Something Wrong Happened");
     }
   };
@@ -146,6 +143,34 @@ class Controller {
     res.clearCookie("accessToken");
     res.clearCookie("refreshToken");
     SendResponse.JsonSuccess(res, "Logged Out Successfully");
+  };
+
+  refreshToken = async (req, res) => {
+    try {
+      const refreshToken = req.body.refreshToken;
+      const username = req.body.username;
+
+      const isValid = await repository.refreshTokenValid(
+        refreshToken,
+        username
+      );
+      if (!isValid) throw Error("User Not Authenticated");
+
+      const user = await repository.getUserByUsername(username);
+      const role = await repository.getUserTypeById(user.UserType_Id);
+      const accessToken = await authService.generateAccessToken({
+        username,
+        role
+      });
+
+      res.cookie("accessToken", accessToken, {
+        secure: false, // set to true if your using https
+        httpOnly: true
+      });
+      SendResponse.JsonSuccess(res);
+    } catch (error) {
+      SendResponse.JsonFailed(res);
+    }
   };
 }
 

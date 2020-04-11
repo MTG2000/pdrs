@@ -15,7 +15,6 @@ const useStyle = makeStyles({
 });
 
 const selectColor = msg => {
-  console.log(msg);
   if (msg.toLowerCase().indexOf("problem") !== -1) return "#f44336";
   if (msg.toLowerCase().indexOf("add") !== -1) return "#3d5afe";
   if (msg.toLowerCase().indexOf("feature") !== -1) return "#43a047";

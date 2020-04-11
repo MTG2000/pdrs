@@ -5,15 +5,19 @@ Create a Main Page
 change the navbar
 Improve The Overall UI
 Client Side Validation
+optimize the localstorage cleaning 
+make the redirection better
+Log the error correctly
 
 -- BackEnd
 Server Side Validation
+implement compromise detection for refresh token
 New Classification
 set cookies security to true
 remove token from response
 private prescriptions 
-check the concept of refresh tokens
 implement cookie removal
+improve some multi sql querys
 
 add Promise thing to auth middleware and service
 

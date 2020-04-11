@@ -1,5 +1,6 @@
 import { observable, action, decorate, runInAction } from "mobx";
 import { NotificationManager } from "react-notifications";
+import axios from "axios";
 
 class AppStore {
   username = "";
@@ -16,19 +17,12 @@ class AppStore {
 
   async Login(username, password) {
     try {
-      const res = await fetch("/api/users/login", {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ username, password })
-      });
-      const { data } = await res.json();
+      const res = await axios.post("/api/users/login", { username, password });
+      const { data } = res.data;
 
       runInAction(() => {
         this.role = data.role;
-
+        localStorage.setItem("refreshToken", data.refreshToken);
         let redirectUrl = "/";
         //Clear the storage
         localStorage.removeItem("pharmacyName");
@@ -63,16 +57,13 @@ class AppStore {
 
   async SendRequest(name, type, phone, email) {
     try {
-      const res = await fetch("/api/users/request-account", {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ name, type, phone, email })
+      await axios.post("/api/users/request-account", {
+        name,
+        type,
+        phone,
+        email
       });
-      const data = await res.json();
-      console.log(data);
+
       NotificationManager.success(" Your Request was sent successfuly");
     } catch (error) {
       NotificationManager.error("Couldn't Login with the provided credentials");
@@ -81,9 +72,7 @@ class AppStore {
 
   async Logout() {
     try {
-      const res = await fetch("/api/users/logout");
-      if (!res.ok) throw Error("couldn't logout");
-
+      await axios.get("/api/users/logout");
       localStorage.removeItem("pharmacyName");
       localStorage.removeItem("doctorName");
       localStorage.removeItem("username");
@@ -94,8 +83,9 @@ class AppStore {
 
   async FetchMessagesCategories() {
     try {
-      const res = await fetch("/api/users/messages-categories");
-      const { data } = await res.json();
+      const res = await axios.get("/api/users/messages-categories");
+      const { data } = res.data;
+
       runInAction(() => {
         this.messagesCategories = data;
       });
@@ -104,15 +94,10 @@ class AppStore {
 
   async SendMessage(category, content) {
     try {
-      const res = await fetch("/api/users/send-message", {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ category, content })
+      await axios.post("/api/users/send-message", {
+        category,
+        content
       });
-      if (!res.ok) throw Error("");
       NotificationManager.success(" Your Message was sent successfuly");
     } catch (error) {
       NotificationManager.error(

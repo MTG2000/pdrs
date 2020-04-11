@@ -1,4 +1,5 @@
 import { observable, action, decorate } from "mobx";
+import axios from "axios";
 
 class AppState {
   //Global
@@ -25,9 +26,8 @@ class AppState {
 
   async Logout() {
     try {
-      const res = await fetch("/api/users/logout");
-      if (!res.ok) throw Error("couldn't logout");
-
+      await axios.get("/api/users/logout");
+      localStorage.removeItem("refresh-token");
       localStorage.removeItem("username");
       localStorage.removeItem("user-role");
       window.location = "/";

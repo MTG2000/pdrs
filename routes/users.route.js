@@ -8,6 +8,8 @@ router.post("/login", controller.loginUser);
 
 router.get("/logout", controller.logout);
 
+router.post("/refresh-token", controller.refreshToken);
+
 router.post("/request-account", controller.requestAccount);
 
 router.post(

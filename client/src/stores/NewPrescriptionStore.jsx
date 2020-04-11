@@ -1,5 +1,6 @@
 import { observable, action, decorate, runInAction, toJS } from "mobx";
 import { NotificationManager } from "react-notifications";
+import axios from "axios";
 
 class NewPrescriptionStore {
   patientId = "";
@@ -25,8 +26,9 @@ class NewPrescriptionStore {
   async FetchPatientName() {
     try {
       if (this.patientId.length < 6) return;
-      const res = await fetch(`/api/users/patient?id=${this.patientId}`);
-      const { data } = await res.json();
+
+      const res = await axios.get(`/api/users/patient?id=${this.patientId}`);
+      const { data } = res.data;
       runInAction(() => {
         if (data.Name) {
           this.patientName = data.Name;
@@ -43,8 +45,8 @@ class NewPrescriptionStore {
 
   async FetchClassifications() {
     try {
-      const res = await fetch("/api/medicins/classifications");
-      const { data } = await res.json();
+      const res = await axios.get("/api/medicins/classifications");
+      const { data } = res.data;
       runInAction(() => {
         this.classifications = data;
         this.loading = false;
@@ -88,17 +90,9 @@ class NewPrescriptionStore {
         medicins: toJS(this.medicins),
         classificationId: this.selectedClassification
       };
-      const response = await fetch("/api/patients/new-prescription", {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(prescription)
-      });
-      if (!response.ok) throw Error();
 
-      await response.json();
+      await axios.post("/api/patients/new-prescription", { ...prescription });
+
       NotificationManager.success("Prescription Created Successfully");
       this.submitingPrescription = false;
       setTimeout(() => {

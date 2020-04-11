@@ -1,5 +1,6 @@
 import { observable, action, decorate, runInAction } from "mobx";
 import { NotificationManager } from "react-notifications";
+import axios from "axios";
 
 class PrescriptionsDispensingStore {
   //Observables
@@ -20,7 +21,7 @@ class PrescriptionsDispensingStore {
 
   async FetchPatientName() {
     try {
-      const res = await fetch(`/api/users/patients?id=${this.patientId}`);
+      const res = await axios.get(`/api/users/patients?id=${this.patientId}`);
       const { data } = await res.json();
       runInAction(() => {
         this.patientName = data.Name;
@@ -32,17 +33,7 @@ class PrescriptionsDispensingStore {
 
   async Dispense(prescriptionId, medicins = []) {
     try {
-      const response = await fetch("/api/patients/dispense", {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ prescriptionId, medicins })
-      });
-      if (!response.ok) throw Error();
-
-      await response.json();
+      await axios.post("/api/patients/dispense", { prescriptionId, medicins });
       NotificationManager.success("Prescription Dispensed Successfully");
       this.FetchPrescriptions();
     } catch (error) {
@@ -63,8 +54,7 @@ class PrescriptionsDispensingStore {
       //These will be used to abort the request if different parameters are specified
       this.abortController = new AbortController();
       this.signal = this.abortController.signal;
-      const res = await fetch(fetchUrl, { signal: this.signal });
-      if (!res.ok) throw Error();
+      const res = await axios.get(fetchUrl);
 
       const { data } = await res.json();
       runInAction(() => {
