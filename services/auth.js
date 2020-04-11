@@ -1,38 +1,24 @@
 const jwt = require("jsonwebtoken");
+const { promisify } = require("util");
 
-const generateAccessToken = dataToInclude => {
-  return new Promise((res, rej) => {
-    jwt.sign(
-      { ...dataToInclude },
-      process.env.JWT_SECRET,
-      {
-        expiresIn: "15m"
-      },
-      (err, token) => {
-        if (err) rej(err);
-        res(token);
-      }
-    );
+const generateAccessToken = async dataToInclude => {
+  //You can also use normal promises if you want
+  return await promisify(jwt.sign)(
+    { ...dataToInclude },
+    process.env.JWT_SECRET,
+    {
+      expiresIn: "15m"
+    }
+  );
+};
+
+const generateRefreshToken = async username => {
+  return await promisify(jwt.sign)({ username }, process.env.JWT_SECRET, {
+    expiresIn: "30d"
   });
 };
 
-const generateRefreshToken = username => {
-  return new Promise((res, rej) => {
-    jwt.sign(
-      { username },
-      process.env.JWT_SECRET,
-      {
-        expiresIn: "30d"
-      },
-      (err, token) => {
-        if (err) rej(err);
-        res(token);
-      }
-    );
-  });
-};
-
-const validateToken = token => {
+const validateToken = async token => {
   return new Promise((res, rej) => {
     jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
       if (err) {
