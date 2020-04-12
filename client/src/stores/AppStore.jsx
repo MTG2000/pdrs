@@ -21,13 +21,10 @@ class AppStore {
       const { data } = res.data;
 
       runInAction(() => {
-        this.role = data.role;
-        localStorage.setItem("refreshToken", data.refreshToken);
         let redirectUrl = "/";
-        //Clear the storage
-        localStorage.removeItem("pharmacyName");
-        localStorage.removeItem("doctorName");
-
+        this.role = data.role;
+        localStorage.clear();
+        localStorage.setItem("refreshToken", data.refreshToken);
         localStorage.setItem("username", data.username);
         localStorage.setItem("user-role", this.role);
 
@@ -38,7 +35,7 @@ class AppStore {
         } else if (data.PharmacyName) {
           this.pharmacyName = data.PharmacyName;
           localStorage.setItem("pharmacyName", this.pharmacyName);
-          NotificationManager.success("Welcome Back  ");
+          NotificationManager.success("Welcome Back ");
         } else if (data.IsAdmin) {
           redirectUrl = "/admin";
           NotificationManager.success("Welcome Back Admin ");
@@ -79,10 +76,7 @@ class AppStore {
   async Logout() {
     try {
       await axios.get("/api/users/logout");
-      localStorage.removeItem("pharmacyName");
-      localStorage.removeItem("doctorName");
-      localStorage.removeItem("username");
-      localStorage.removeItem("user-role");
+      localStorage.clear();
       window.location = "/login";
     } catch (error) {}
   }

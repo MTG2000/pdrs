@@ -29,9 +29,7 @@ class AppState {
   async Logout() {
     try {
       await axios.get("/api/users/logout");
-      localStorage.removeItem("refresh-token");
-      localStorage.removeItem("username");
-      localStorage.removeItem("user-role");
+      localStorage.clear();
       window.location = "/";
     } catch (error) {
       NotificationManager.error(
