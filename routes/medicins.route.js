@@ -13,6 +13,6 @@ router.post(
   controller.newMedicine
 );
 
-router.get("/", controller.getMedicins);
+router.get("/", authMiddleware(), controller.getMedicins);
 
 module.exports = router;

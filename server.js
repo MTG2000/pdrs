@@ -12,12 +12,15 @@ require("dotenv").config();
 
 const dev = server.get("env") !== "production";
 
+morgan.token("user", (req, res) => {
+  return (req.user && req.user.username) || "";
+});
+server.use(morgan(":user :method :url :status - :response-time ms"));
+
 if (!dev) {
   server.disable("x-powerd-by");
-  server.use(morgan("common"));
   server.use(compression());
 }
-
 // server.use(cors());
 
 server.use(bodyParser.urlencoded({ extended: false }));

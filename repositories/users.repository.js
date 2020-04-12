@@ -72,12 +72,12 @@ class Repository {
   };
 
   getUserTypeId = async name => {
-    await cache.get(`getUserTypeId-${name}`, async () => {
+    return await cache.get(`getUserTypeId-${name}`, async () => {
       return (await DB.get(sqlQueries.getUserTypeId, [name])).Id;
     });
   };
   getUserTypeById = async id => {
-    await cache.get(`getUserTypeById-${id}`, async () => {
+    return await cache.get(`getUserTypeById-${id}`, async () => {
       return (await DB.get(sqlQueries.getUserTypeById, [id])).Type;
     });
   };
