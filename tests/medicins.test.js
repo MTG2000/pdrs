@@ -31,12 +31,12 @@ describe("Testing Medicins api", () => {
   it("it should login as admin", async () => {
     const res = await agent.post("/api/users/login").send({
       username: "mtg",
-      password: "123"
+      password: "mtgmtgmtg"
     });
     res.should.have.status(200);
     res.body.data.should.be.a("object");
-    res.body.data.should.have.property("token");
-    adminToken = res.body.token;
+    res.body.data.should.have.property("accessToken");
+    adminToken = res.body.accessToken;
   });
 
   it("it should add new medicine", async () => {
@@ -61,11 +61,10 @@ describe("Testing Medicins api", () => {
   it("it should not add medicine with wrong authorization", async () => {
     const res = await agent.post("/api/users/login").send({
       username: "ahmad",
-      password: "123"
+      password: "123123"
     });
     res.should.have.status(200);
     res.body.data.should.be.a("object");
-    res.body.data.should.have.property("token");
 
     const res2 = await agent
       .post("/api/medicins/new")

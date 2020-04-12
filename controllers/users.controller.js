@@ -4,6 +4,8 @@ const argon = require("argon2");
 const SendResponse = require("../Utils/SendResponse");
 const Validation = require("../services/Validation");
 
+const sha256 = require("crypto-js/sha256");
+
 class Controller {
   getAllUsers = async (req, res) => {
     const users = await repository.getAllUsers();
@@ -30,10 +32,9 @@ class Controller {
       role
     });
     //update refresh token
-    const refreshToken = await authService.generateRefreshToken({
-      username: user.Username
-    });
-    await repository.insertUserToken(user.Id, refreshToken);
+    const refreshToken = sha256(Math.random().toString()).toString();
+
+    await repository.updateUserToken(user.Id, refreshToken);
     //set cookie with the token
     res.cookie("accessToken", accessToken, {
       secure: false, // set to true if your using https
@@ -42,8 +43,8 @@ class Controller {
 
     SendResponse.JsonSuccess(res, "Logged-In Successfully", "", {
       username: user.Username,
-      role: role,
-      token: accessToken,
+      role,
+      accessToken,
       refreshToken,
       ...name
     });
@@ -140,7 +141,8 @@ class Controller {
 
   logout = async (req, res) => {
     res.clearCookie("accessToken");
-    res.clearCookie("refreshToken");
+    const userId = (await repository.getUserByUsername(req.user.username)).Id;
+    repository.updateUserToken(userId, null);
     SendResponse.JsonSuccess(res, "Logged Out Successfully");
   };
 
@@ -149,24 +151,28 @@ class Controller {
       const refreshToken = req.body.refreshToken;
       const username = req.body.username;
 
-      const isValid = await repository.refreshTokenValid(
-        refreshToken,
-        username
-      );
-      if (!isValid) throw Error("User Not Authenticated");
+      const currentToken = await repository.getRefreshToken(username);
 
-      const user = await repository.getUserByUsername(username);
-      const role = await repository.getUserTypeById(user.UserType_Id);
-      const accessToken = await authService.generateAccessToken({
-        username,
-        role
-      });
+      //Token Valid
+      if (currentToken === refreshToken) {
+        const newRefreshToken = sha256(currentToken).toString();
+        const user = await repository.getUserByUsername(username);
+        const role = await repository.getUserTypeById(user.UserType_Id);
+        const accessToken = await authService.generateAccessToken({
+          username,
+          role
+        });
+        await repository.updateUserToken(user.Id, newRefreshToken);
 
-      res.cookie("accessToken", accessToken, {
-        secure: false, // set to true if your using https
-        httpOnly: true
-      });
-      SendResponse.JsonSuccess(res);
+        res.cookie("accessToken", accessToken, {
+          secure: false, // set to true if your using https
+          httpOnly: true
+        });
+        SendResponse.JsonData(res, { refreshToken: newRefreshToken });
+      } else {
+        //Token Already Changed
+        SendResponse.JsonFailed(res);
+      }
     } catch (error) {
       SendResponse.JsonFailed(res);
     }

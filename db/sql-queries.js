@@ -39,10 +39,9 @@ FOREIGN KEY (UserType_Id) REFERENCES USERSTYPES(ID)
 
   createTable_UsersTokens = `
 CREATE TABLE IF NOT EXISTS UsersTokens (
-  Id INTEGER PRIMARY KEY, 
+  Id INTEGER PRIMARY KEY  ON CONFLICT REPLACE, 
   Token VARCHAR(50) ,
-  User_Id  INTEGER ,
-  FOREIGN KEY (User_Id) REFERENCES USERS(ID) ON DELETE CASCADE
+  FOREIGN KEY (Id) REFERENCES USERS(ID) ON DELETE CASCADE
 )
 `;
 
@@ -74,20 +73,15 @@ set IsActive = null
 where id = ? and IsActive is not Null
 `;
 
-  createUserTokenRow = `
-  insert into UsersTokens (User_Id) VALUES (?)
-`;
-
   setUserToken = `
-  update UsersTokens 
-  set token = ?
-  where User_Id = ?
+  insert or replace into UsersTokens
+  (Id,Token) VALUES (?,?)
 `;
 
   getUserToken = `
   SELECT t.Token
   from users u left join UsersTokens t 
-  on u.id = t.User_Id
+  on u.id = t.Id
   where u.Username = ?
   
 `;

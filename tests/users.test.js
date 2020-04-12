@@ -23,12 +23,12 @@ describe("Testing Users Api", () => {
   it("it should login as admin", async () => {
     const res = await agent.post("/api/users/login").send({
       username: "mtg",
-      password: "123"
+      password: "mtgmtgmtg"
     });
     res.should.have.status(200);
     res.body.data.should.be.a("object");
-    res.body.data.should.have.property("token");
-    adminToken = res.body.data.token;
+    res.body.data.should.have.property("accessToken");
+    adminToken = res.body.data.accessToken;
   });
 
   it("it should register a new Doctor", async () => {

@@ -92,18 +92,17 @@ class Repository {
         contact
       ])
     ).lastID;
-    await DB.run(sqlQueries.createUserTokenRow, [newUserId]);
     cache.del("getAllUsers");
     return newUserId;
   };
 
-  insertUserToken = async (id, token) => {
-    await DB.run(sqlQueries.setUserToken, [token, id]);
+  updateUserToken = async (id, token) => {
+    await DB.run(sqlQueries.setUserToken, [id, token]);
   };
 
-  refreshTokenValid = async (token, username) => {
+  getRefreshToken = async username => {
     const row = await DB.get(sqlQueries.getUserToken, [username]);
-    if (row) return row.Token === token;
+    return row.Token;
   };
 
   insertDoctor = async (username, password, doctorName, contact) => {

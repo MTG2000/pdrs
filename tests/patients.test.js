@@ -15,11 +15,11 @@ describe("Testing Patients Api", () => {
   it("it should login as Doctor", async () => {
     const res = await agent.post("/api/users/login").send({
       username: "ahmad",
-      password: "123"
+      password: "123123"
     });
     res.should.have.status(200);
     res.body.data.should.be.a("object");
-    res.body.data.should.have.property("token");
+    res.body.data.should.have.property("accessToken");
   });
 
   it("it should add a new prescriptions", async () => {
