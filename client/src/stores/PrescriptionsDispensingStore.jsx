@@ -22,7 +22,7 @@ class PrescriptionsDispensingStore {
   async FetchPatientName() {
     try {
       const res = await axios.get(`/api/users/patients?id=${this.patientId}`);
-      const { data } = await res.json();
+      const { data } = res.data;
       runInAction(() => {
         this.patientName = data.Name;
       });
@@ -37,7 +37,10 @@ class PrescriptionsDispensingStore {
       NotificationManager.success("Prescription Dispensed Successfully");
       this.FetchPrescriptions();
     } catch (error) {
-      NotificationManager.error("Couldn't Dispense Prescription");
+      NotificationManager.error(
+        error.response.data.message,
+        error.response.data.title
+      );
     }
   }
 
@@ -56,15 +59,23 @@ class PrescriptionsDispensingStore {
       this.signal = this.abortController.signal;
       const res = await axios.get(fetchUrl);
 
-      const { data } = await res.json();
+      const { data } = res.data;
+      console.log(res.data);
+
       runInAction(() => {
         this.prescriptions = data.prescriptions;
         this.loadingPrescriptions = false;
       });
     } catch (error) {
       console.log(error);
+      console.log(error.response);
+
       //Request cancelled so that a new one can be sent
-      NotificationManager.error("Couldn't Get Prescriptions");
+      NotificationManager.error(
+        error.response.data.message,
+        error.response.data.title
+      );
+
       this.loadingPrescriptions = false;
     }
   }

@@ -101,7 +101,11 @@ class NewPrescriptionStore {
         });
       }, 3000);
     } catch (error) {
-      NotificationManager.error("Prescription couldn't be created");
+      NotificationManager.error(
+        error.response.data.message,
+        error.response.data.title
+      );
+
       this.submitingPrescription = false;
     }
   }

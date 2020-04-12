@@ -19,12 +19,11 @@ const newMedicine = async (req, res, next) => {
     const medicineExist = await repository.medicineExist(name);
     if (!medicineExist) {
       const medicineId = await repository.addMedicine(name);
-      res.status(201).json(medicineId);
-    } else res.status(400).send({ error: "Medicine Already Inserted" });
+      SendResponse.JsonCreated(res, "Medicine Added Successfully");
+    } else SendResponse.JsonFailed(res, "Medicine Already exist");
   } catch (error) {
-    console.error(error);
     res.failed = true;
-    SendResponse.JsonFailed(res, error);
+    SendResponse.JsonFailed(res);
   }
   next();
 };

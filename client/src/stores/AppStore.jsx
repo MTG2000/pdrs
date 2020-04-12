@@ -51,7 +51,10 @@ class AppStore {
         }, 3000);
       });
     } catch (error) {
-      NotificationManager.error("Couldn't Login with the provided credentials");
+      NotificationManager.error(
+        error.response.data.message,
+        error.response.data.title
+      );
     }
   }
 
@@ -66,7 +69,10 @@ class AppStore {
 
       NotificationManager.success(" Your Request was sent successfuly");
     } catch (error) {
-      NotificationManager.error("Couldn't Login with the provided credentials");
+      NotificationManager.error(
+        error.response.data.message,
+        error.response.data.title
+      );
     }
   }
 
@@ -101,7 +107,8 @@ class AppStore {
       NotificationManager.success(" Your Message was sent successfuly");
     } catch (error) {
       NotificationManager.error(
-        "Something wrong happened while sending message"
+        error.response.data.message,
+        error.response.data.title
       );
     }
   }

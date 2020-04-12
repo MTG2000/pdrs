@@ -80,7 +80,11 @@ class PatientPrescriptionsStore {
       if (error.name === "AbortError") return; //when we abort request the error gets thrown from where we called axios.get() so we catch it and do nothing
       console.log(error);
       //Request cancelled so that a new one can be sent
-      NotificationManager.error("Couldn't Get Prescriptions");
+      NotificationManager.error(
+        error.response.data.message,
+        error.response.data.title
+      );
+
       this.loadingPrescriptions = false;
     }
   }

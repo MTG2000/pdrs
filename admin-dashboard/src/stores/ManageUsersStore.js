@@ -55,7 +55,10 @@ class ManageUsersStore {
       this.FetchAllUsers();
       runInAction(() => {});
     } catch (error) {
-      NotificationManager.error("User Registereation Failed");
+      NotificationManager.error(
+        error.response.data.message,
+        error.response.data.title
+      );
     }
   }
 

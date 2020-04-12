@@ -1,4 +1,6 @@
 import { observable, action, decorate } from "mobx";
+import { NotificationManager } from "react-notifications";
+
 import axios from "axios";
 
 class AppState {
@@ -31,7 +33,12 @@ class AppState {
       localStorage.removeItem("username");
       localStorage.removeItem("user-role");
       window.location = "/";
-    } catch (error) {}
+    } catch (error) {
+      NotificationManager.error(
+        error.response.data.message,
+        error.response.data.title
+      );
+    }
   }
 }
 

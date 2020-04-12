@@ -21,7 +21,7 @@ class Controller {
       return SendResponse.JsonFailed(res, "Invalid Credentials");
 
     if (!user.IsActive)
-      return SendResponse.JsonFailed(res, "Account Has been de-activated");
+      return SendResponse.JsonFailed(res, "Account Has been De-Activated");
 
     const role = await repository.getUserTypeById(user.UserType_Id);
     const name = await repository.getUserRealName(user.Id);

@@ -32,7 +32,10 @@ class ManageMedicinsStore {
       NotificationManager.success("Medicine Added Successfully");
       this.FetchMedicins();
     } catch (error) {
-      NotificationManager.error("Couldn't Add Medicine");
+      NotificationManager.error(
+        error.response.data.message,
+        error.response.data.title
+      );
     }
   }
 }

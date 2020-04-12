@@ -1,4 +1,6 @@
 import { observable, action, decorate, runInAction } from "mobx";
+import { NotificationManager } from "react-notifications";
+
 import axios from "axios";
 
 class DashboardStore {
@@ -40,6 +42,10 @@ class DashboardStore {
         this.loadingNewAccountRequests = false;
       });
     } catch (error) {
+      NotificationManager.error(
+        error.response.data.message,
+        error.response.data.title
+      );
       this.loadingNewAccountRequests = false;
     }
   }
@@ -48,7 +54,12 @@ class DashboardStore {
     try {
       await axios.post("/api/admin/read-account-request", { id });
       this.FetchNewAccountRequests();
-    } catch (error) {}
+    } catch (error) {
+      NotificationManager.error(
+        error.response.data.message,
+        error.response.data.title
+      );
+    }
   }
 }
 

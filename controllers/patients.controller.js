@@ -31,7 +31,10 @@ const newPrescription = async (req, res, next) => {
     }
     const doctorId = await usersRepository.getDoctorId(req.user.username);
     if (!doctorId || medicins.length === 0 || note.trim().length < 5)
-      throw Error("Values Not correct");
+      return SendResponse.JsonFailed(
+        res,
+        "Data Incorrect, please provide valid data"
+      );
     const prescriptionId = await patientsRepository.newPrescription(
       patientId,
       doctorId,
@@ -48,9 +51,11 @@ const newPrescription = async (req, res, next) => {
       "Presecription Created Successfully"
     );
   } catch (error) {
-    console.error(error);
     res.failed = true;
-    SendResponse.JsonFailed(res, "Failed", "Couldn't Create Prescription");
+    SendResponse.JsonFailed(
+      res,
+      "Something Wrong happened while creating prescription"
+    );
   }
   next();
 };
@@ -112,6 +117,7 @@ const getPrescriptionsToDispense = async (req, res) => {
       ...medicins.filter(m => m.isChronic == true)
     ];
   }
+
   //remove duplicates
   chronicMedicins = chronicMedicins.filter(
     (m, i) => chronicMedicins.indexOf(m) === i
@@ -141,9 +147,8 @@ const dispenseMedicins = async (req, res, next) => {
     }
     SendResponse.JsonSuccess(res);
   } catch (error) {
-    console.error(error);
     res.failed = true;
-    SendResponse.JsonFailed(res);
+    SendResponse.JsonFailed(res, "Couldn't dispense medicins");
   }
   next();
 };
@@ -154,7 +159,6 @@ const stopChronicMedicine = async (req, res, next) => {
     await patientsRepository.stopChronicMedicine(prescriptionId, medicineId);
     SendResponse.JsonSuccess(res);
   } catch (error) {
-    console.error(error);
     res.failed = true;
     SendResponse.JsonFailed(res);
   }

@@ -60,7 +60,6 @@ const PrescriptionCard = ({ prescription, store }) => {
     const medicinsIds = Object.keys(medicinsToDispense)
       .filter(m => medicinsToDispense[m])
       .map(Number);
-    console.log(medicinsIds);
 
     store.Dispense(prescription.Id, medicinsIds);
   };
