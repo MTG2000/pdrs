@@ -1,6 +1,7 @@
 import React from "react";
 import AsyncSelect from "react-select/async";
 import _ from "lodash";
+import Axios from "axios";
 
 /*{
     fetchUrl:'/api/users',
@@ -52,12 +53,12 @@ class SearchableSelect extends React.Component {
     const fetchUrl = `${this.props.fetchUrl}${
       queryName ? `?${queryName}=${inputValue}` : ""
     }`;
-    fetch(fetchUrl).then(response => {
-      response.json().then(({ data }) => {
-        if (this.props.mapOptionsToValues)
-          callback(this.props.mapOptionsToValues(data));
-        else callback(this.mapOptionsToValues(data));
-      });
+
+    Axios.get(fetchUrl).then(res => {
+      const { data } = res.data;
+      if (this.props.mapOptionsToValues)
+        callback(this.props.mapOptionsToValues(data));
+      else callback(this.mapOptionsToValues(data));
     });
   };
 
