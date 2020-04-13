@@ -9,9 +9,6 @@ class PrescriptionsDispensingStore {
   prescriptions = [];
   loading = true;
   loadingPrescriptions = false;
-  //Class Props
-  abortController;
-  signal;
 
   SetPatientId(v) {
     this.patientId = v;
@@ -46,31 +43,18 @@ class PrescriptionsDispensingStore {
 
   async FetchPrescriptions() {
     try {
-      if (this.loadingPrescriptions) this.abortController.abort();
-    } catch (error) {}
-
-    try {
       this.loadingPrescriptions = true;
       let fetchUrl = "/api/patients/prescriptions-to-dispense?";
       fetchUrl = fetchUrl.concat(`patientId=${this.patientId}`);
-
-      //These will be used to abort the request if different parameters are specified
-      this.abortController = new AbortController();
-      this.signal = this.abortController.signal;
       const res = await axios.get(fetchUrl);
 
       const { data } = res.data;
-      console.log(res.data);
 
       runInAction(() => {
         this.prescriptions = data.prescriptions;
         this.loadingPrescriptions = false;
       });
     } catch (error) {
-      console.log(error);
-      console.log(error.response);
-
-      //Request cancelled so that a new one can be sent
       NotificationManager.error(
         error.response.data.message,
         error.response.data.title

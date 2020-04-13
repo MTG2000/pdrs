@@ -19,6 +19,9 @@ class SearchableSelect extends React.Component {
       selectedOption: this.props.defaultValue
     };
     this.getOptions = _.debounce(this.getOptions.bind(this), 500);
+
+    this.CancelToken = Axios.CancelToken;
+    this.source = this.CancelToken.source();
   }
 
   handleChange = selectedOption => {
@@ -43,23 +46,22 @@ class SearchableSelect extends React.Component {
       return callback([]);
     }
 
-    // const { searchApiUrl } = this.props;
-    // const limit =
-    //   this.props.limit || process.env['REACT_APP_DROPDOWN_ITEMS_LIMIT'] || 5;
-    // const queryAdder = searchApiUrl.indexOf('?') === -1 ? '?' : '&';
-    // const fetchURL = `${searchApiUrl}${queryAdder}search=${inputValue}&limit=${limit}`;
-    const queryName = this.props.queryName;
+    this.source.cancel("search value updated");
+    this.source = this.CancelToken.source();
 
+    const queryName = this.props.queryName;
     const fetchUrl = `${this.props.fetchUrl}${
       queryName ? `?${queryName}=${inputValue}` : ""
     }`;
 
-    Axios.get(fetchUrl).then(res => {
-      const { data } = res.data;
-      if (this.props.mapOptionsToValues)
-        callback(this.props.mapOptionsToValues(data));
-      else callback(this.mapOptionsToValues(data));
-    });
+    Axios.get(fetchUrl, { cancelToken: this.source.token })
+      .then(res => {
+        const { data } = res.data;
+        if (this.props.mapOptionsToValues)
+          callback(this.props.mapOptionsToValues(data));
+        else callback(this.mapOptionsToValues(data));
+      })
+      .catch(err => {});
   };
 
   render() {

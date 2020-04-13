@@ -50,8 +50,9 @@ INSERT INTO USERS (UserType_Id,username,password,IsActive,Contact) VALUES (?,?,?
 `;
 
   getUser = `
-  select * from Users u , UsersTypes ut
-  where username=? and u.UserType_Id = ut.Id
+  select u.Id , u.Username , u.Password,u.IsActive,u.UserType_Id,u.Contact,ut.Type
+ from Users u , UsersTypes ut
+  where u.username=? and u.UserType_Id = ut.Id
 `;
 
   getUserById = `

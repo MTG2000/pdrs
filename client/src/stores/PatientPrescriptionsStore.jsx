@@ -13,9 +13,6 @@ class PatientPrescriptionsStore {
   selectedClassification = 0;
   loading = true;
   loadingPrescriptions = false;
-  //Class Props
-  abortController;
-  signal;
 
   SetPatientId(v) {
     this.patientId = v;
@@ -56,18 +53,11 @@ class PatientPrescriptionsStore {
   }
 
   async FetchPrescriptions() {
-    if (this.loadingPrescriptions) {
-      this.abortController.abort();
-    }
-
     try {
       this.loadingPrescriptions = true;
       let fetchUrl = "/api/patients/prescriptions?";
       fetchUrl = fetchUrl.concat(`patientId=${this.patientId}`);
 
-      //These will be used to abort the request if different parameters are specified
-      this.abortController = new AbortController();
-      this.signal = this.abortController.signal;
       const res = await axios.get(fetchUrl);
       const { data } = res.data;
       runInAction(() => {
