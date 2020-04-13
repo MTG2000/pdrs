@@ -27,6 +27,12 @@ async function getPatientPrescriptions(patientId) {
   return await DB.queryAll(sqlQueries.getPatientPrescriptions, [patientId]);
 }
 
+async function getPatientPrescriptionsToDispense(patientId) {
+  return await DB.queryAll(sqlQueries.getPatientPrescriptionsToDispense, [
+    patientId
+  ]);
+}
+
 async function getPatientPrescriptionsByClassification(
   patientId,
   classification
@@ -49,12 +55,21 @@ const getPrescriptionMedicinsToDispense = async prescriptionId => {
   ]);
 };
 
-const dispenseMedicine = async (prescriptionId, medicineId, pharmacyId) => {
-  return await DB.queryAll(sqlQueries.dispenseMedicine, [
+const dispenseMedicins = async (prescriptionId, medicins, pharmacyId) => {
+  if (!Array.isArray(medicins) || medicins.some(m => typeof m !== "number"))
+    throw Error("Invalid Medicins Ids");
+
+  await DB.run(sqlQueries.dispenseMedicins + `(${medicins.join(",")})`, [
     pharmacyId,
-    medicineId,
     prescriptionId
   ]);
+
+  if (
+    (await DB.queryAll(sqlQueries.getPrescriptionMedicinsToDispense)).length ===
+    0
+  ) {
+    await DB.run(sqlQueries.setPrescriptionDispensed, [prescriptionId]);
+  }
 };
 
 const stopChronicMedicine = async (prescriptionId, medicineId) => {
@@ -71,6 +86,7 @@ module.exports = {
   getPrescriptionMedicins,
   getPrescriptionMedicinsToDispense,
   getPatientPrescriptionsByClassification,
-  dispenseMedicine,
-  stopChronicMedicine
+  dispenseMedicins,
+  stopChronicMedicine,
+  getPatientPrescriptionsToDispense
 };

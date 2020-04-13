@@ -23,13 +23,16 @@ class Controller {
       return SendResponse.JsonFailed(res, "Invalid Credentials");
 
     if (!user.IsActive)
-      return SendResponse.JsonFailed(res, "Account Has been De-Activated");
+      return SendResponse.JsonFailed(
+        res,
+        "Account De-Activated",
+        "please contact the admins for info"
+      );
 
-    const role = await repository.getUserTypeById(user.UserType_Id);
     const name = await repository.getUserRealName(user.Id);
     const accessToken = await authService.generateAccessToken({
       username: user.Username,
-      role
+      role: user.Type
     });
     //update refresh token
     const refreshToken = sha256(Math.random().toString()).toString();
@@ -43,7 +46,7 @@ class Controller {
 
     SendResponse.JsonSuccess(res, "Logged-In Successfully", "", {
       username: user.Username,
-      role,
+      role: user.Type,
       accessToken,
       refreshToken,
       ...name
@@ -86,14 +89,14 @@ class Controller {
         SendResponse.JsonCreated(res, "Pharmacy Created Successfully");
         next();
         return;
+      } else if (type === "Admin") {
+        //Logic for inserting Admin
       }
       res.failed = true;
       SendResponse.JsonFailed(res, "Type Not Valid");
       next();
     } catch (error) {
-      console.error(error);
       res.failed = true;
-
       SendResponse.JsonFailed(res, "Could Not Register User");
       next();
     }
@@ -157,10 +160,10 @@ class Controller {
       if (currentToken === refreshToken) {
         const newRefreshToken = sha256(currentToken).toString();
         const user = await repository.getUserByUsername(username);
-        const role = await repository.getUserTypeById(user.UserType_Id);
+
         const accessToken = await authService.generateAccessToken({
           username,
-          role
+          role: user.Type
         });
         await repository.updateUserToken(user.Id, newRefreshToken);
 

@@ -50,7 +50,8 @@ INSERT INTO USERS (UserType_Id,username,password,IsActive,Contact) VALUES (?,?,?
 `;
 
   getUser = `
-select * from Users where username=? 
+  select * from Users u , UsersTypes ut
+  where username=? and u.UserType_Id = ut.Id
 `;
 
   getUserById = `
@@ -196,10 +197,10 @@ from Medicine_Prescription mp , Medicins m
 where prescription_ID = ? and mp.Medicine_Id = m.Id and mp.Pharmacy_Id is NULL
 `;
 
-  dispenseMedicine = `
-update Medicine_Prescription 
-set Pharmacy_Id = ?
-where medicine_Id = ? and prescription_Id = ?
+  dispenseMedicins = `
+  update Medicine_Prescription 
+  set Pharmacy_Id = ?
+  where prescription_Id = ? and medicine_Id in 
 `;
 
   stopChronincMedicine = `
@@ -238,6 +239,7 @@ CREATE TABLE IF NOT EXISTS Prescriptions
   Classification_Id  INTEGER , 
   Pre_Date  TIMESTAMP, 
   Description  VARCHAR(200) ,
+  IsDispensed CHAR(1), 
   FOREIGN KEY (Doctor_Id) REFERENCES DOCTORS(ID),
   FOREIGN KEY (Patient_Id) REFERENCES PATIENTS(ID),
   FOREIGN KEY (Classification_Id) REFERENCES CLASSIFICATIONS (ID)
@@ -272,10 +274,22 @@ from prescriptions p , Classifications c , Patients patients
  where patient_id = ? and p.Classification_Id = c.id and p.Patient_Id = patients.Id
 `;
 
+  getPatientPrescriptionsToDispense = `
+select p.Id , p.Doctor_Id , p.Description as Note, p.Pre_Date as Prescription_Date , c.Id as Classification_Id , c.Name as Classification_Name , c.ImageUrl as ClassificationIconUrl , patients.Name as Patient_Name 
+from prescriptions p , Classifications c , Patients patients
+ where p.IsDispensed is NuLL and patient_id = ? and p.Classification_Id = c.id and p.Patient_Id = patients.Id
+`;
+
   getPatientPrescriptionsByClassification = `
 select p.Id , p.Doctor_Id , p.Description as Note, p.Pre_Date as Prescription_Date ,  c.Name as Classification_Name , c.ImageUrl as ClassificationIconUrl , patients.Name as Patient_Name 
 from prescriptions p , Classifications c , Patients patients
  where patient_id = ? and p.Classification_Id = c.id and p.Patient_Id = patients.Id and classification_Id = ?
+`;
+
+  setPrescriptionDispensed = `
+  update Prescriptions
+  set IsDispensed = '1'
+  where ID = ?
 `;
 
   //AccountRequests

@@ -99,19 +99,15 @@ const getPrescriptions = async (req, res) => {
 const getPrescriptionsToDispense = async (req, res) => {
   const patientId = req.query.patientId;
   let chronicMedicins = [];
-  let prescriptions = [];
-  let allPrescriptions = await patientsRepository.getPatientPrescriptions(
+  let prescriptions = await patientsRepository.getPatientPrescriptionsToDispense(
     patientId
   );
 
-  for (const prescription of allPrescriptions) {
+  for (const prescription of prescriptions) {
     const medicins = await patientsRepository.getPrescriptionMedicinsToDispense(
       prescription.Id
     );
-    if (medicins.length > 0) {
-      prescriptions.push(prescription);
-      prescriptions[prescriptions.length - 1].medicins = medicins;
-    }
+    prescription.medicins = medicins;
     chronicMedicins = [
       ...chronicMedicins,
       ...medicins.filter(m => m.isChronic == true)
@@ -138,13 +134,13 @@ const dispenseMedicins = async (req, res, next) => {
   try {
     const { prescriptionId, medicins } = req.body;
     const pharmacyId = await usersRepository.getPharmacyId(req.user.username);
-    for (const med of medicins) {
-      await patientsRepository.dispenseMedicine(
-        prescriptionId,
-        med,
-        pharmacyId
-      );
-    }
+
+    await patientsRepository.dispenseMedicins(
+      prescriptionId,
+      medicins,
+      pharmacyId
+    );
+
     SendResponse.JsonSuccess(res);
   } catch (error) {
     res.failed = true;

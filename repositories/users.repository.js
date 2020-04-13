@@ -76,11 +76,6 @@ class Repository {
       return (await DB.get(sqlQueries.getUserTypeId, [name])).Id;
     });
   };
-  getUserTypeById = async id => {
-    return await cache.get(`getUserTypeById-${id}`, async () => {
-      return (await DB.get(sqlQueries.getUserTypeById, [id])).Type;
-    });
-  };
 
   insertUser = async (username, password, type = "pharmacy", contact) => {
     const userTypeId = await this.getUserTypeId(type);
