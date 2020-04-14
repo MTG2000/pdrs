@@ -1,27 +1,43 @@
-const repository = require("../repositories/admin.repository");
-const SendResponse = require("../Utils/SendResponse");
+const Response = require("../helpers/response");
+const AdminService = require("../ApplicationLayer/admin");
 
 class Controller {
-  getNewAccountRequests = async (req, res) => {
-    const accountRequests = await repository.getNewAccountRequests();
-    SendResponse.JsonData(res, accountRequests);
+  getNewAccountRequests = async (req, res, next) => {
+    try {
+      const accountRequests = await AdminService.getNewAccountRequests();
+      res.send(new Response.Data(accountRequests));
+    } catch (error) {
+      next(error);
+    }
   };
 
-  getNewMessages = async (req, res) => {
-    const newMsgs = await repository.getNewMessages();
-    SendResponse.JsonData(res, newMsgs);
+  getNewMessages = async (req, res, next) => {
+    try {
+      const newMsgs = await AdminService.getNewMessages();
+      res.send(new Response.Data(newMsgs));
+    } catch (error) {
+      next(error);
+    }
   };
 
-  markMessageRead = async (req, res) => {
-    const { id } = req.body;
-    await repository.markMessageRead(id);
-    SendResponse.JsonSuccess(res);
+  markMessageRead = async (req, res, next) => {
+    try {
+      const { id } = req.body;
+      await AdminService.markMessageRead(id);
+      res.send(new Response.Success());
+    } catch (error) {
+      next(error);
+    }
   };
 
-  markAccountRequestRead = async (req, res) => {
-    const { id } = req.body;
-    await repository.markAccountRequestRead(id);
-    SendResponse.JsonSuccess(res);
+  markAccountRequestRead = async (req, res, next) => {
+    try {
+      const { id } = req.body;
+      await AdminService.markAccountRequestRead(id);
+      res.send(new Response.Success());
+    } catch (error) {
+      next(error);
+    }
   };
 }
 

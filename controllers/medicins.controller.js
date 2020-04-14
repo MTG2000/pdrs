@@ -1,31 +1,34 @@
-const repository = require("../repositories/medicins.repository");
-const SendResponse = require("../Utils/SendResponse");
+const Response = require("../helpers/response");
+const MedicinsService = require("../ApplicationLayer/medicins");
 
-const getMedicins = async (req, res) => {
-  const { name = "" } = req.query;
-  const medicins = await repository.getMedicins(name);
-  SendResponse.JsonData(res, medicins);
-};
+class Controller {
+  getMedicins = async (req, res) => {
+    try {
+      const { name = "" } = req.query;
+      const medicins = await MedicinsService.getMedicins(name);
+      res.send(new Response.Data(medicins));
+    } catch (error) {
+      next(error);
+    }
+  };
 
-const getClassifications = async (req, res) => {
-  const classifications = await repository.getClassifications();
-  SendResponse.JsonData(res, classifications);
-};
+  getClassifications = async (req, res) => {
+    try {
+      const classifications = await MedicinsService.getClassifications();
+      res.send(new Response.Data(classifications));
+    } catch (error) {
+      next(error);
+    }
+  };
 
-const newMedicine = async (req, res, next) => {
-  try {
-    const { name } = req.body;
-    if (!name) throw Error();
-    const medicineExist = await repository.medicineExist(name);
-    if (!medicineExist) {
-      const medicineId = await repository.addMedicine(name);
-      SendResponse.JsonCreated(res, "Medicine Added Successfully");
-    } else SendResponse.JsonFailed(res, "Medicine Already exist");
-  } catch (error) {
-    res.failed = true;
-    SendResponse.JsonFailed(res);
-  }
-  next();
-};
+  newMedicine = async (req, res, next) => {
+    try {
+      const { name } = req.body;
+      await MedicinsService.newMedicine(name);
+    } catch (error) {
+      next(error);
+    }
+  };
+}
 
-module.exports = { getMedicins, getClassifications, newMedicine };
+module.exports = new Controller();

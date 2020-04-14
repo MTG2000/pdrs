@@ -7,6 +7,7 @@ const bodyParser = require("body-parser");
 const favicon = require("serve-favicon");
 const morgan = require("morgan");
 const compression = require("compression");
+const { handleError } = require("./helpers/error");
 
 require("dotenv").config();
 
@@ -28,7 +29,6 @@ server.use(express.static(path.join(__dirname, "static")));
 server.use(express.static(path.resolve(__dirname, "client", "build")));
 server.use(express.static(path.resolve(__dirname, "admin-dashboard", "build")));
 server.use(favicon(path.resolve(__dirname, "client", "build", "favicon.ico")));
-
 server.use(cookieParser());
 server.use(express.urlencoded({ extended: false }));
 server.use(express.json());
@@ -62,6 +62,11 @@ server.get("/admin", (req, res) => {
 });
 server.get("*", (req, res) => {
   res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
+});
+
+//to centeralize Errors handling
+server.use((err, req, res, next) => {
+  handleError(err, res);
 });
 
 //REMEMBER TO KEEP THIS AT THE END (BECAUSE IT USES res.end())

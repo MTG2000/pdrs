@@ -1,7 +1,7 @@
 const sqlQueries = require("./sql-queries");
 const argon = require("argon2");
 const path = require("path");
-const Constants = require("../Utils/Constants");
+const Constants = require("../helpers/Constants");
 
 const seedOptions = {
   usersTypes: true,

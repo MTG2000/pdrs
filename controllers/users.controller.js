@@ -1,183 +1,134 @@
-const repository = require("../repositories/users.repository");
-const authService = require("../services/auth");
-const argon = require("argon2");
-const SendResponse = require("../Utils/SendResponse");
-const Validation = require("../services/Validation");
-
-const sha256 = require("crypto-js/sha256");
+const Response = require("../helpers/response");
+const UsersService = require("../ApplicationLayer/users");
 
 class Controller {
-  getAllUsers = async (req, res) => {
-    const users = await repository.getAllUsers();
-    SendResponse.JsonData(res, users);
+  getAllUsers = async (req, res, next) => {
+    try {
+      const users = await UsersService.getAllUsers();
+      res.send(new Response.Data(users));
+    } catch (error) {
+      next(error);
+    }
   };
 
-  loginUser = async (req, res) => {
+  loginUser = async (req, res, next) => {
     //Verify credentials
-    const { username, password } = req.body;
 
-    const user = await repository.getUserByUsername(username);
-
-    if (!user || !(await argon.verify(user.Password, password)))
-      //User Doesn't exist or wrong credentials
-      return SendResponse.JsonFailed(res, "Invalid Credentials");
-
-    if (!user.IsActive)
-      return SendResponse.JsonFailed(
-        res,
-        "Account De-Activated",
-        "please contact the admins for info"
+    try {
+      const { username, password } = req.body;
+      const { accessToken, response } = await UsersService.login(
+        username,
+        password
       );
-
-    const name = await repository.getUserRealName(user.Id);
-    const accessToken = await authService.generateAccessToken({
-      username: user.Username,
-      role: user.Type
-    });
-    //update refresh token
-    const refreshToken = sha256(Math.random().toString()).toString();
-
-    await repository.updateUserToken(user.Id, refreshToken);
-    //set cookie with the token
-    res.cookie("accessToken", accessToken, {
-      secure: false, // set to true if your using https
-      httpOnly: true
-    });
-
-    SendResponse.JsonSuccess(res, "Logged-In Successfully", "", {
-      username: user.Username,
-      role: user.Type,
-      accessToken,
-      refreshToken,
-      ...name
-    });
+      //set cookie with the token
+      res.cookie("accessToken", accessToken, {
+        secure: false, // set to true if your using https
+        httpOnly: true
+      });
+      res.send(
+        new Response.Data({ ...response }, "Logged-In Successfully", "")
+      );
+    } catch (error) {
+      next(error);
+    }
   };
 
-  getPatient = async (req, res) => {
-    const { id } = req.query;
-    const patinet = await repository.getPatient(id);
-    if (patinet) SendResponse.JsonData(res, patinet);
-    else SendResponse.JsonNotFound(res);
+  getPatient = async (req, res, next) => {
+    try {
+      const { id } = req.query;
+      const patient = await UsersService.getPatient(id);
+      res.send(new Response.Data(patient));
+    } catch (error) {
+      next(error);
+    }
   };
 
   registerUser = async (req, res, next) => {
     try {
-      const { username, password: passwordRaw, type, contact } = req.body;
-      await Validation.registerUser(req.body);
+      const {
+        username,
+        password: passwordRaw,
+        type,
+        contact,
+        doctorName,
+        pharmacyName,
+        address
+      } = req.body;
 
-      const password = await argon.hash(passwordRaw);
-      if (type === "Doctor") {
-        const { doctorName } = req.body;
-        const doctorId = await repository.insertDoctor(
-          username,
-          password,
-          doctorName,
-          contact
-        );
-        SendResponse.JsonCreated(res, "Doctor Created Successfully");
-        next();
-        return;
-      } else if (type === "Pharmacy") {
-        const { pharmacyName, address } = req.body;
-        const pharmacyId = await repository.insertPharmacy(
-          username,
-          password,
-          pharmacyName,
-          address,
-          contact
-        );
-        SendResponse.JsonCreated(res, "Pharmacy Created Successfully");
-        next();
-        return;
-      } else if (type === "Admin") {
-        //Logic for inserting Admin
-      }
-      res.failed = true;
-      SendResponse.JsonFailed(res, "Type Not Valid");
-      next();
+      await UsersService.registerUser(username, passwordRaw, type, contact, {
+        doctorName,
+        pharmacyName,
+        address
+      });
+      res.send(new Response.Success("User Registered Successfully"));
     } catch (error) {
-      res.failed = true;
-      SendResponse.JsonFailed(res, "Could Not Register User");
-      next();
+      next(error);
     }
   };
 
   toggleUserActiveState = async (req, res, next) => {
     try {
       const { id } = req.body;
-      await repository.toggleUserActiveState(id);
-      SendResponse.JsonSuccess(res, "User Active state change successfully");
+      await UsersService.toggleUserActive(id);
+      res.send(new Response.Success("Active Statuse Changed"));
     } catch (error) {
-      SendResponse.JsonFailed(res, "Something Wrong Happened");
+      next(error);
     }
   };
 
   requestAccount = async (req, res, next) => {
     try {
       const { name, type, phone, email } = req.body;
-      await repository.addAccountRequest(name, type, phone, email);
-      SendResponse.JsonSuccess(res, "Your Request Was Sent Successfully");
+      await UsersService.requestAccount(name, type, phone, email);
+      res.send(new Response.Success("Your Request Was Sent Successfully"));
     } catch (error) {
-      SendResponse.JsonFailed(res, "Something Wrong Happened");
+      next(error);
     }
   };
 
   getMessagesCategories = async (req, res, next) => {
     try {
-      const msgsCategories = await repository.getMessagesCategories();
-      SendResponse.JsonData(res, msgsCategories);
+      const msgsCategories = await UsersService.getMessagesCategories();
+      res.send(new Response.Data(msgsCategories));
     } catch (error) {
-      SendResponse.JsonFailed(res, "Something Wrong Happened");
+      next(error);
     }
   };
 
   addNewMessage = async (req, res, next) => {
     try {
       const { category, content } = req.body;
-      const userId = (await repository.getUserByUsername(req.user.username)).Id;
-      await repository.addMessage(userId, category, content);
-      SendResponse.JsonSuccess(res, "Your Message was sent successfully");
+      const username = req.user.username;
+      await UsersService.addNewMessage(username, category, content);
+      res.send(new Response.Success("Your Message Was Sent Successfully"));
     } catch (error) {
-      SendResponse.JsonFailed(res, "Something Wrong Happened");
+      next(error);
     }
   };
 
-  logout = async (req, res) => {
-    res.clearCookie("accessToken");
-    const userId = (await repository.getUserByUsername(req.user.username)).Id;
-    repository.updateUserToken(userId, null);
-    SendResponse.JsonSuccess(res, "Logged Out Successfully");
+  logout = async (req, res, next) => {
+    try {
+      res.clearCookie("accessToken");
+      await UsersService.logout(req.user.username);
+      res.send(new Response.Success("Logged Out Successfully"));
+    } catch (error) {
+      next(error);
+    }
   };
 
-  refreshToken = async (req, res) => {
+  refreshToken = async (req, res, next) => {
     try {
-      const refreshToken = req.body.refreshToken;
-      const username = req.body.username;
+      const { refreshToken, username } = req.body;
 
-      const currentToken = await repository.getRefreshToken(username);
+      const result = await UsersService.refreshToken(refreshToken, username);
 
-      //Token Valid
-      if (currentToken === refreshToken) {
-        const newRefreshToken = sha256(currentToken).toString();
-        const user = await repository.getUserByUsername(username);
-
-        const accessToken = await authService.generateAccessToken({
-          username,
-          role: user.Type
-        });
-        await repository.updateUserToken(user.Id, newRefreshToken);
-
-        res.cookie("accessToken", accessToken, {
-          secure: false, // set to true if your using https
-          httpOnly: true
-        });
-        SendResponse.JsonData(res, { refreshToken: newRefreshToken });
-      } else {
-        //Token Already Changed
-        SendResponse.JsonFailed(res);
-      }
+      res.cookie("accessToken", result.accessToken, {
+        secure: false, // set to true if your using https
+        httpOnly: true
+      });
+      res.send(new Response.Data({ refreshToken: result.refreshToken }));
     } catch (error) {
-      SendResponse.JsonFailed(res);
+      next(error);
     }
   };
 }
