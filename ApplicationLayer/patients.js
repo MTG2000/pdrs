@@ -32,7 +32,7 @@ class PatientsService {
     }
     const doctorId = await UsersDomain.getDoctorId(username);
     if (!doctorId || medicins.length === 0 || note.trim().length < 5)
-      throw new ErrorHandler(400, "Invalid Data");
+      throw new ErrorHandler(400, "Info Required");
     const prescriptionId = await PatientsDomain.newPrescription(
       patientId,
       doctorId,

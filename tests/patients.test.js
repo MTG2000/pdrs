@@ -47,7 +47,6 @@ describe("Testing Patients Api", () => {
       ]
     });
     res.should.have.status(201);
-    res.body.data.should.be.a("object");
   });
 
   it("it should not add invalid prescriptions (invalid med id)", async () => {

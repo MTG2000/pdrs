@@ -2,16 +2,16 @@ const Response = require("../helpers/response");
 const UsersService = require("../ApplicationLayer/users");
 
 class Controller {
-  getAllUsers = async (req, res, next) => {
+  async getAllUsers(req, res, next) {
     try {
       const users = await UsersService.getAllUsers();
       res.send(new Response.Data(users));
     } catch (error) {
       next(error);
     }
-  };
+  }
 
-  loginUser = async (req, res, next) => {
+  async loginUser(req, res, next) {
     //Verify credentials
 
     try {
@@ -25,15 +25,16 @@ class Controller {
         secure: false, // set to true if your using https
         httpOnly: true
       });
+
       res.send(
         new Response.Data({ ...response }, "Logged-In Successfully", "")
       );
     } catch (error) {
       next(error);
     }
-  };
+  }
 
-  getPatient = async (req, res, next) => {
+  async getPatient(req, res, next) {
     try {
       const { id } = req.query;
       const patient = await UsersService.getPatient(id);
@@ -41,9 +42,9 @@ class Controller {
     } catch (error) {
       next(error);
     }
-  };
+  }
 
-  registerUser = async (req, res, next) => {
+  async registerUser(req, res, next) {
     try {
       const {
         username,
@@ -60,14 +61,16 @@ class Controller {
         pharmacyName,
         address
       });
-      res.send(new Response.Success("User Registered Successfully"));
+      res
+        .status(201)
+        .send(new Response.Success("User Registered Successfully"));
       next();
     } catch (error) {
       next(error);
     }
-  };
+  }
 
-  toggleUserActiveState = async (req, res, next) => {
+  async toggleUserActiveState(req, res, next) {
     try {
       const { id } = req.body;
       await UsersService.toggleUserActive(id);
@@ -75,9 +78,9 @@ class Controller {
     } catch (error) {
       next(error);
     }
-  };
+  }
 
-  requestAccount = async (req, res, next) => {
+  async requestAccount(req, res, next) {
     try {
       const { name, type, phone, email } = req.body;
       await UsersService.requestAccount(name, type, phone, email);
@@ -85,18 +88,18 @@ class Controller {
     } catch (error) {
       next(error);
     }
-  };
+  }
 
-  getMessagesCategories = async (req, res, next) => {
+  async getMessagesCategories(req, res, next) {
     try {
       const msgsCategories = await UsersService.getMessagesCategories();
       res.send(new Response.Data(msgsCategories));
     } catch (error) {
       next(error);
     }
-  };
+  }
 
-  addNewMessage = async (req, res, next) => {
+  async addNewMessage(req, res, next) {
     try {
       const { category, content } = req.body;
       const username = req.user.username;
@@ -105,9 +108,9 @@ class Controller {
     } catch (error) {
       next(error);
     }
-  };
+  }
 
-  logout = async (req, res, next) => {
+  async logout(req, res, next) {
     try {
       res.clearCookie("accessToken");
       await UsersService.logout(req.user.username);
@@ -115,9 +118,9 @@ class Controller {
     } catch (error) {
       next(error);
     }
-  };
+  }
 
-  refreshToken = async (req, res, next) => {
+  async refreshToken(req, res, next) {
     try {
       const { refreshToken, username } = req.body;
 
@@ -131,7 +134,7 @@ class Controller {
     } catch (error) {
       next(error);
     }
-  };
+  }
 }
 
 module.exports = new Controller();

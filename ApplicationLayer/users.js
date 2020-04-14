@@ -56,7 +56,12 @@ class UserAppService {
   }
 
   async registerUser(username, passwordRaw, type, contact, additionalInfo) {
-    await Validation.registerUser({ username, passwordRaw, type, contact });
+    await Validation.registerUser({
+      username,
+      password: passwordRaw,
+      type,
+      contact
+    });
 
     const password = await argon.hash(passwordRaw);
     if (type === "Doctor") {

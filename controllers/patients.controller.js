@@ -33,9 +33,11 @@ class Controller {
         note
       );
 
-      res.send(
-        new Response.Success("Created", "Presecription Created Successfully")
-      );
+      res
+        .status(201)
+        .send(
+          new Response.Success("Created", "Presecription Created Successfully")
+        );
       next();
     } catch (error) {
       next(error);

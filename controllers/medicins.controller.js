@@ -25,6 +25,9 @@ class Controller {
     try {
       const { name } = req.body;
       await MedicinsService.newMedicine(name);
+      res
+        .status(201)
+        .send(new Response.Success("Success", "Medicine Added Successfully"));
     } catch (error) {
       next(error);
     }
