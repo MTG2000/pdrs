@@ -61,6 +61,7 @@ class Controller {
         address
       });
       res.send(new Response.Success("User Registered Successfully"));
+      next();
     } catch (error) {
       next(error);
     }

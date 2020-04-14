@@ -18,12 +18,11 @@ class ErrorHandler extends Error {
 
 const handleError = (err, res) => {
   //Send A response back to the client
-
   res
     .status(err.statusCode || 500)
     .json(err.response || { title: "Something Wrong Happened" });
   //Log the error
-  // console.log(err);
+  // console.log("err");
 };
 
 module.exports = {

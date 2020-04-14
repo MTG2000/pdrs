@@ -1,7 +1,6 @@
 const router = require("express").Router();
 const authMiddleware = require("../middleware/auth");
-const transactionBeginMiddleware = require("../middleware/sqlTransaction")
-  .transactionBegin;
+
 const controller = require("../controllers/admin.controller");
 
 router.get(

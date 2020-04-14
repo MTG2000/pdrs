@@ -7,7 +7,6 @@ const bodyParser = require("body-parser");
 const favicon = require("serve-favicon");
 const morgan = require("morgan");
 const compression = require("compression");
-const { handleError } = require("./helpers/error");
 
 require("dotenv").config();
 
@@ -64,12 +63,11 @@ server.get("*", (req, res) => {
   res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
 });
 
-//to centeralize Errors handling
-server.use((err, req, res, next) => {
-  handleError(err, res);
-});
-
 //REMEMBER TO KEEP THIS AT THE END (BECAUSE IT USES res.end())
-server.use(require("./middleware/sqlTransaction").transactionEnd);
+server.use(require("./middleware/sqlTransaction").transactionCommit);
+server.use(require("./middleware/sqlTransaction").transactionRollback);
+
+//to centeralize Errors handling
+server.use(require("./middleware/handleError"));
 
 module.exports = server;

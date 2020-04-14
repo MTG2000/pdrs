@@ -65,8 +65,11 @@ const dispenseMedicins = async (prescriptionId, medicins, pharmacyId) => {
   ]);
 
   if (
-    (await DB.queryAll(sqlQueries.getPrescriptionMedicinsToDispense)).length ===
-    0
+    (
+      await DB.queryAll(sqlQueries.getPrescriptionMedicinsToDispense, [
+        prescriptionId
+      ])
+    ).length === 0
   ) {
     await DB.run(sqlQueries.setPrescriptionDispensed, [prescriptionId]);
   }

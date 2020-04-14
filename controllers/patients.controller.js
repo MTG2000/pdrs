@@ -36,6 +36,7 @@ class Controller {
       res.send(
         new Response.Success("Created", "Presecription Created Successfully")
       );
+      next();
     } catch (error) {
       next(error);
     }
@@ -87,11 +88,16 @@ class Controller {
   dispenseMedicins = async (req, res, next) => {
     try {
       const { prescriptionId, medicins } = req.body;
-      await PatientsService.dispenseMedicins(prescriptionId, medicins);
+      await PatientsService.dispenseMedicins(
+        prescriptionId,
+        medicins,
+        req.user.username
+      );
 
       res.send(
         new Response.Success("Success", "Medicins Dispenesed Successfully")
       );
+      next();
     } catch (error) {
       next(error);
     }
@@ -103,6 +109,7 @@ class Controller {
 
       await PatientsService.stopChronicMedicine(prescriptionId, medicineId);
       res.send(new Response.Success());
+      next();
     } catch (error) {
       next(error);
     }

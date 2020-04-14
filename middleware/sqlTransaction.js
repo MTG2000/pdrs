@@ -15,26 +15,36 @@ const transactionBegin = async (req, res, next) => {
   }
 };
 
-const transactionEnd = async (req, res, next) => {
+const transactionCommit = async (req, res, next) => {
   // console.log("Transaction End");
 
   try {
     if (!req.transactionBegin) {
-      res.end();
       next();
       return;
     }
-
-    if (res.failed) {
-      await rollbackTransaction();
-    } else {
-      await commitTransaction();
-    }
-    res.end();
+    await commitTransaction();
     next();
   } catch (error) {
     rollbackTransaction();
+    next(error);
   }
 };
 
-module.exports = { transactionBegin, transactionEnd };
+const transactionRollback = async (err, req, res, next) => {
+  // console.log("Transaction End");
+
+  try {
+    if (!req.transactionBegin) {
+      next(err);
+      return;
+    }
+    await rollbackTransaction();
+    next(err);
+  } catch (error) {
+    rollbackTransaction();
+    next(error);
+  }
+};
+
+module.exports = { transactionBegin, transactionCommit, transactionRollback };

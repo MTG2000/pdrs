@@ -6,12 +6,7 @@ const controller = require("../controllers/medicins.controller");
 
 router.get("/classifications", controller.getClassifications);
 
-router.post(
-  "/new",
-  authMiddleware(["Admin"]),
-  transactionBeginMiddleware,
-  controller.newMedicine
-);
+router.post("/new", authMiddleware(["Admin"]), controller.newMedicine);
 
 router.get("/", authMiddleware(), controller.getMedicins);
 
