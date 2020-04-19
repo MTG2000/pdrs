@@ -31,7 +31,12 @@ class PatientsService {
       await UsersDomain.newPatient(patientId, patientName);
     }
     const doctorId = await UsersDomain.getDoctorId(username);
-    if (!doctorId || medicins.length === 0 || note.trim().length < 5)
+    if (
+      !doctorId ||
+      medicins.length === 0 ||
+      note.trim().length < 5 ||
+      note.trim().length > 350
+    )
       throw new ErrorHandler(400, "Info Required");
     const prescriptionId = await PatientsDomain.newPrescription(
       patientId,

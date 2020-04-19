@@ -76,9 +76,11 @@ class AppStore {
   async Logout() {
     try {
       await axios.get("/api/users/logout");
+    } catch (error) {
+    } finally {
       localStorage.clear();
       window.location = "/login";
-    } catch (error) {}
+    }
   }
 
   async FetchMessagesCategories() {

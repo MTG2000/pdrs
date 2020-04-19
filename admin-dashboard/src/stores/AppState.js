@@ -29,13 +29,10 @@ class AppState {
   async Logout() {
     try {
       await axios.get("/api/users/logout");
-      localStorage.clear();
-      window.location = "/";
     } catch (error) {
-      NotificationManager.error(
-        error.response.data.message,
-        error.response.data.title
-      );
+    } finally {
+      localStorage.clear();
+      window.location = "/login";
     }
   }
 }
