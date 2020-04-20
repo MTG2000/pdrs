@@ -7,13 +7,18 @@ import ScrollToTop from "./ScrollToTopController";
 import { BrowserRouter } from "react-router-dom";
 import "react-notifications/lib/notifications.css";
 import { ContextProvider } from "../stores/Context";
+import { GoogleReCaptchaProvider } from "react-google-recaptcha-v3";
 
 const AppWrapper = props => {
   return (
     <BrowserRouter>
       <ContextProvider>
         <ThemeProvider theme={theme}>
-          <ScrollToTop>{props.children}</ScrollToTop>
+          <ScrollToTop>
+            <GoogleReCaptchaProvider reCaptchaKey="6Lc05esUAAAAALzJgbFxf6KG-jY4EMjdY_Ifsxqt">
+              {props.children}
+            </GoogleReCaptchaProvider>
+          </ScrollToTop>
         </ThemeProvider>
       </ContextProvider>
     </BrowserRouter>

@@ -2,16 +2,18 @@ import React from "react";
 import { useState } from "react";
 import { TextField, Typography, Button } from "@material-ui/core";
 import SendIcon from "@material-ui/icons/Telegram";
+import { GoogleReCaptcha } from "react-google-recaptcha-v3";
 
 const RequestAccount = ({ store }) => {
   const [name, setName] = useState("");
   const [type, setType] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+  const [recaptcha, setRecaptcha] = useState("");
 
   const onSubmit = e => {
     e.preventDefault();
-    store.SendRequest(name, type, phone, email);
+    store.SendRequest(name, type, phone, email, recaptcha);
   };
 
   return (
@@ -66,6 +68,8 @@ const RequestAccount = ({ store }) => {
           value={email}
           onChange={e => setEmail(e.target.value)}
         />
+        <GoogleReCaptcha onVerify={token => setRecaptcha(token)} />
+
         <div className="col-12 py-4 row justify-content-center">
           <Button type="submit" variant="contained" color="primary">
             Send Request <SendIcon className="ml-2" />

@@ -4,6 +4,7 @@ const Validation = require("../services/Validation");
 const UsersDomain = require("../DomainLayer/users.repository");
 const { ErrorHandler } = require("../helpers/error");
 const sha256 = require("crypto-js/sha256");
+const Axios = require("axios");
 
 class UserAppService {
   async getAllUsers() {
@@ -90,7 +91,15 @@ class UserAppService {
     await UsersDomain.toggleUserActiveState(id);
   }
 
-  async requestAccount(name, type, phone, email) {
+  async requestAccount(name, type, phone, email, recaptcha) {
+    const secret_key = process.env.RECAPTCHA_SECRET;
+    const url = `https://www.google.com/recaptcha/api/siteverify?secret=${secret_key}&response=${recaptcha}`;
+
+    const res = await Axios.post(url);
+    if (!res.data.success)
+      //recaptcha failed
+      throw new ErrorHandler(400, "Recaptcha Failed", "Please try again");
+
     await UsersDomain.addAccountRequest(name, type, phone, email);
   }
 

@@ -21,6 +21,10 @@ input[type="number"] {
   -moz-appearance: textfield; /* Firefox */
 }
 
+.grecaptcha-badge {
+  visibility: collapse !important;
+}
+
 //Classification Filters
 .classification-icon {
   width: 90px;

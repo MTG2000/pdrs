@@ -82,8 +82,8 @@ class Controller {
 
   async requestAccount(req, res, next) {
     try {
-      const { name, type, phone, email } = req.body;
-      await UsersService.requestAccount(name, type, phone, email);
+      const { name, type, phone, email, recaptcha } = req.body;
+      await UsersService.requestAccount(name, type, phone, email, recaptcha);
       res.send(new Response.Success("Your Request Was Sent Successfully"));
     } catch (error) {
       next(error);

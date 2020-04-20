@@ -55,13 +55,14 @@ class AppStore {
     }
   }
 
-  async SendRequest(name, type, phone, email) {
+  async SendRequest(name, type, phone, email, recaptcha) {
     try {
       await axios.post("/api/users/request-account", {
         name,
         type,
         phone,
-        email
+        email,
+        recaptcha
       });
 
       NotificationManager.success(" Your Request was sent successfuly");
