@@ -7,6 +7,7 @@ import Axios from "axios";
     fetchUrl:'/api/users',
     *queryName:'username',
     *handleSelect:()=>{},
+    *autoFocus:true||false
     *mapOptionsToValues:()=>{},
     *classes:'',
     *isMulti:'',
@@ -19,7 +20,6 @@ class SearchableSelect extends React.Component {
       selectedOption: this.props.defaultValue
     };
     this.getOptions = _.debounce(this.getOptions.bind(this), 500);
-
     this.CancelToken = Axios.CancelToken;
     this.source = this.CancelToken.source();
   }
@@ -29,6 +29,9 @@ class SearchableSelect extends React.Component {
     this.setState({
       selectedOption: ""
     });
+
+    if (this.props.autoFocus) this.refs.input.focus();
+
     if (this.props.actionOnSelectedOption) {
       this.props.actionOnSelectedOption(selectedOption.value);
     }
@@ -64,10 +67,15 @@ class SearchableSelect extends React.Component {
       .catch(err => {});
   };
 
+  // componentDidMount() {
+  //   this.inputElem = this.refs.input;
+  // }
+
   render() {
     const { defaultOptions, placeholder, inputId } = this.props;
     return (
       <AsyncSelect
+        ref="input"
         className={this.props.classes}
         isMulti={this.props.isMulti}
         inputId={inputId}

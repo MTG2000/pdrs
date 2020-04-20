@@ -5,8 +5,7 @@ import Delete from "@material-ui/icons/Delete";
 const useStyle = makeStyles({
   root: () => ({
     background: "#FFF",
-    boxShadow: "3px 3px 10px #999",
-    borderRadius: 8,
+    borderBottom: "1px solid #999",
     borderWidth: "1px !important"
   }),
   icon: {
@@ -24,11 +23,11 @@ const MedicineCard = ({
   const classes = useStyle();
 
   return (
-    <div className="col-12 mb-2 mx-2">
+    <div className="mb-">
       <div
         className={`${classes.root} mx-auto px-2 py-2 row justify-content-between `}
       >
-        <h4 className="mb-0 align-self-center">{name}</h4>
+        <h5 className="mb-0 align-self-center">{name}</h5>
         <div className="col-12 ml-auto col-sm-auto row justify-content-end align-items-center">
           <Checkbox
             color="primary"

@@ -2,7 +2,7 @@ const Response = require("../helpers/response");
 const MedicinsService = require("../ApplicationLayer/medicins");
 
 class Controller {
-  getMedicins = async (req, res) => {
+  getMedicins = async (req, res, next) => {
     try {
       const { name = "" } = req.query;
       const medicins = await MedicinsService.getMedicins(name);
@@ -12,7 +12,7 @@ class Controller {
     }
   };
 
-  getClassifications = async (req, res) => {
+  getClassifications = async (req, res, next) => {
     try {
       const classifications = await MedicinsService.getClassifications();
       res.send(new Response.Data(classifications));

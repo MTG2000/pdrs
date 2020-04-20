@@ -7,27 +7,29 @@ const MedicinsList = ({ store }) => {
 
   return (
     <div
-      className="row justify-content-center mx-auto col-md-6"
-      style={{ maxWidth: 500 }}
+      className="row justify-content-center align-content-start mx-auto col-12"
+      style={{ minHeight: 400 }}
     >
-      <div className="col-12 row justify-content-between">
-        <label className="ml-2">Medicine Name</label>
+      <div className="col-12 px-0 row justify-content-between">
+        <label className="">Medicine Name</label>
         <div>
           <label className="mx-1">Chronic</label>
-          <label className="mx-1 mr-4 mr-xs-5">Bold</label>
+          <label className="mx-1 mr-4">Bold</label>
         </div>
       </div>
-      {medicins.map((m, i) => {
-        return (
-          <MedicineCard
-            key={m.value}
-            name={m.label}
-            onRemove={() => store.RemoveMedicin(i)}
-            onToggleBold={() => store.ToggleBold(i)}
-            onToggleChronic={() => store.ToggleChronic(i)}
-          />
-        );
-      })}
+      <div className=" w-100">
+        {medicins.map((m, i) => {
+          return (
+            <MedicineCard
+              key={m.value}
+              name={m.label}
+              onRemove={() => store.RemoveMedicin(i)}
+              onToggleBold={() => store.ToggleBold(i)}
+              onToggleChronic={() => store.ToggleChronic(i)}
+            />
+          );
+        })}
+      </div>
     </div>
   );
 };

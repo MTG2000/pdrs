@@ -12,6 +12,7 @@ import ActionBtn from "../Shared/ActionBtn";
 import LoadingMini from "../Shared/LoadingMini";
 import ClassificationsFilter from "../Shared/ClassificationsFilter";
 import LoadingPage from "../Shared/LoadingPage";
+import MedicinsPaper from "./Partials/MedicinsPaper";
 
 const NewPrescription = () => {
   const { NewPrescriptionStore } = useContext(mainContext);
@@ -33,10 +34,7 @@ const NewPrescription = () => {
 
       <ClassificationsFilter store={store} />
       <PrescriptionNote store={store} />
-      <div className="row">
-        <MedicinSelect store={store} />
-        <MedicinsList store={store} />
-      </div>
+      <MedicinsPaper store={store} />
       <div className="row justify-content-center py-3">
         <ActionBtn loading={store.submitingPrescription}>
           <Button
