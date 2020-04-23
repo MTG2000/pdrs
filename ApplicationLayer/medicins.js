@@ -6,7 +6,6 @@ const getMedicins = async (name = "") => {
 };
 
 const getClassifications = async () => {
-  throw new Error("Unhandled");
   return await MedicinsDomain.getClassifications();
 };
 

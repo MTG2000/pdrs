@@ -62,6 +62,7 @@ const RequestAccount = ({ store }) => {
           label="Your Email"
           placeholder="user@gmail.com"
           type="email"
+          required
           className="col-12 col-md-55 mb-3"
           color="primary"
           variant="outlined"

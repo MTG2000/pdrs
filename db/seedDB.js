@@ -27,6 +27,7 @@ module.exports = async (_run, _get, _log = false) => {
     log = _log;
 
     log && console.log("Seeding Started");
+    generateRandomPrescriptions();
 
     await usersTypes();
     await users();
@@ -151,106 +152,142 @@ let seedData = {
     { name: "Ear" },
     { name: "Sex" }
   ],
-  prescriptions: [
-    {
-      doctorId: 1,
-      patientId: "02114432341",
-      classification: 1,
-      note: "The Patient sufferd from an Intense Heart Attack"
-    },
-    {
-      doctorId: 1,
-      patientId: "02114432341",
-      classification: 3,
-      note: "A car accident that cause a lot of damage to the head"
-    },
-    {
-      doctorId: 2,
-      patientId: "02114443115",
-      classification: 2,
-      note: "An accident that caused an arm break"
-    }
-  ],
-  medsPrescriptions: [
-    {
-      id: 1,
-      meds: [
-        {
-          id: 2,
-          bold: false,
-          chronic: false
-        },
-        {
-          id: 4,
-          bold: false,
-          chronic: false
-        },
-        {
-          id: 5,
-          bold: true,
-          chronic: true,
-          pharmacyId: 1
-        },
-        {
-          id: 7,
-          bold: false,
-          chronic: false,
-          pharmacyId: 1
-        }
-      ]
-    },
-    {
-      id: 2,
-      meds: [
-        {
-          id: 3,
-          bold: false,
-          chronic: false,
-          pharmacyId: 1
-        },
-        {
-          id: 5,
-          bold: false,
-          chronic: false,
-          pharmacyId: 1
-        },
-        {
-          id: 6,
-          bold: false,
-          chronic: false,
-          pharmacyId: 1
-        }
-      ]
-    },
-    {
-      id: 3,
-      meds: [
-        {
-          id: 5,
-          bold: false,
-          chronic: false
-        },
-        {
-          id: 1,
-          bold: false,
-          chronic: false,
-          pharmacyId: 1
-        },
-        {
-          id: 9,
-          bold: false,
-          chronic: false,
-          pharmacyId: 1
-        },
-        {
-          id: 8,
-          bold: false,
-          chronic: false
-        }
-      ]
-    }
-  ]
+  prescriptions: [],
+  medsPrescriptions: []
 };
+
+const conditions = [
+  {
+    classification: 2,
+    note: "An accident that caused an arm break"
+  },
+  {
+    classification: 2,
+    note: "A break in the skull"
+  },
+  {
+    classification: 1,
+    note: "A Seroious Heart Attack"
+  },
+  {
+    classification: 1,
+    note: "Open Heart surgery"
+  },
+  {
+    classification: 3,
+    note: "An accident that caused a brain damage"
+  },
+  {
+    classification: 3,
+    note: "A Shock to the brain"
+  },
+  {
+    classification: 4,
+    note: "cant see clearly due to long working hours on computer (IT student)"
+  },
+  {
+    classification: 4,
+    note: "blury sight"
+  },
+  {
+    classification: 5,
+    note: "Severe pain due to rotten food"
+  },
+  {
+    classification: 5,
+    note: "Stomach wash due to poisoning"
+  },
+  {
+    classification: 6,
+    note: "Cosmetic surgery for the jaw"
+  },
+  {
+    classification: 6,
+    note: "Decay in wisdom tooth"
+  },
+  {
+    classification: 7,
+    note: "Severe kidney failure"
+  },
+  {
+    classification: 7,
+    note: "A Kidney failure that cause a poisoning"
+  },
+  {
+    classification: 8,
+    note: "Covid-23 ( a new form of corona virus )"
+  },
+  {
+    classification: 8,
+    note: "Shortness of breath"
+  },
+  {
+    classification: 9,
+    note: "An ant entered the ear while sleeping on the floor"
+  },
+  {
+    classification: 9,
+    note: "cant hear properly due to long usage of earphones"
+  },
+  {
+    classification: 10,
+    note: "Not able to become pregnant"
+  },
+  {
+    classification: 10,
+    note: "Ovarian deformation"
+  }
+];
+
+function generateRandomPrescriptions() {
+  // Generate Prescription
+  const numOfDoctors = seedData.users.filter(u => u.userType === 2).length;
+  const numOfPharmacies = seedData.users.filter(u => u.userType === 3).length;
+
+  for (const patient of seedData.patients) {
+    const numOfPrescriptions = getRndInteger(3, 7);
+    for (let i = 0; i < numOfPrescriptions; i++) {
+      const doctorId = getRndInteger(0, numOfDoctors) + 1;
+
+      const randomCondition = conditions[getRndInteger(0, conditions.length)];
+      const newPrescription = {
+        doctorId,
+        patientId: patient.id,
+        ...randomCondition
+      };
+
+      seedData.prescriptions.push(newPrescription);
+    }
+  }
+  // Generate Meds for prescriptions
+  for (let i = 0; i < seedData.prescriptions.length; i++) {
+    // generate a number between 3 and 6
+    const numberOfMedsToGenerate = getRndInteger(3, 7);
+    const medsObject = {};
+    const pharmacy = getRndInteger(0, numOfPharmacies) + 1;
+
+    for (let i = 0; i < numberOfMedsToGenerate; i++) {
+      const medId = getRndInteger(1, seedData.medicins.length + 1);
+      const bold = Math.random() > 0.8;
+      const chronic = Math.random() > 0.93;
+      let pharmacyId = null;
+      if (Math.random() > 0.33) pharmacyId = pharmacy;
+      medsObject[medId] = { bold, chronic, pharmacyId };
+    }
+    seedData.medsPrescriptions.push({
+      id: i + 1,
+      meds: Object.entries(medsObject).map(([medId, props]) => ({
+        id: medId,
+        ...props
+      }))
+    });
+  }
+}
+
+//min Included, max excluded
+function getRndInteger(min, max) {
+  return Math.floor(Math.random() * (max - min)) + min;
+}
 
 const usersTypes = async () => {
   const { usersTypes } = seedData;

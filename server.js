@@ -49,7 +49,7 @@ server.use("/api/admin", require("./routes/admin.route"));
 (async () => {
   if (server.get("env") === "test") return; //Initialize the db is done in the test setup file
   if (server.get("env") === "development")
-    await DB.initializeDB(false, false, false);
+    await DB.initializeDB(true, true, true);
   else await DB.initializeDB(false, false, false);
 })();
 
