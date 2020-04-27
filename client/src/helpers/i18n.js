@@ -6,7 +6,7 @@ import home_ar from "../langs/ar/home.json";
 import common_en from "../langs/en/common.json";
 import common_ar from "../langs/ar/common.json";
 
-const lang = localStorage.getItem("lang") || "ar";
+const lang = localStorage.getItem("lang") || "en";
 
 if (lang === "ar") configureForArabic();
 

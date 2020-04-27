@@ -9,13 +9,11 @@ body {
 .text-left {
   text-align: right !important;
 }
-.ml-auto,
-.mx-auto {
+.ml-auto {
   margin-right: auto !important;
-  margin-left: 0 !important;
+  margin-left: initial !important;
 }
-.mr-auto,
-.mx-auto {
+.mr-auto {
   margin-left: auto !important;
-  margin-right: 0 !important;
+  margin-right: initial !important;
 }
