@@ -2,7 +2,11 @@ import { createMuiTheme } from "@material-ui/core";
 
 const primaryColor = "#007ebe";
 
+let direction = "rtl";
+if (localStorage.getItem("lang") === "ar") direction = "rtl";
+
 export const theme = createMuiTheme({
+  direction,
   typography: {
     fontFamily: [
       "Titillium Web",

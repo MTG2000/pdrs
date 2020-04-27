@@ -15,6 +15,14 @@ class AppStore {
     this.pharmacyName = localStorage.getItem("pharmacyName") || undefined;
   }
 
+  clearStorage() {
+    localStorage.removeItem("username");
+    localStorage.removeItem("user-role");
+    localStorage.removeItem("doctorName");
+    localStorage.removeItem("pharmacyName");
+    localStorage.removeItem("refreshToken");
+  }
+
   async Login(username, password) {
     try {
       const res = await axios.post("/api/users/login", { username, password });
@@ -23,7 +31,7 @@ class AppStore {
       runInAction(() => {
         let redirectUrl = "/";
         this.role = data.role;
-        localStorage.clear();
+        this.clearStorage();
         localStorage.setItem("refreshToken", data.refreshToken);
         localStorage.setItem("username", data.username);
         localStorage.setItem("user-role", this.role);
@@ -79,7 +87,7 @@ class AppStore {
       await axios.get("/api/users/logout");
     } catch (error) {
     } finally {
-      localStorage.clear();
+      this.clearStorage();
       window.location = "/login";
     }
   }

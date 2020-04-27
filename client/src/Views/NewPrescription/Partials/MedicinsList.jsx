@@ -1,9 +1,11 @@
 import React from "react";
 import MedicineCard from "./MedicineCard";
 import { observer } from "mobx-react";
+import { useTranslation } from "react-i18next";
 
 const MedicinsList = ({ store }) => {
   const medicins = store.medicins;
+  const { t } = useTranslation("common");
 
   return (
     <div
@@ -11,10 +13,10 @@ const MedicinsList = ({ store }) => {
       style={{ minHeight: 400 }}
     >
       <div className="col-12 px-0 row justify-content-between">
-        <label className="">Medicine Name</label>
+        <label className="">{t("med name")}</label>
         <div>
-          <label className="mx-1">Chronic</label>
-          <label className="mx-1 mr-4">Bold</label>
+          <label className="mx-1">{t("chronic")}</label>
+          <label className="mx-1 mr-4">{t("bold")}</label>
         </div>
       </div>
       <div className=" w-100">

@@ -1,10 +1,21 @@
 import React from "react";
 import { Navbar, Nav, NavLink } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import LanguageIcon from "@material-ui/icons/Language";
 
 const Header = ({ store }) => {
   const username = store.username;
   const role = store.role;
+
+  const changeLanguage = () => {
+    if (localStorage.getItem("lang") === "ar")
+      localStorage.setItem("lang", "en");
+    else localStorage.setItem("lang", "ar");
+    window.location.reload();
+  };
+
+  const { t } = useTranslation("common");
 
   return (
     <Navbar
@@ -22,37 +33,37 @@ const Header = ({ store }) => {
         <Nav className="ml-auto text-white">
           {role === "Doctor" && (
             <Link className="nav-link text-white" to="/new-prescription">
-              New Prescription
+              {t("new prescription")}
             </Link>
           )}
           {role === "Pharmacy" && (
             <Link className="nav-link text-white" to="/dispense-prescription">
-              Dispense Prescription
+              {t("dispense prescription")}
             </Link>
           )}
           {role === "Doctor" && (
             <Link className="nav-link text-white" to="/patients-prescriptions">
-              Patinets Prescriptions
+              {t("patient prescriptions")}
             </Link>
           )}
           {role === "Admin" && (
             <NavLink className="nav-link text-white" href="/admin">
-              Admin Dashboard
+              {t("admin dashboard")}
             </NavLink>
           )}
           {username && role !== "Admin" && (
             <Link className="nav-link text-white" to="/contact">
-              Technical Support
+              {t("technical support")}
             </Link>
           )}
           {!username && (
             <Link className="nav-link text-white" to="/about">
-              About{" "}
+              {t("about")}
             </Link>
           )}
           {!username ? (
             <Link className="nav-link text-white" to="/login">
-              Login
+              {t("login")}
             </Link>
           ) : (
             <Link
@@ -62,9 +73,16 @@ const Header = ({ store }) => {
                 await store.Logout();
               }}
             >
-              Logout
+              {t("logout")}
             </Link>
           )}
+          <a
+            className="nav-link text-white"
+            href="javascript:void(0)"
+            onClick={changeLanguage}
+          >
+            <LanguageIcon />
+          </a>
         </Nav>
       </Navbar.Collapse>
     </Navbar>

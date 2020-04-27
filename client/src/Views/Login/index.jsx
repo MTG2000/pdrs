@@ -7,6 +7,7 @@ import {
   Button
 } from "@material-ui/core";
 import { mainContext } from "../../stores/Context";
+import { useTranslation } from "react-i18next";
 const useStyle = makeStyles({
   input: theme => ({
     borderColor: `${theme.palette.primary.main} !important`,
@@ -22,6 +23,8 @@ const LoginPage = () => {
 
   const { AppStore } = useContext(mainContext);
   const [store] = useState(AppStore);
+
+  const { t } = useTranslation("common");
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -41,7 +44,7 @@ const LoginPage = () => {
         color="primary"
         className="mb-5 col-12 text-center"
       >
-        Who are you again ??
+        {t("who are you")}
       </Typography>
       <form
         onSubmit={handleSubmit}
@@ -50,10 +53,11 @@ const LoginPage = () => {
       >
         <TextField
           id="username"
-          label="User Name"
+          label={t("username")}
           value={username}
           onChange={e => setUsername(e.target.value)}
           variant="outlined"
+          required
           color="primary"
           className={`${classes.input} mx-auto mb-3 col-12 `}
           InputProps={{
@@ -64,11 +68,12 @@ const LoginPage = () => {
         />
         <TextField
           id="password"
-          label="Password"
+          label={t("password")}
           type="password"
           value={password}
           onChange={e => setPassword(e.target.value)}
           variant="outlined"
+          required
           color="primary"
           className={`${classes.input} mx-auto mb-3 col-12 `}
           InputProps={{
@@ -84,7 +89,7 @@ const LoginPage = () => {
             color="primary"
             size="large"
           >
-            Login
+            {t("login")}
           </Button>
         </div>
       </form>

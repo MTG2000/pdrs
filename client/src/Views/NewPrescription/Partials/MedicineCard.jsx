@@ -28,7 +28,7 @@ const MedicineCard = ({
         className={`${classes.root} mx-auto px-2 py-2 row justify-content-between `}
       >
         <h5 className="mb-0 align-self-center">{name}</h5>
-        <div className="col-12 ml-auto col-sm-auto row justify-content-end align-items-center">
+        <div className="col-12 ml-auto  col-sm-auto row justify-content-end align-items-center">
           <Checkbox
             color="primary"
             inputProps={{ "aria-label": "secondary checkbox" }}

@@ -5,10 +5,12 @@ import { mainContext } from "../../stores/Context";
 import { observer } from "mobx-react";
 import { Container } from "@material-ui/core";
 import RequestAccount from "./Partials/RequestAccount";
+import { useTranslation } from "react-i18next";
 
 const Home = () => {
   const { AppStore } = useContext(mainContext);
   const [store] = useState(AppStore);
+  const { t } = useTranslation("home");
 
   return (
     <div>
@@ -17,10 +19,10 @@ const Home = () => {
         style={{ height: "90vh" }}
         className="row align-content-center justify-content-center"
       >
-        <h2 className="h1 text-white text-center">Welcome To PDR System </h2>
+        <h2 className="h1 text-white text-center">{t("welcome to pdr")} </h2>
         {!store.username && (
           <p className="text-white col-12 text-center mt-4">
-            login with your account and start using the system now
+            {t("login to start")}
           </p>
         )}
         {store.doctorName && (

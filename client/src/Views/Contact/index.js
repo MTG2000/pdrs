@@ -13,12 +13,14 @@ import { mainContext } from "../../stores/Context";
 import { useEffect } from "react";
 import { observer } from "mobx-react";
 import SendIcon from "@material-ui/icons/Telegram";
+import { useTranslation } from "react-i18next";
 
 const Contact = () => {
   const { AppStore } = useContext(mainContext);
   const [store] = useState(AppStore);
   const [category, setCategory] = useState("");
   const [msg, setMsg] = useState("");
+  const { t } = useTranslation("common");
 
   useEffect(() => {
     store.FetchMessagesCategories();
@@ -32,12 +34,10 @@ const Contact = () => {
   return (
     <Container className="py-5">
       <Typography variant="h4" color="primary" align="center">
-        We are here to help
+        {t("we are here to help")}
       </Typography>
       <Typography variant="h6" align="center">
-        Need A new medicine added, new classification, improvment proposal,
-        found a bug in the system, or even just wanting to chat we will read
-        your message and do our best to help
+        {t("how we can help")}
       </Typography>
 
       <form
@@ -46,13 +46,13 @@ const Contact = () => {
         onSubmit={onSubmit}
       >
         <FormControl className="w-100" variant="outlined" required>
-          <InputLabel id="msg-category">Message Category</InputLabel>
+          <InputLabel id="msg-category">{t("message category")}</InputLabel>
           <Select
             labelId="msg-category"
             required
             value={category}
             onChange={e => setCategory(e.target.value)}
-            label="Message Category"
+            label={t("message category")}
           >
             {store.messagesCategories.length === 0 && (
               <MenuItem value={""}>Loading Categories</MenuItem>
@@ -65,7 +65,7 @@ const Contact = () => {
           </Select>
         </FormControl>
         <TextField
-          label="Your Message"
+          label={t("your message")}
           type="text"
           required
           multiline
@@ -78,7 +78,7 @@ const Contact = () => {
         />
         <div className="col-12 py-4 row mx-0 justify-content-center">
           <Button type="submit" variant="contained" color="primary">
-            Send Message <SendIcon className="ml-2" />
+            {t("send message")} <SendIcon className="ml-2" />
           </Button>
         </div>
       </form>

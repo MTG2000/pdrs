@@ -13,10 +13,12 @@ import LoadingMini from "../Shared/LoadingMini";
 import ClassificationsFilter from "../Shared/ClassificationsFilter";
 import LoadingPage from "../Shared/LoadingPage";
 import MedicinsPaper from "./Partials/MedicinsPaper";
+import { useTranslation } from "react-i18next";
 
 const NewPrescription = () => {
   const { NewPrescriptionStore } = useContext(mainContext);
   const [store] = useState(new NewPrescriptionStore());
+  const { t } = useTranslation("common");
 
   useEffect(() => {
     store.FetchClassifications();
@@ -42,7 +44,7 @@ const NewPrescription = () => {
             color="primary"
             onClick={() => store.SubmitPrescription()}
           >
-            <span className="content">Submit Prescription</span>
+            <span className="content">{t("submit prescription")}</span>
             <div className="loading">
               <LoadingMini color={"#FFF"} />
             </div>

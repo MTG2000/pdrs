@@ -6,6 +6,7 @@ Improve The Overall UI
 Client Side Validation
 make the redirection better
 use computed in stores
+service worker for offline
 
 -- BackEnd
 Server Side Validation
