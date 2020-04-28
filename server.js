@@ -28,7 +28,7 @@ server.use(
   "/api/",
   rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 100
+    max: 100,
   })
 );
 server.use(express.static(path.join(__dirname, "static")));
@@ -73,7 +73,7 @@ server.use(require("./middleware/sqlTransaction").transactionRollback);
 server.use(require("./middleware/handleError"));
 
 //Handling uncaught excpentions
-process.on("uncaughtException", err => {
+process.on("uncaughtException", (err) => {
   console.error(`Uncaught Exception: ${err}`);
   process.exit(1);
 });

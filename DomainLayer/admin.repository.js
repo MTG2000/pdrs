@@ -27,6 +27,10 @@ class Repository {
   markAccountRequestRead = async id => {
     await DB.run(sqlQueries.markAccountRequestRead, [id]);
   };
+
+  getAllPrescriptionsAfter = async date => {
+    return await DB.queryAll(sqlQueries.getPrescriptionsAfterDate, [date]);
+  };
 }
 
 module.exports = new Repository();

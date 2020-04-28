@@ -262,7 +262,7 @@ CREATE TABLE IF NOT EXISTS Medicine_Prescription
 );`;
 
   insert_Prescription = `
-INSERT INTO Prescriptions (Doctor_Id,Patient_Id,Classification_Id,Pre_Date,Description) VALUES (?,?,?,datetime('now'),?);
+INSERT INTO Prescriptions (Doctor_Id,Patient_Id,Classification_Id,Pre_Date,Description) VALUES (?,?,?,?,?);
 `;
 
   insert_MedicinePrescription = `
@@ -273,6 +273,14 @@ INSERT INTO Medicine_Prescription (Medicine_ID,Prescription_ID,isBold,isChronic,
 select p.Id , p.Doctor_Id , p.Description as Note, p.Pre_Date as Prescription_Date , c.Id as Classification_Id , c.Name as Classification_Name , c.ImageUrl as ClassificationIconUrl , patients.Name as Patient_Name 
 from prescriptions p , Classifications c , Patients patients
  where patient_id = ? and p.Classification_Id = c.id and p.Patient_Id = patients.Id
+`;
+
+  getPrescriptionsAfterDate = `
+  SELECT strftime("%Y-%m", Pre_Date) as Date,
+  count(*) as Count from Prescriptions
+ where Pre_Date > ?
+ group by strftime("%m-%Y", Pre_Date)
+ ORDER by Date DESC 
 `;
 
   getPatientPrescriptionsToDispense = `
@@ -382,7 +390,7 @@ where Id = ?
     "Delete from Medicins",
     "Delete from Classifications",
     "Delete from Prescriptions",
-    "Delete from Medicine_Prescription"
+    "Delete from Medicine_Prescription",
   ];
 
   dropAllTabels = `
@@ -403,7 +411,7 @@ where Id = ?
     this.createTable_MedicinePrescription,
     this.createTable_MessageCategories,
     this.createTable_Messages,
-    this.createTable_AccountRequests
+    this.createTable_AccountRequests,
   ];
 }
 

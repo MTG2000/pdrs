@@ -1,5 +1,6 @@
 const DB = require("../services/db").DB;
 const sqlQueries = require("../db/sql-queries");
+const date = require("date-and-time");
 
 const newPrescription = async (patientId, doctorId, classification, note) => {
   return (
@@ -7,6 +8,7 @@ const newPrescription = async (patientId, doctorId, classification, note) => {
       doctorId,
       patientId,
       classification,
+      date.format(new Date(), "YYYY-MM-DD"),
       note
     ])
   ).lastID;

@@ -2,6 +2,7 @@ const sqlQueries = require("./sql-queries");
 const argon = require("argon2");
 const path = require("path");
 const Constants = require("../helpers/Constants");
+const date = require("date-and-time");
 
 const seedOptions = {
   usersTypes: true,
@@ -15,7 +16,7 @@ const seedOptions = {
   medicins: true,
   classifications: true,
   prescriptions: true,
-  medicinsPrescriptions: true
+  medicinsPrescriptions: true,
 };
 
 let run, get, log;
@@ -57,14 +58,14 @@ let seedData = {
       username: "ahmad",
       password: "123123",
       doctorName: "Ahmad Ghazal",
-      contact: "0983663451"
+      contact: "0983663451",
     },
     {
       userType: 2,
       username: "morad",
       password: "123123",
       doctorName: "Morad Niazi",
-      contact: "0931163451"
+      contact: "0931163451",
     },
     {
       userType: 3,
@@ -72,57 +73,65 @@ let seedData = {
       password: "123123",
       pharmacyName: "Al-Fateh",
       pharmacyLocation: "Aleppo Al-Jamelia",
-      contact: "fatehpharm@gmail.com"
-    }
+      contact: "fatehpharm@gmail.com",
+    },
   ],
   msgCategories: [
     "Add Medinice",
     "Add Classification",
     "Report a Problem",
     "Suggest a Feature",
-    "Something Else"
+    "Something Else",
   ],
   accountRequests: [
     {
       name: "Ahmad Abdullah",
       type: "Mental Doctor",
       phone: "0978647344",
-      email: "ahmadabd@gmail.com"
+      email: "ahmadabd@gmail.com",
     },
     {
       name: "Alaa Mouraoui",
       type: "Pharmacian",
-      phone: "0978643114"
-    }
+      phone: "0978643114",
+    },
   ],
   messages: [
     {
       userId: 3,
       category: 2,
-      content: "Please add the classification 'Phsycology'"
+      content: "Please add the classification 'Phsycology'",
     },
     {
       userId: 4,
       category: 3,
-      content: "Hello admin, please Improve the Overall UI"
+      content: "Hello admin, please Improve the Overall UI",
     },
     {
       userId: 3,
       category: 1,
-      content: "Please Add Medicine 'Ativan'"
+      content: "Please Add Medicine 'Ativan'",
     },
     {
       userId: 2,
       category: 4,
       content:
-        "If you can add a feature to enable us ot see some meds usage statistics"
-    }
+        "If you can add a feature to enable us ot see some meds usage statistics",
+    },
   ],
   patients: [
     { id: "02114432341", name: "Fadi Tahan" },
     { id: "02114443115", name: "Basim Yakhoor" },
     { id: "02116674324", name: "Abd-Alhadi Issa" },
-    { id: "02996753455", name: "Shahed Ibraheem" }
+    { id: "02996753455", name: "Shahed Ibraheem" },
+    { id: "11223311334", name: "Osama Hamdan" },
+    { id: "02144455190", name: "Reem Shahba" },
+    { id: "09576577557", name: "Yara Sleem" },
+    { id: "16367891342", name: "Feras Ashhab" },
+    { id: "75645613497", name: "Abd-allah Tahan" },
+    { id: "64734566635", name: "Nour Safi" },
+    { id: "77356555662", name: "Riham Mouna" },
+    { id: "13334144445", name: "Rana Saeed" },
   ],
   medicins: [
     { name: "Sitamol" },
@@ -138,7 +147,7 @@ let seedData = {
     { name: "Ibuprofen" },
     { name: "Cymbalta" },
     { name: "Doxycycline" },
-    { name: "Lorazepam" }
+    { name: "Lorazepam" },
   ],
   classifications: [
     { name: "Heart" },
@@ -150,102 +159,106 @@ let seedData = {
     { name: "Kidney" },
     { name: "Lungs" },
     { name: "Ear" },
-    { name: "Sex" }
+    { name: "Sex" },
   ],
   prescriptions: [],
-  medsPrescriptions: []
+  medsPrescriptions: [],
 };
 
 const conditions = [
   {
     classification: 2,
-    note: "An accident that caused an arm break"
+    note: "An accident that caused an arm break",
   },
   {
     classification: 2,
-    note: "A break in the skull"
+    note: "A break in the skull",
   },
   {
     classification: 1,
-    note: "A Seroious Heart Attack"
+    note: "A Seroious Heart Attack",
   },
   {
     classification: 1,
-    note: "Open Heart surgery"
+    note: "Open Heart surgery",
   },
   {
     classification: 3,
-    note: "An accident that caused a brain damage"
+    note: "An accident that caused a brain damage",
   },
   {
     classification: 3,
-    note: "A Shock to the brain"
+    note: "A Shock to the brain",
   },
   {
     classification: 4,
-    note: "cant see clearly due to long working hours on computer (IT student)"
+    note: "cant see clearly due to long working hours on computer (IT student)",
   },
   {
     classification: 4,
-    note: "blury sight"
+    note: "blury sight",
   },
   {
     classification: 5,
-    note: "Severe pain due to rotten food"
+    note: "Severe pain due to rotten food",
   },
   {
     classification: 5,
-    note: "Stomach wash due to poisoning"
+    note: "Stomach wash due to poisoning",
   },
   {
     classification: 6,
-    note: "Cosmetic surgery for the jaw"
+    note: "Cosmetic surgery for the jaw",
   },
   {
     classification: 6,
-    note: "Decay in wisdom tooth"
+    note: "Decay in wisdom tooth",
   },
   {
     classification: 7,
-    note: "Severe kidney failure"
+    note: "Severe kidney failure",
   },
   {
     classification: 7,
-    note: "A Kidney failure that cause a poisoning"
+    note: "A Kidney failure that cause a poisoning",
   },
   {
     classification: 8,
-    note: "Covid-23 ( a new form of corona virus )"
+    note: "Covid-23 ( a new form of corona virus )",
   },
   {
     classification: 8,
-    note: "Shortness of breath"
+    note: "Shortness of breath",
   },
   {
     classification: 9,
-    note: "An ant entered the ear while sleeping on the floor"
+    note: "An ant entered the ear while sleeping on the floor",
   },
   {
     classification: 9,
-    note: "cant hear properly due to long usage of earphones"
+    note: "cant hear properly due to long usage of earphones",
   },
   {
     classification: 10,
-    note: "Not able to become pregnant"
+    note: "Not able to become pregnant",
   },
   {
     classification: 10,
-    note: "Ovarian deformation"
-  }
+    note: "Ovarian deformation",
+  },
 ];
 
 function generateRandomPrescriptions() {
   // Generate Prescription
-  const numOfDoctors = seedData.users.filter(u => u.userType === 2).length;
-  const numOfPharmacies = seedData.users.filter(u => u.userType === 3).length;
+  const numOfDoctors = seedData.users.filter((u) => u.userType === 2).length;
+  const numOfPharmacies = seedData.users.filter((u) => u.userType === 3).length;
+
+  let startDate = new Date();
+  startDate.setFullYear(startDate.getFullYear() - 1);
+  let endDate = new Date();
 
   for (const patient of seedData.patients) {
-    const numOfPrescriptions = getRndInteger(3, 7);
+    const numOfPrescriptions = getRndInteger(4, 15);
     for (let i = 0; i < numOfPrescriptions; i++) {
       const doctorId = getRndInteger(0, numOfDoctors) + 1;
 
@@ -253,7 +266,8 @@ function generateRandomPrescriptions() {
       const newPrescription = {
         doctorId,
         patientId: patient.id,
-        ...randomCondition
+        date: date.format(randomDate(startDate, endDate), "YYYY-MM-DD"),
+        ...randomCondition,
       };
 
       seedData.prescriptions.push(newPrescription);
@@ -278,8 +292,8 @@ function generateRandomPrescriptions() {
       id: i + 1,
       meds: Object.entries(medsObject).map(([medId, props]) => ({
         id: medId,
-        ...props
-      }))
+        ...props,
+      })),
     });
   }
 }
@@ -287,6 +301,11 @@ function generateRandomPrescriptions() {
 //min Included, max excluded
 function getRndInteger(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
+}
+
+function randomDate(start, end) {
+  var date = new Date(+start + Math.random() * (end - start));
+  return date;
 }
 
 const usersTypes = async () => {
@@ -319,7 +338,7 @@ const users = async () => {
         userTypeId,
         u.username,
         passwordHash,
-        u.contact
+        u.contact,
       ])
     ).lastID;
   }
@@ -405,7 +424,7 @@ const pharmacies = async () => {
         await run(sqlQueries.insert_Pharmacy, [
           u.pharmacyName,
           u.pharmacyLocation,
-          u.id
+          u.id,
         ])
       ).lastID;
     }
@@ -437,7 +456,7 @@ const classifications = async () => {
         path.join(
           Constants.classificationsIconsPath,
           `${c.name.toLowerCase()}.svg`
-        )
+        ),
       ])
     ).lastID;
   }
@@ -456,7 +475,8 @@ const prescriptions = async () => {
       p.doctorId,
       p.patientId,
       p.classification,
-      p.note
+      p.date.toString(),
+      p.note,
     ]);
   }
 };
@@ -476,7 +496,7 @@ const medicinsPrescriptions = async () => {
         mp.id,
         m.bold,
         m.chronic,
-        m.pharmacyId
+        m.pharmacyId,
       ]);
     }
   }

@@ -3,17 +3,19 @@ import AppState from "./AppState";
 import DashboardStore from "./DashboardStore";
 import ManageUsersStore from "./ManageUsersStore";
 import ManageMedicinsStore from "./ManageMedicinsStore";
+import StatisticsStore from "./StatisticsStore";
 
 export const mainContext = React.createContext();
 
-export const ContextProvider = props => {
+export const ContextProvider = (props) => {
   return (
     <mainContext.Provider
       value={{
         AppState,
         DashboardStore,
         ManageUsersStore,
-        ManageMedicinsStore
+        ManageMedicinsStore,
+        StatisticsStore,
       }}
     >
       {props.children}

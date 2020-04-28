@@ -21,6 +21,8 @@ router.post(
   controller.markMessageRead
 );
 
+router.get("/prescriptions-usage", controller.getPrescriptionsUsage);
+
 router.post(
   "/read-account-request",
   authMiddleware(["Admin"]),
