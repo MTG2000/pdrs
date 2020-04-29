@@ -20,16 +20,20 @@ class Repository {
     return msgsDTO.reverse();
   };
 
-  markMessageRead = async id => {
+  markMessageRead = async (id) => {
     await DB.run(sqlQueries.markMessageRead, [id]);
   };
 
-  markAccountRequestRead = async id => {
+  markAccountRequestRead = async (id) => {
     await DB.run(sqlQueries.markAccountRequestRead, [id]);
   };
 
-  getAllPrescriptionsAfter = async date => {
+  getAllPrescriptionsAfter = async (date) => {
     return await DB.queryAll(sqlQueries.getPrescriptionsAfterDate, [date]);
+  };
+
+  getPrescriptionsPerClassificationCount = async () => {
+    return await DB.queryAll(sqlQueries.getPrescriptionsPerClassificationCount);
   };
 }
 

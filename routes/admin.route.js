@@ -23,6 +23,11 @@ router.post(
 
 router.get("/prescriptions-usage", controller.getPrescriptionsUsage);
 
+router.get(
+  "/prescriptions-per-classification-count",
+  controller.getPrescriptionsPerClassificationCount
+);
+
 router.post(
   "/read-account-request",
   authMiddleware(["Admin"]),

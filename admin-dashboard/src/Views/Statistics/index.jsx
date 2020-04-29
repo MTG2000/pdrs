@@ -5,6 +5,7 @@ import Tab from "@material-ui/core/Tab";
 import { Box, Typography, Paper } from "@material-ui/core";
 import SystemUsage from "./Partials/SystemUsage";
 import { mainContext } from "../../stores/Context";
+import PrescriptionsPerClassification from "./Partials/PrescriptionsPerClassification";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -53,20 +54,20 @@ const Statistics = () => {
             value="system-usage"
             label="System Usage"
             wrapped
-            {...a11yProps("one")}
+            {...a11yProps("system-usage")}
           />
-          <Tab value="two" label="Item Two" {...a11yProps("two")} />
-          <Tab value="three" label="Item Three" {...a11yProps("three")} />
+          <Tab
+            value="prescription/classification"
+            label="Prescriptions/Classification"
+            {...a11yProps("prescription/classification")}
+          />
         </Tabs>
       </Paper>
       <TabPanel value={value} index="system-usage">
         <SystemUsage store={store} />
       </TabPanel>
-      <TabPanel value={value} index="two">
-        Item Two
-      </TabPanel>
-      <TabPanel value={value} index="three">
-        Item Three
+      <TabPanel value={value} index="prescription/classification">
+        <PrescriptionsPerClassification store={store} />
       </TabPanel>
     </Container>
   );

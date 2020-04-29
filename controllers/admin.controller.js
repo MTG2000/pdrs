@@ -48,6 +48,15 @@ class Controller {
       next(error);
     }
   };
+
+  getPrescriptionsPerClassificationCount = async (req, res, next) => {
+    try {
+      const result = await AdminService.getPrescriptionsPerClassificationCount();
+      res.send(new Response.Data(result));
+    } catch (error) {
+      next(error);
+    }
+  };
 }
 
 module.exports = new Controller();

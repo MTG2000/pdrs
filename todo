@@ -13,9 +13,9 @@ Server Side Validation
 New Classification
 private prescriptions 
 try to get a working email service
-
+add options to statistics
 
 *
 improve compromise detection for refresh token
 set cookies security to true
-remove token from response
+

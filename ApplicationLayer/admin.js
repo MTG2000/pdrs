@@ -42,6 +42,10 @@ class AdminService {
 
     return result;
   };
+
+  getPrescriptionsPerClassificationCount = async () => {
+    return await AdminDomain.getPrescriptionsPerClassificationCount();
+  };
 }
 
 module.exports = new AdminService();

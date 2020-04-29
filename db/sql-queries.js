@@ -275,14 +275,6 @@ from prescriptions p , Classifications c , Patients patients
  where patient_id = ? and p.Classification_Id = c.id and p.Patient_Id = patients.Id
 `;
 
-  getPrescriptionsAfterDate = `
-  SELECT strftime("%Y-%m", Pre_Date) as Date,
-  count(*) as Count from Prescriptions
- where Pre_Date > ?
- group by strftime("%m-%Y", Pre_Date)
- ORDER by Date DESC 
-`;
-
   getPatientPrescriptionsToDispense = `
 select p.Id , p.Doctor_Id , p.Description as Note, p.Pre_Date as Prescription_Date , c.Id as Classification_Id , c.Name as Classification_Name , c.ImageUrl as ClassificationIconUrl , patients.Name as Patient_Name 
 from prescriptions p , Classifications c , Patients patients
@@ -299,6 +291,21 @@ from prescriptions p , Classifications c , Patients patients
   update Prescriptions
   set IsDispensed = '1'
   where ID = ?
+`;
+
+  getPrescriptionsAfterDate = `
+SELECT strftime("%Y-%m", Pre_Date) as Date,
+count(*) as Count from Prescriptions
+where Pre_Date > ?
+group by strftime("%m-%Y", Pre_Date)
+ORDER by Date DESC 
+`;
+
+  getPrescriptionsPerClassificationCount = `
+SELECT count(p.Id) as Count , c.Name 
+from Classifications c left outer join Prescriptions p 
+on c.Id = p.Classification_Id 
+group by Classification_Id
 `;
 
   //AccountRequests
