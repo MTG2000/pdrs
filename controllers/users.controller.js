@@ -23,7 +23,7 @@ class Controller {
       //set cookie with the token
       res.cookie("accessToken", accessToken, {
         secure: false, // set to true if your using https
-        httpOnly: true
+        httpOnly: true,
       });
 
       res.send(
@@ -53,13 +53,13 @@ class Controller {
         contact,
         doctorName,
         pharmacyName,
-        address
+        address,
       } = req.body;
 
       await UsersService.registerUser(username, passwordRaw, type, contact, {
         doctorName,
         pharmacyName,
-        address
+        address,
       });
       res
         .status(201)
@@ -128,9 +128,14 @@ class Controller {
 
       res.cookie("accessToken", result.accessToken, {
         secure: false, // set to true if your using https
-        httpOnly: true
+        httpOnly: true,
       });
-      res.send(new Response.Data({ refreshToken: result.refreshToken }));
+      res.send(
+        new Response.Data({
+          accessToken: result.accessToken,
+          refreshToken: result.refreshToken,
+        })
+      );
     } catch (error) {
       next(error);
     }
