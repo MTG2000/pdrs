@@ -2,13 +2,8 @@ import React, { useEffect } from "react";
 import { observer } from "mobx-react";
 import { Bar } from "react-chartjs-2";
 import LoadingPage from "../../Shared/LoadingPage";
+import DatePicker from "react-date-picker";
 import date from "date-and-time";
-import "date-fns";
-import DateFnsUtils from "@date-io/date-fns";
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker,
-} from "@material-ui/pickers";
 import { Grid, Button } from "@material-ui/core";
 
 const initialData = {
@@ -60,39 +55,23 @@ const PrescriptionsPerClassification = ({ store }) => {
   return (
     <div>
       <h2>Prescriptions Per Classification</h2>
-      <MuiPickersUtilsProvider utils={DateFnsUtils}>
-        <Grid container justify="center" alignItems="center">
-          <KeyboardDatePicker
-            disableToolbar
-            className="mx-4"
-            variant="inline"
-            format="MM/dd/yyyy"
-            margin="normal"
-            label="From"
-            value={startDate}
-            onChange={(date) => setStartDate(date)}
-            KeyboardButtonProps={{
-              "aria-label": "change date",
-            }}
-          />
-          <KeyboardDatePicker
-            disableToolbar
-            variant="inline"
-            className="mx-4"
-            format="MM/dd/yyyy"
-            margin="normal"
-            label="To"
-            value={endDate}
-            onChange={(date) => setEndDate(date)}
-            KeyboardButtonProps={{
-              "aria-label": "change date",
-            }}
-          />
-          <Button variant="contained" color="primary" onClick={getData}>
-            Go
-          </Button>
-        </Grid>
-      </MuiPickersUtilsProvider>
+      <Grid container justify="center" alignItems="center">
+        from:{" "}
+        <DatePicker
+          className="mx-3"
+          value={startDate}
+          onChange={(date) => setStartDate(date)}
+        />
+        to:{" "}
+        <DatePicker
+          className="mx-3"
+          value={endDate}
+          onChange={(date) => setEndDate(date)}
+        />
+        <Button variant="contained" color="primary" onClick={getData}>
+          Go
+        </Button>
+      </Grid>
       <Bar
         data={data}
         width={100}

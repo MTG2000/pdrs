@@ -308,6 +308,18 @@ on c.Id = p.Classification_Id and p.Pre_Date> ? and p.Pre_Date < ?
 group by Classification_Id
 `;
 
+  getMedicinsUsage = `
+SELECT   mp.Medicine_Id , m.Name , count(mp.Medicine_Id) as Count 
+FROM Prescriptions p , Medicine_Prescription mp , Medicins m
+where p.id = mp.Prescription_Id
+and m.id = mp.Medicine_Id 
+and Pre_Date > ? 
+and Pre_Date < ?
+GROUP by mp.Medicine_Id
+ORDER by Count DESC
+limit ?
+`;
+
   //AccountRequests
   //---------------
 

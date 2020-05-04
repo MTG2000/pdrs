@@ -1,6 +1,5 @@
 const router = require("express").Router();
 const authMiddleware = require("../middleware/auth");
-
 const controller = require("../controllers/admin.controller");
 
 router.get(
@@ -21,10 +20,22 @@ router.post(
   controller.markMessageRead
 );
 
-router.get("/prescriptions-usage", controller.getPrescriptionsUsage);
+router.get(
+  "/prescriptions-usage",
+  authMiddleware(["Admin"]),
+  controller.getPrescriptionsUsage
+);
+
+router.get(
+  "/medicins-usage",
+  authMiddleware(["Admin"]),
+  controller.getMedicinsUsage
+);
 
 router.get(
   "/prescriptions-per-classification-count",
+  authMiddleware(["Admin"]),
+
   controller.getPrescriptionsPerClassificationCount
 );
 

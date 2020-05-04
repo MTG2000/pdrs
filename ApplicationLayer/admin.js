@@ -46,6 +46,10 @@ class AdminService {
   getPrescriptionsPerClassificationCount = async (from, to) => {
     return await AdminDomain.getPrescriptionsPerClassificationCount(from, to);
   };
+
+  getMedicinsUsageCount = async (from, to) => {
+    return await AdminDomain.getMedicinsUsageCount(from, to);
+  };
 }
 
 module.exports = new AdminService();

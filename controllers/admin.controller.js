@@ -61,6 +61,16 @@ class Controller {
       next(error);
     }
   };
+
+  getMedicinsUsage = async (req, res, next) => {
+    try {
+      const { from, to } = req.query;
+      const result = await AdminService.getMedicinsUsageCount(from, to);
+      res.send(new Response.Data(result));
+    } catch (error) {
+      next(error);
+    }
+  };
 }
 
 module.exports = new Controller();

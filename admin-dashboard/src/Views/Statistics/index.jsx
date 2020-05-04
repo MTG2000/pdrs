@@ -6,6 +6,7 @@ import { Box, Paper } from "@material-ui/core";
 import SystemUsage from "./Partials/SystemUsage";
 import { mainContext } from "../../stores/Context";
 import PrescriptionsPerClassification from "./Partials/PrescriptionsPerClassification";
+import MedicinsUsage from "./Partials/MedicinsUsage";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -49,13 +50,17 @@ const Statistics = () => {
           <Tab
             value="system-usage"
             label="System Usage"
-            wrapped
             {...a11yProps("system-usage")}
           />
           <Tab
             value="prescription/classification"
             label="Prescriptions/Classification"
             {...a11yProps("prescription/classification")}
+          />{" "}
+          <Tab
+            value="medicins-usage"
+            label="Medicins Usage"
+            {...a11yProps("medicins-usage")}
           />
         </Tabs>
       </Paper>
@@ -64,6 +69,9 @@ const Statistics = () => {
       </TabPanel>
       <TabPanel value={value} index="prescription/classification">
         <PrescriptionsPerClassification store={store} />
+      </TabPanel>
+      <TabPanel value={value} index="medicins-usage">
+        <MedicinsUsage store={store} />
       </TabPanel>
     </Container>
   );

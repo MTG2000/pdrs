@@ -38,6 +38,10 @@ class Repository {
       [from, to]
     );
   };
+
+  getMedicinsUsageCount = async (from, to, limit = 10) => {
+    return await DB.queryAll(sqlQueries.getMedicinsUsage, [from, to, limit]);
+  };
 }
 
 module.exports = new Repository();
