@@ -51,7 +51,11 @@ class Controller {
 
   getPrescriptionsPerClassificationCount = async (req, res, next) => {
     try {
-      const result = await AdminService.getPrescriptionsPerClassificationCount();
+      const { from, to } = req.query;
+      const result = await AdminService.getPrescriptionsPerClassificationCount(
+        from,
+        to
+      );
       res.send(new Response.Data(result));
     } catch (error) {
       next(error);

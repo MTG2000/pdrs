@@ -304,7 +304,7 @@ ORDER by Date DESC
   getPrescriptionsPerClassificationCount = `
 SELECT count(p.Id) as Count , c.Name 
 from Classifications c left outer join Prescriptions p 
-on c.Id = p.Classification_Id 
+on c.Id = p.Classification_Id and p.Pre_Date> ? and p.Pre_Date < ?
 group by Classification_Id
 `;
 

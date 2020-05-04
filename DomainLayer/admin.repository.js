@@ -32,8 +32,11 @@ class Repository {
     return await DB.queryAll(sqlQueries.getPrescriptionsAfterDate, [date]);
   };
 
-  getPrescriptionsPerClassificationCount = async () => {
-    return await DB.queryAll(sqlQueries.getPrescriptionsPerClassificationCount);
+  getPrescriptionsPerClassificationCount = async (from, to) => {
+    return await DB.queryAll(
+      sqlQueries.getPrescriptionsPerClassificationCount,
+      [from, to]
+    );
   };
 }
 

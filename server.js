@@ -11,6 +11,7 @@ const compression = require("compression");
 const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
 require("dotenv").config();
+const authMiddleware = require("./middleware/auth");
 
 const dev = server.get("env") !== "production";
 morgan.token("user", (req, res) => {
@@ -48,7 +49,7 @@ server.use("/api/users", require("./routes/users.route"));
 server.use("/api/admin", require("./routes/admin.route"));
 
 //handle serving client apps
-server.get("/admin", (req, res) => {
+server.get("/admin", authMiddleware(["Admin"]), (req, res) => {
   res.sendFile(
     path.resolve(__dirname, "admin-dashboard", "build", "index.html")
   );

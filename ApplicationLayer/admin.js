@@ -43,8 +43,8 @@ class AdminService {
     return result;
   };
 
-  getPrescriptionsPerClassificationCount = async () => {
-    return await AdminDomain.getPrescriptionsPerClassificationCount();
+  getPrescriptionsPerClassificationCount = async (from, to) => {
+    return await AdminDomain.getPrescriptionsPerClassificationCount(from, to);
   };
 }
 

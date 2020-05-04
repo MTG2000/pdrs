@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import Container from "@material-ui/core/Container";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-import { Box, Typography, Paper } from "@material-ui/core";
+import { Box, Paper } from "@material-ui/core";
 import SystemUsage from "./Partials/SystemUsage";
 import { mainContext } from "../../stores/Context";
 import PrescriptionsPerClassification from "./Partials/PrescriptionsPerClassification";
@@ -17,11 +17,7 @@ function TabPanel(props) {
       aria-labelledby={`wrapped-tab-${index}`}
       {...other}
     >
-      {value === index && (
-        <Box p={3}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
+      {value === index && <Box p={3}>{children}</Box>}
     </div>
   );
 }

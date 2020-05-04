@@ -1,5 +1,6 @@
 import { observable, action, decorate, runInAction } from "mobx";
 import { NotificationManager } from "react-notifications";
+import date from "date-and-time";
 
 import axios from "axios";
 
@@ -21,15 +22,18 @@ class StatisticsStore {
     }
   }
 
-  async getPrescriptionsPerClassification() {
+  async getPrescriptionsPerClassification(from, to) {
     try {
-      if (this.prescriptionsPerClassification.length > 0) return;
-
       const res = await axios.get(
-        "/api/admin/prescriptions-per-classification-count"
+        "/api/admin/prescriptions-per-classification-count",
+        {
+          params: {
+            to: date.format(to, "YYYY-MM-DD"),
+            from: date.format(from, "YYYY-MM-DD"),
+          },
+        }
       );
       const { data } = res.data;
-      console.log(data);
 
       runInAction(() => {
         this.prescriptionsPerClassification = data;
