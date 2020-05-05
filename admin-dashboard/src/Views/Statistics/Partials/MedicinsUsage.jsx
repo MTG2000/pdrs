@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useCallback } from "react";
 import { observer } from "mobx-react";
 import { Bar } from "react-chartjs-2";
 import LoadingPage from "../../Shared/LoadingPage";
@@ -31,13 +31,13 @@ const MedicinsUsage = ({ store }) => {
     JSON.parse(JSON.stringify(initialData))
   );
 
-  const getData = () => {
+  const getData = useCallback(() => {
     store.getMedicinsUsage(startDate, endDate);
-  };
+  }, [store, startDate, endDate]);
 
   useEffect(() => {
     getData();
-  }, []);
+  }, [getData]);
 
   useEffect(() => {
     let temp = JSON.parse(JSON.stringify(initialData));

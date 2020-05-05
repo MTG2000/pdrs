@@ -1,5 +1,4 @@
 import { observable, action, decorate } from "mobx";
-import { NotificationManager } from "react-notifications";
 
 import axios from "axios";
 
@@ -41,7 +40,7 @@ decorate(AppState, {
   username: observable,
   role: observable,
   Logout: action,
-  ChangeWidth: action
+  ChangeWidth: action,
 });
 
 export default new AppState();

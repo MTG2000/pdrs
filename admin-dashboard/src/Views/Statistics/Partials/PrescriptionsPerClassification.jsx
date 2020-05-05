@@ -5,6 +5,7 @@ import LoadingPage from "../../Shared/LoadingPage";
 import DatePicker from "react-date-picker";
 import date from "date-and-time";
 import { Grid, Button } from "@material-ui/core";
+import { useCallback } from "react";
 
 const initialData = {
   labels: [],
@@ -31,13 +32,13 @@ const PrescriptionsPerClassification = ({ store }) => {
     JSON.parse(JSON.stringify(initialData))
   );
 
-  const getData = () => {
+  const getData = useCallback(() => {
     store.getPrescriptionsPerClassification(startDate, endDate);
-  };
+  }, [store, startDate, endDate]);
 
   useEffect(() => {
     getData();
-  }, []);
+  }, [getData]);
 
   useEffect(() => {
     let temp = JSON.parse(JSON.stringify(initialData));
