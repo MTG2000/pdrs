@@ -76,13 +76,14 @@ const Header = ({ store }) => {
               {t("logout")}
             </Link>
           )}
-          <a
-            className="nav-link text-white"
-            href="javascript:void(0)"
+          <button
+            href="#"
+            className="nav-link text-white border-0"
             onClick={changeLanguage}
+            style={{ backgroundColor: "transparent" }}
           >
             <LanguageIcon />
-          </a>
+          </button>
         </Nav>
       </Navbar.Collapse>
     </Navbar>

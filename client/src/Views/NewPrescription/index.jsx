@@ -2,8 +2,6 @@ import React, { useContext, useState, useEffect } from "react";
 import PatientIdInput from "./Partials/PatientIdInput";
 import { Box } from "@material-ui/core";
 import PrescriptionNote from "./Partials/PrescriptionNote";
-import MedicinSelect from "./Partials/MedicinSelect";
-import MedicinsList from "./Partials/MedicinsList";
 import { Button } from "@material-ui/core";
 import { mainContext } from "../../stores/Context";
 import { observer } from "mobx-react";

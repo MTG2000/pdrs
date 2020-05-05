@@ -6,6 +6,7 @@ import { observer } from "mobx-react";
 import { Container } from "@material-ui/core";
 import RequestAccount from "./Partials/RequestAccount";
 import { useTranslation } from "react-i18next";
+import About from "./Partials/About";
 
 const Home = () => {
   const { AppStore } = useContext(mainContext);
@@ -33,6 +34,7 @@ const Home = () => {
       </div>
       {!store.username && (
         <Container>
+          <About />
           <RequestAccount store={store} />
         </Container>
       )}
