@@ -4,11 +4,13 @@ class ErrorHandler extends Error {
   constructor(
     statusCode,
     title = "Something Wrong happened",
-    message = "please try again "
+    message = "please try again ",
+    err
   ) {
     super();
     this.statusCode = statusCode;
     this.response = new ErrorResponse(statusCode, title, message);
+    this.errorObject = err;
   }
 
   sendErrorResponse(res) {
