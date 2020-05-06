@@ -22,10 +22,10 @@ const handleError = (err, res) => {
     .status(err.statusCode || 400)
     .json(err.response || { title: "Something Wrong Happened" });
   //Log the error
-  // console.log("err");
+  console.log(err);
 };
 
 module.exports = {
   ErrorHandler,
-  handleError
+  handleError,
 };
