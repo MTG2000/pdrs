@@ -21,6 +21,18 @@ class Controller {
     }
   };
 
+  getConditions = async (req, res, next) => {
+    try {
+      const { classification = "" } = req.query;
+      const conditions = await MedicinsService.getConditionsByClassification(
+        classification
+      );
+      res.send(new Response.Data(conditions));
+    } catch (error) {
+      next(error);
+    }
+  };
+
   newMedicine = async (req, res, next) => {
     try {
       const { name } = req.body;

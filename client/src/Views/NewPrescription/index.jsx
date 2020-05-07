@@ -12,6 +12,7 @@ import ClassificationsFilter from "../Shared/ClassificationsFilter";
 import LoadingPage from "../Shared/LoadingPage";
 import MedicinsPaper from "./Partials/MedicinsPaper";
 import { useTranslation } from "react-i18next";
+import ConditionSelect from "./Partials/ConditionSelect";
 
 const NewPrescription = () => {
   const { NewPrescriptionStore } = useContext(mainContext);
@@ -33,6 +34,7 @@ const NewPrescription = () => {
       </Box>
 
       <ClassificationsFilter store={store} />
+      <ConditionSelect store={store} />
       <PrescriptionNote store={store} />
       <MedicinsPaper store={store} />
       <div className="row justify-content-center py-3">

@@ -2,6 +2,7 @@ import React from "react";
 import date from "date-and-time";
 import Check from "@material-ui/icons/Check";
 import Close from "@material-ui/icons/Close";
+import Note from "@material-ui/icons/Bookmark";
 import Tooltip from "@material-ui/core/Tooltip";
 
 /*{
@@ -44,18 +45,23 @@ const PrescriptionCard = ({ prescription }) => {
     "DD MMM"
   );
 
-  const note = prescription.Note;
-  const allowedNoteLength = 60;
   return (
     <div className="prescription-card mx-auto py-5">
-      <Tooltip title={<h6>{note}</h6>}>
-        <div className="note  bg-primary px-3 py-3">
-          <p className=" mb-0 ">
-            {note.slice(0, allowedNoteLength)}
-            {note.length > allowedNoteLength && "...."}
-          </p>
+      {prescription.Note ? (
+        <Tooltip title={<h6>{prescription.Note}</h6>}>
+          <div className="note  bg-primary px-3 py-3">
+            <p className=" mb-0 ">
+              {prescription.Condition} <Note />
+            </p>
+          </div>
+        </Tooltip>
+      ) : (
+        <div>
+          <div className="note  bg-primary px-3 py-3">
+            <p className=" mb-0 ">{prescription.Condition}</p>
+          </div>
         </div>
-      </Tooltip>
+      )}
       <div className="icon ">
         <img src={prescription.ClassificationIconUrl} alt="classification" />
       </div>

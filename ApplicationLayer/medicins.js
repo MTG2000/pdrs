@@ -9,7 +9,7 @@ const getClassifications = async () => {
   return await MedicinsDomain.getClassifications();
 };
 
-const newMedicine = async name => {
+const newMedicine = async (name) => {
   if (!name) throw new ErrorHandler(400, "Medicine doesn't have a name");
   const medicineExist = await MedicinsDomain.medicineExist(name);
   if (!medicineExist) {
@@ -17,4 +17,13 @@ const newMedicine = async name => {
   } else throw new ErrorHandler(400, "Medicine Already exist");
 };
 
-module.exports = { getMedicins, getClassifications, newMedicine };
+const getConditionsByClassification = async (classification) => {
+  return await MedicinsDomain.getConditionsByClassification(classification);
+};
+
+module.exports = {
+  getMedicins,
+  getClassifications,
+  newMedicine,
+  getConditionsByClassification,
+};

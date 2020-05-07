@@ -21,7 +21,8 @@ class Controller {
         patientName,
         medicins,
         classificationId,
-        note
+        conditionId,
+        note,
       } = req.body;
 
       await PatientsService.newPrescription(
@@ -30,6 +31,7 @@ class Controller {
         patientName,
         medicins,
         classificationId,
+        conditionId,
         note
       );
 
@@ -56,7 +58,7 @@ class Controller {
       res.send(
         new Response.Data({
           prescriptions: result.prescriptions,
-          chronicMedicins: result.chronicMedicins
+          chronicMedicins: result.chronicMedicins,
         })
       );
     } catch (error) {
@@ -74,7 +76,7 @@ class Controller {
       res.send(
         new Response.Data({
           prescriptions: result.prescriptions,
-          chronicMedicins: result.chronicMedicins
+          chronicMedicins: result.chronicMedicins,
         })
       );
     } catch (error) {

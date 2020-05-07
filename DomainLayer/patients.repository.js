@@ -2,14 +2,21 @@ const DB = require("../services/db").DB;
 const sqlQueries = require("../db/sql-queries");
 const date = require("date-and-time");
 
-const newPrescription = async (patientId, doctorId, classification, note) => {
+const newPrescription = async (
+  patientId,
+  doctorId,
+  classification,
+  conditionId,
+  note
+) => {
   return (
     await DB.run(sqlQueries.insert_Prescription, [
       doctorId,
       patientId,
       classification,
+      conditionId,
       date.format(new Date(), "YYYY-MM-DD"),
-      note
+      note,
     ])
   ).lastID;
 };
@@ -20,7 +27,7 @@ const addMedicinsToPrescription = async (prescriptionId, medicins) => {
       m.id,
       prescriptionId,
       m.isBold || "0",
-      m.isChronic || "0"
+      m.isChronic || "0",
     ]);
   }
 };
@@ -31,7 +38,7 @@ async function getPatientPrescriptions(patientId) {
 
 async function getPatientPrescriptionsToDispense(patientId) {
   return await DB.queryAll(sqlQueries.getPatientPrescriptionsToDispense, [
-    patientId
+    patientId,
   ]);
 }
 
@@ -41,35 +48,35 @@ async function getPatientPrescriptionsByClassification(
 ) {
   return await DB.queryAll(sqlQueries.getPatientPrescriptionsByClassification, [
     patientId,
-    classification
+    classification,
   ]);
 }
 
-const getPrescriptionMedicins = async prescriptionId => {
+const getPrescriptionMedicins = async (prescriptionId) => {
   return await DB.queryAll(sqlQueries.getPrescriptionMedicins, [
-    prescriptionId
+    prescriptionId,
   ]);
 };
 
-const getPrescriptionMedicinsToDispense = async prescriptionId => {
+const getPrescriptionMedicinsToDispense = async (prescriptionId) => {
   return await DB.queryAll(sqlQueries.getPrescriptionMedicinsToDispense, [
-    prescriptionId
+    prescriptionId,
   ]);
 };
 
 const dispenseMedicins = async (prescriptionId, medicins, pharmacyId) => {
-  if (!Array.isArray(medicins) || medicins.some(m => typeof m !== "number"))
+  if (!Array.isArray(medicins) || medicins.some((m) => typeof m !== "number"))
     throw Error("Invalid Medicins Ids");
 
   await DB.run(sqlQueries.dispenseMedicins + `(${medicins.join(",")})`, [
     pharmacyId,
-    prescriptionId
+    prescriptionId,
   ]);
 
   if (
     (
       await DB.queryAll(sqlQueries.getPrescriptionMedicinsToDispense, [
-        prescriptionId
+        prescriptionId,
       ])
     ).length === 0
   ) {
@@ -80,7 +87,7 @@ const dispenseMedicins = async (prescriptionId, medicins, pharmacyId) => {
 const stopChronicMedicine = async (prescriptionId, medicineId) => {
   return await DB.run(sqlQueries.stopChronincMedicine, [
     medicineId,
-    prescriptionId
+    prescriptionId,
   ]);
 };
 
@@ -93,5 +100,5 @@ module.exports = {
   getPatientPrescriptionsByClassification,
   dispenseMedicins,
   stopChronicMedicine,
-  getPatientPrescriptionsToDispense
+  getPatientPrescriptionsToDispense,
 };

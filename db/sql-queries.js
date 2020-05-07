@@ -228,6 +228,26 @@ INSERT INTO Classifications (Name,ImageUrl) VALUES (?,?);
 select * from Classifications ;
 `;
 
+  //Conditions
+  //-----------
+  createTable_Conditions = `
+CREATE TABLE IF NOT EXISTS Conditions  
+( 
+  Id  INTEGER PRIMARY KEY, 
+  Name VARCHAR(25) NOT NULL UNIQUE,
+  Classification_Id  INTEGER , 
+  FOREIGN KEY (Classification_Id) REFERENCES CLASSIFICATIONS (ID)
+); `;
+
+  insert_Condition = `
+  INSERT INTO Conditions (Name,Classification_Id) VALUES (?,?);
+`;
+
+  getConditionsByClassification = `
+SELECT * from Conditions 
+where Classification_Id = ?
+`;
+
   //Prescriptions
   //------------
 
@@ -235,15 +255,17 @@ select * from Classifications ;
 CREATE TABLE IF NOT EXISTS Prescriptions 
 ( 
   Id  INTEGER PRIMARY KEY, 
-  Doctor_Id   INTEGER , 
-  Patient_Id  varchar(20) , 
-  Classification_Id  INTEGER , 
+  Doctor_Id   INTEGER NOT NULL, 
+  Patient_Id  varchar(20) NOT NULL, 
+  Classification_Id  INTEGER NOT NULL , 
+  Condition_Id INTEGER NOT NULL,
   Pre_Date  TIMESTAMP, 
   Description  VARCHAR(200) ,
   IsDispensed CHAR(1), 
   FOREIGN KEY (Doctor_Id) REFERENCES DOCTORS(ID),
   FOREIGN KEY (Patient_Id) REFERENCES PATIENTS(ID),
-  FOREIGN KEY (Classification_Id) REFERENCES CLASSIFICATIONS (ID)
+  FOREIGN KEY (Classification_Id) REFERENCES CLASSIFICATIONS (ID),
+  FOREIGN KEY (Condition_Id) REFERENCES Conditions (ID)
 ); `;
 
   createTable_MedicinePrescription = `
@@ -262,7 +284,8 @@ CREATE TABLE IF NOT EXISTS Medicine_Prescription
 );`;
 
   insert_Prescription = `
-INSERT INTO Prescriptions (Doctor_Id,Patient_Id,Classification_Id,Pre_Date,Description) VALUES (?,?,?,?,?);
+INSERT INTO Prescriptions (Doctor_Id,Patient_Id,Classification_Id,Condition_Id,Pre_Date,Description)
+ VALUES (?,?,?,?,?,?);
 `;
 
   insert_MedicinePrescription = `
@@ -270,9 +293,15 @@ INSERT INTO Medicine_Prescription (Medicine_ID,Prescription_ID,isBold,isChronic,
 `;
 
   getPatientPrescriptions = `
-select p.Id , p.Doctor_Id , p.Description as Note, p.Pre_Date as Prescription_Date , c.Id as Classification_Id , c.Name as Classification_Name , c.ImageUrl as ClassificationIconUrl , patients.Name as Patient_Name 
-from prescriptions p , Classifications c , Patients patients
- where patient_id = ? and p.Classification_Id = c.id and p.Patient_Id = patients.Id
+  select p.Id , p.Doctor_Id , p.Description as Note, p.Pre_Date as Prescription_Date , c.Id as Classification_Id ,conditions.Name as Condition, c.Name as Classification_Name , c.ImageUrl as ClassificationIconUrl , patients.Name as Patient_Name 
+  FROM prescriptions p ,
+  Classifications c ,
+  Patients patients,
+  Conditions conditions
+  where patient_id = ? and
+   p.Classification_Id = c.id and
+   p.Patient_Id = patients.Id and 
+   conditions.id = p.Condition_Id
 `;
 
   getPatientPrescriptionsToDispense = `
@@ -431,6 +460,7 @@ where Id = ?
     this.createTable_MessageCategories,
     this.createTable_Messages,
     this.createTable_AccountRequests,
+    this.createTable_Conditions,
   ];
 }
 

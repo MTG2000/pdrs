@@ -21,6 +21,7 @@ class PatientsService {
     patientName,
     medicins,
     classificationId,
+    conditionId,
     note
   ) => {
     //!!! add validation !!!
@@ -31,22 +32,18 @@ class PatientsService {
       await UsersDomain.newPatient(patientId, patientName);
     }
     const doctorId = await UsersDomain.getDoctorId(username);
-    if (
-      !doctorId ||
-      medicins.length === 0 ||
-      note.trim().length < 5 ||
-      note.trim().length > 350
-    )
+    if (!doctorId || medicins.length === 0)
       throw new ErrorHandler(400, "Info Required");
     const prescriptionId = await PatientsDomain.newPrescription(
       patientId,
       doctorId,
       classificationId,
+      conditionId,
       note
     );
     await PatientsDomain.addMedicinsToPrescription(
       prescriptionId,
-      medicins.map(m => ({ ...m, id: m.value }))
+      medicins.map((m) => ({ ...m, id: m.value }))
     );
   };
 
@@ -69,7 +66,7 @@ class PatientsService {
 
       chronicMedicins = [
         ...chronicMedicins,
-        ...medicins.filter(m => m.IsChronic == true).map(m => m.Name)
+        ...medicins.filter((m) => m.IsChronic == true).map((m) => m.Name),
       ];
     }
 
@@ -80,11 +77,11 @@ class PatientsService {
 
     return {
       prescriptions: prescriptions.reverse(),
-      chronicMedicins
+      chronicMedicins,
     };
   };
 
-  getPrescriptionsToDispense = async patientId => {
+  getPrescriptionsToDispense = async (patientId) => {
     let chronicMedicins = [];
     let prescriptions = await PatientsDomain.getPatientPrescriptionsToDispense(
       patientId
@@ -97,7 +94,7 @@ class PatientsService {
       prescription.medicins = medicins;
       chronicMedicins = [
         ...chronicMedicins,
-        ...medicins.filter(m => m.isChronic == true)
+        ...medicins.filter((m) => m.isChronic == true),
       ];
     }
 
@@ -108,7 +105,7 @@ class PatientsService {
 
     return {
       prescriptions: prescriptions.reverse(),
-      chronicMedicins
+      chronicMedicins,
     };
   };
 

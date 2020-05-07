@@ -65,6 +65,8 @@ input[type="number"] {
     left: -20px;
     top: -20px;
     color: white;
+    min-width: 300px;
+    text-align: center;
     width: 75%;
   }
 
@@ -111,7 +113,6 @@ input[type="number"] {
   top: -20px;
   box-shadow: -1px -1px 15px 0px #03b7bf;
   color: white;
-  text-align: center;
   padding: 10px;
 }
 .note::first-letter {

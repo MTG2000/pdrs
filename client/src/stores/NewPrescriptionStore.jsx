@@ -9,7 +9,10 @@ class NewPrescriptionStore {
   note = "";
   medicins = [];
   classifications = [];
+  conditions = [];
+
   selectedClassification = -1;
+  selectedCondition = -1;
   submitingPrescription = false;
   loading = true;
   redirect = false;
@@ -54,8 +57,28 @@ class NewPrescriptionStore {
     } catch (error) {}
   }
 
+  async FetchConditions() {
+    try {
+      const res = await axios.get("/api/medicins/conditions", {
+        params: {
+          classification: this.selectedClassification,
+        },
+      });
+      const { data } = res.data;
+      runInAction(() => {
+        this.conditions = data;
+        this.loading = false;
+      });
+    } catch (error) {}
+  }
+
   SelectClassification(id) {
     this.selectedClassification = id;
+    this.FetchConditions();
+  }
+
+  SelectCondition(c) {
+    this.selectedCondition = c;
   }
 
   AddMedicine(medicine) {
@@ -88,7 +111,8 @@ class NewPrescriptionStore {
         patientName: this.patientName,
         note: this.note,
         medicins: toJS(this.medicins),
-        classificationId: this.selectedClassification
+        classificationId: this.selectedClassification,
+        conditionId: this.selectedCondition.Id,
       };
 
       await axios.post("/api/patients/new-prescription", { ...prescription });
@@ -115,6 +139,7 @@ decorate(NewPrescriptionStore, {
   redirect: observable,
   loading: observable,
   selectedClassification: observable,
+  selectedCondition: observable,
   patientId: observable,
   showPatientNameInput: observable,
   submitingPrescription: observable,
@@ -122,6 +147,7 @@ decorate(NewPrescriptionStore, {
   note: observable,
   medicins: observable,
   classifications: observable,
+  conditions: observable,
   AddMedicine: action,
   SetPatientId: action,
   FetchClassifications: action,
@@ -132,7 +158,7 @@ decorate(NewPrescriptionStore, {
   SetNote: action,
   SubmitPrescription: action,
   FetchPatientName: action,
-  SetPatientName: action
+  SetPatientName: action,
 });
 
 export default NewPrescriptionStore;

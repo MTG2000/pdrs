@@ -28,7 +28,6 @@ module.exports = async (_run, _get, _log = false) => {
     log = _log;
 
     log && console.log("Seeding Started");
-    generateRandomPrescriptions();
 
     await usersTypes();
     await users();
@@ -40,6 +39,7 @@ module.exports = async (_run, _get, _log = false) => {
     await patients();
     await medicins();
     await classifications();
+    generateRandomPrescriptions();
     await prescriptions();
     await medicinsPrescriptions();
 
@@ -150,103 +150,107 @@ let seedData = {
     { name: "Lorazepam" },
   ],
   classifications: [
-    { name: "Heart" },
-    { name: "Bones" },
-    { name: "Brain" },
-    { name: "Eye" },
-    { name: "Stomach" },
-    { name: "Tooth" },
-    { name: "Kidney" },
-    { name: "Lungs" },
-    { name: "Ear" },
-    { name: "Sex" },
+    {
+      name: "Heart",
+      conditions: [
+        { name: "Abnormal heart rhythms" },
+        { name: "Aorta disease" },
+        { name: "Congenital heart disease" },
+        { name: "Coronary artery disease " },
+      ],
+    },
+    {
+      name: "Bones",
+      conditions: [
+        { name: "Bone cancer" },
+        { name: "Curvature of the spine" },
+        { name: "Broken Arm" },
+        { name: "Broken Leg" },
+        { name: "Broken Skull" },
+        { name: "arthritis" },
+      ],
+    },
+    {
+      name: "Brain",
+      conditions: [
+        { name: "Alzheimer's Disease" },
+        { name: "Dementias" },
+        { name: "Brain Cancer" },
+        { name: "Mental Disorders" },
+        { name: "Parkinson's and Other Movement Disorders" },
+        { name: "Epilepsy and Other Seizure Disorders" },
+        { name: "Stroke and Transient Ischemic Attack" },
+      ],
+    },
+    {
+      name: "Eye",
+      conditions: [
+        { name: "Eyestrain" },
+        { name: "Red Eyes" },
+        { name: "Night Blindness" },
+      ],
+    },
+    {
+      name: "Stomach",
+      conditions: [
+        { name: "Gastroesophageal Reflux Disease" },
+        { name: "Celiac Disease" },
+        { name: "Crohn's Disease" },
+        { name: "Ulcerative Colitis" },
+        { name: "Irritable Bowel Syndrome" },
+      ],
+    },
+    {
+      name: "Tooth",
+      conditions: [
+        { name: "Cavities" },
+        { name: "Periodontitis" },
+        { name: "Cracked or broken teeth" },
+        { name: "Sensitive teeth" },
+        { name: "Oral cancer" },
+      ],
+    },
+    {
+      name: "Kidney",
+      conditions: [
+        { name: "Chronic kidney disease" },
+        { name: "Kidney stones" },
+        { name: "Glomerulonephritis" },
+        { name: "Polycystic kidney disease" },
+        { name: "Urinary tract infections" },
+      ],
+    },
+    {
+      name: "Lungs",
+      conditions: [
+        { name: "Asthma" },
+        { name: "Lung cancer" },
+        { name: "Covid-19" },
+        { name: "Lung infection (pneumonia)" },
+      ],
+    },
+    {
+      name: "Ear",
+      conditions: [
+        { name: "Otosclerosis" },
+        { name: "Menieres Disease" },
+        { name: "Ear Infections" },
+        { name: "Swimmer's ear (otitis externa)" },
+      ],
+    },
+    {
+      name: "Sex",
+      conditions: [
+        { name: "Desire disorders" },
+        { name: "Arousal disorders" },
+        { name: "Orgasm disorders" },
+        { name: "Pain disorders" },
+      ],
+    },
   ],
   prescriptions: [],
   medsPrescriptions: [],
 };
-
-const conditions = [
-  {
-    classification: 2,
-    note: "An accident that caused an arm break",
-  },
-  {
-    classification: 2,
-    note: "A break in the skull",
-  },
-  {
-    classification: 1,
-    note: "A Seroious Heart Attack",
-  },
-  {
-    classification: 1,
-    note: "Open Heart surgery",
-  },
-  {
-    classification: 3,
-    note: "An accident that caused a brain damage",
-  },
-  {
-    classification: 3,
-    note: "A Shock to the brain",
-  },
-  {
-    classification: 4,
-    note: "cant see clearly due to long working hours on computer (IT student)",
-  },
-  {
-    classification: 4,
-    note: "blury sight",
-  },
-  {
-    classification: 5,
-    note: "Severe pain due to rotten food",
-  },
-  {
-    classification: 5,
-    note: "Stomach wash due to poisoning",
-  },
-  {
-    classification: 6,
-    note: "Cosmetic surgery for the jaw",
-  },
-  {
-    classification: 6,
-    note: "Decay in wisdom tooth",
-  },
-  {
-    classification: 7,
-    note: "Severe kidney failure",
-  },
-  {
-    classification: 7,
-    note: "A Kidney failure that cause a poisoning",
-  },
-  {
-    classification: 8,
-    note: "Covid-23 ( a new form of corona virus )",
-  },
-  {
-    classification: 8,
-    note: "Shortness of breath",
-  },
-  {
-    classification: 9,
-    note: "An ant entered the ear while sleeping on the floor",
-  },
-  {
-    classification: 9,
-    note: "cant hear properly due to long usage of earphones",
-  },
-  {
-    classification: 10,
-    note: "Not able to become pregnant",
-  },
-  {
-    classification: 10,
-    note: "Ovarian deformation",
-  },
-];
 
 function generateRandomPrescriptions() {
   // Generate Prescription
@@ -261,13 +265,32 @@ function generateRandomPrescriptions() {
     const numOfPrescriptions = getRndInteger(4, 15);
     for (let i = 0; i < numOfPrescriptions; i++) {
       const doctorId = getRndInteger(0, numOfDoctors) + 1;
+      // Select a random classification then a random condition
+      const randomClassification = getRndInteger(
+        0,
+        seedData.classifications.length
+      );
+      const randomCondition = getRndInteger(
+        0,
+        seedData.classifications[randomClassification].conditions.length
+      );
 
-      const randomCondition = conditions[getRndInteger(0, conditions.length)];
+      const classificationId =
+        seedData.classifications[randomClassification].id;
+      const conditionId =
+        seedData.classifications[randomClassification].conditions[
+          randomCondition
+        ].id;
+
+      const note = Math.random() > 0.75 ? "This is a side note" : null;
+
       const newPrescription = {
         doctorId,
         patientId: patient.id,
         date: date.format(randomDate(startDate, endDate), "YYYY-MM-DD"),
-        ...randomCondition,
+        classification: classificationId,
+        condition: conditionId,
+        note,
       };
 
       seedData.prescriptions.push(newPrescription);
@@ -459,6 +482,11 @@ const classifications = async () => {
         ),
       ])
     ).lastID;
+
+    for (const condition of c.conditions)
+      condition.id = (
+        await run(sqlQueries.insert_Condition, [condition.name, c.id])
+      ).lastID;
   }
 };
 
@@ -475,6 +503,7 @@ const prescriptions = async () => {
       p.doctorId,
       p.patientId,
       p.classification,
+      p.condition,
       p.date.toString(),
       p.note,
     ]);
