@@ -12,13 +12,15 @@ class ManageUsersStore {
       const { data } = res.data;
       runInAction(() => {
         this.allUsers = data;
+        console.log(data);
+
         this.users = this.allUsers;
       });
     } catch (error) {}
   }
 
   SearchUsers(value) {
-    this.users = this.allUsers.filter(u => {
+    this.users = this.allUsers.filter((u) => {
       if (u.Username.toLowerCase().indexOf(value.toLowerCase()) !== -1)
         return true;
       if (u.DoctorName) {
@@ -48,7 +50,7 @@ class ManageUsersStore {
         type,
         doctorName,
         pharmacyName,
-        address: pharmacyAddress
+        address: pharmacyAddress,
       });
 
       NotificationManager.success("User Registered Successfully");
@@ -64,20 +66,20 @@ class ManageUsersStore {
 
   async ToggleActive(id) {
     try {
-      this.users = this.users.map(u => {
+      this.users = this.users.map((u) => {
         if (u.Id === id) u.loadingToggleActive = true;
         return u;
       });
       this.loadingToggleActive = true;
       await axios.post("/api/users/toggle-active-state", {
-        id
+        id,
       });
       runInAction(() => {
-        this.users = this.users.map(u => {
+        this.users = this.users.map((u) => {
           if (u.Id === id) u.loadingToggleActive = false;
           return u;
         });
-        this.users = this.users.map(u => {
+        this.users = this.users.map((u) => {
           if (u.Id === id) u.IsActive = !u.IsActive;
           return u;
         });
@@ -91,7 +93,7 @@ decorate(ManageUsersStore, {
   allUsers: observable,
   FetchAllUsers: action,
   SearchUsers: action,
-  RegisterUser: action
+  RegisterUser: action,
 });
 
 export default new ManageUsersStore();

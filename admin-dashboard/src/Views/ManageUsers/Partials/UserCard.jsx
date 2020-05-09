@@ -9,16 +9,16 @@ const useStyle = makeStyles({
   card: {
     backgroundColor: "#FFF",
     boxShadow: "3px 5px 10px #939393",
-    borderRadius: 5
+    borderRadius: 5,
   },
   activeIcon: {
     color: "green",
-    cursor: "pointer"
+    cursor: "pointer",
   },
   deactiveIcon: {
     color: "red",
-    cursor: "pointer"
-  }
+    cursor: "pointer",
+  },
 });
 
 const UserCard = ({ user, onToggleActive }) => {

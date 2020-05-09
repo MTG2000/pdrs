@@ -5,20 +5,22 @@ const CacheService = require("../services/cache");
 const cache = new CacheService(60 * 60);
 
 class Repository {
-  getUserByUsername = async username => {
+  getUserByUsername = async (username) => {
     return await DB.get(sqlQueries.getUser, [username]);
   };
 
-  toggleUserActiveState = async id => {
-    const isActive = (await DB.get(sqlQueries.getUserById, [id])).IsActive;
+  toggleUserActiveState = async (id) => {
+    const user = await DB.get(sqlQueries.getUserById, [id]);
+    const isActive = user.IsActive;
     if (isActive) {
       await DB.run(sqlQueries.toggleUserInActive, [id]);
-      await DB.run(sqlQueries.setUserToken, [null, id]);
+      await DB.run(sqlQueries.setUserToken, [id, null]);
     } else await DB.run(sqlQueries.toggleUserActive, [id]);
+    cache.del("getAllUsers");
   };
 
   //it either returns {DoctorName:'name'} or {PharmacyName:'name'}
-  getUserRealName = async id => {
+  getUserRealName = async (id) => {
     if (!this.DoctorTypeId) {
       this.DoctorTypeId = (
         await DB.get(sqlQueries.getUserTypeId, ["Doctor"])
@@ -33,15 +35,15 @@ class Repository {
 
     if (user.UserType_Id === this.DoctorTypeId)
       return {
-        DoctorName: (await DB.get(sqlQueries.getDoctorById, [id])).Name
+        DoctorName: (await DB.get(sqlQueries.getDoctorById, [id])).Name,
       };
     else if (user.UserType_Id === this.PharmacyTypeId) {
       return {
-        PharmacyName: (await DB.get(sqlQueries.getPharmacyById, [id])).Name
+        PharmacyName: (await DB.get(sqlQueries.getPharmacyById, [id])).Name,
       };
     } else if (user.UserType_Id === this.AdminTypeId) {
       return {
-        IsAdmin: true
+        IsAdmin: true,
       };
     }
   };
@@ -57,7 +59,7 @@ class Repository {
           Username: user.Username,
           IsActive: user.IsActive,
           Contact: user.Contact,
-          ...name
+          ...name,
         });
       }
       return usersDTO;
@@ -71,7 +73,7 @@ class Repository {
     return await DB.run(sqlQueries.insert_Patient, [id, name]);
   };
 
-  getUserTypeId = async name => {
+  getUserTypeId = async (name) => {
     return await cache.get(`getUserTypeId-${name}`, async () => {
       return (await DB.get(sqlQueries.getUserTypeId, [name])).Id;
     });
@@ -84,7 +86,7 @@ class Repository {
         userTypeId,
         username,
         password,
-        contact
+        contact,
       ])
     ).lastID;
     cache.del("getAllUsers");
@@ -95,7 +97,7 @@ class Repository {
     await DB.run(sqlQueries.setUserToken, [id, token]);
   };
 
-  getRefreshToken = async username => {
+  getRefreshToken = async (username) => {
     const row = await DB.get(sqlQueries.getUserToken, [username]);
     return row.Token;
   };
@@ -135,7 +137,7 @@ class Repository {
 
   getPharmacyId = async (username = "") => {
     const pharmacyId = await DB.get(sqlQueries.getPharmacyIdByUsername, [
-      username
+      username,
     ]);
     return pharmacyId.Id;
   };
