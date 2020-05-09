@@ -3,6 +3,7 @@ import date from "date-and-time";
 import Tooltip from "@material-ui/core/Tooltip";
 import Checkbox from "@material-ui/core/Checkbox";
 import Button from "@material-ui/core/Button";
+import Note from "@material-ui/icons/Bookmark";
 
 /*{
             "Id": 1,
@@ -39,8 +40,6 @@ const PrescriptionCard = ({ prescription, store }) => {
     "DD MMM"
   );
 
-  const note = prescription.Note;
-  const allowedNoteLength = 60;
   const [medicinsToDispense, setMedicinsToDispense] = useState({});
   const [selectAll, setSelectAll] = useState(true);
   const toggleMedicineDispens = (id, v) => {
@@ -49,7 +48,7 @@ const PrescriptionCard = ({ prescription, store }) => {
 
   const toggleAll = () => {
     let medicins = {};
-    prescription.medicins.forEach(m => {
+    prescription.medicins.forEach((m) => {
       medicins = { ...medicins, [m.Id]: selectAll };
     });
     setMedicinsToDispense(medicins);
@@ -58,7 +57,7 @@ const PrescriptionCard = ({ prescription, store }) => {
 
   const handleDispense = () => {
     const medicinsIds = Object.keys(medicinsToDispense)
-      .filter(m => medicinsToDispense[m])
+      .filter((m) => medicinsToDispense[m])
       .map(Number);
 
     store.Dispense(prescription.Id, medicinsIds);
@@ -66,14 +65,21 @@ const PrescriptionCard = ({ prescription, store }) => {
 
   return (
     <div className="prescription-card mx-auto py-5">
-      <Tooltip title={<h6>{note}</h6>}>
-        <div className="note  bg-primary px-3 py-3">
-          <p className=" mb-0 ">
-            {note.slice(0, allowedNoteLength)}
-            {note.length > allowedNoteLength && "...."}
-          </p>
+      {prescription.Note ? (
+        <Tooltip title={<h6>{prescription.Note}</h6>}>
+          <div className="note  bg-primary px-3 py-3">
+            <p className=" mb-0 ">
+              {prescription.Condition} <Note />
+            </p>
+          </div>
+        </Tooltip>
+      ) : (
+        <div>
+          <div className="note  bg-primary px-3 py-3">
+            <p className=" mb-0 ">{prescription.Condition}</p>
+          </div>
         </div>
-      </Tooltip>
+      )}
       <div className="icon ">
         <img src={prescription.ClassificationIconUrl} alt="classification" />
       </div>
@@ -83,7 +89,7 @@ const PrescriptionCard = ({ prescription, store }) => {
           <Checkbox
             color="primary"
             checked={!selectAll}
-            onChange={e => toggleAll(e.target.checked)}
+            onChange={(e) => toggleAll(e.target.checked)}
             inputProps={{ "aria-label": "primary checkbox" }}
           />
           <p className="d-inline-block ml-2 "></p>{" "}
@@ -94,7 +100,7 @@ const PrescriptionCard = ({ prescription, store }) => {
             <Checkbox
               color="primary"
               checked={medicinsToDispense[m.Id] === true}
-              onChange={e => toggleMedicineDispens(m.Id, e.target.checked)}
+              onChange={(e) => toggleMedicineDispens(m.Id, e.target.checked)}
               inputProps={{ "aria-label": "primary checkbox" }}
             />
             <p className="d-inline-block ml-2 ">{m.Name}</p>

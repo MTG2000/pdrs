@@ -55,6 +55,7 @@ class PrescriptionsDispensingStore {
         this.loadingPrescriptions = false;
       });
     } catch (error) {
+      console.log(error);
       NotificationManager.error(
         error.response.data.message,
         error.response.data.title
@@ -78,7 +79,7 @@ decorate(PrescriptionsDispensingStore, {
   patientName: observable,
   SetPatientId: action,
   FetchPrescriptions: action,
-  FetchPatientName: action
+  FetchPatientName: action,
 });
 
 export default PrescriptionsDispensingStore;

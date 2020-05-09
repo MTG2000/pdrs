@@ -288,7 +288,6 @@ function generateRandomPrescriptions() {
         doctorId,
         patientId: patient.id,
         date: date.format(randomDate(startDate, endDate), "YYYY-MM-DD"),
-        classification: classificationId,
         condition: conditionId,
         note,
       };
@@ -502,7 +501,6 @@ const prescriptions = async () => {
     await run(sqlQueries.insert_Prescription, [
       p.doctorId,
       p.patientId,
-      p.classification,
       p.condition,
       p.date.toString(),
       p.note,

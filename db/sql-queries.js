@@ -257,14 +257,12 @@ CREATE TABLE IF NOT EXISTS Prescriptions
   Id  INTEGER PRIMARY KEY, 
   Doctor_Id   INTEGER NOT NULL, 
   Patient_Id  varchar(20) NOT NULL, 
-  Classification_Id  INTEGER NOT NULL , 
   Condition_Id INTEGER NOT NULL,
   Pre_Date  TIMESTAMP, 
   Description  VARCHAR(200) ,
   IsDispensed CHAR(1), 
   FOREIGN KEY (Doctor_Id) REFERENCES DOCTORS(ID),
   FOREIGN KEY (Patient_Id) REFERENCES PATIENTS(ID),
-  FOREIGN KEY (Classification_Id) REFERENCES CLASSIFICATIONS (ID),
   FOREIGN KEY (Condition_Id) REFERENCES Conditions (ID)
 ); `;
 
@@ -284,8 +282,8 @@ CREATE TABLE IF NOT EXISTS Medicine_Prescription
 );`;
 
   insert_Prescription = `
-INSERT INTO Prescriptions (Doctor_Id,Patient_Id,Classification_Id,Condition_Id,Pre_Date,Description)
- VALUES (?,?,?,?,?,?);
+INSERT INTO Prescriptions (Doctor_Id,Patient_Id,Condition_Id,Pre_Date,Description)
+ VALUES (?,?,?,?,?);
 `;
 
   insert_MedicinePrescription = `
@@ -293,28 +291,52 @@ INSERT INTO Medicine_Prescription (Medicine_ID,Prescription_ID,isBold,isChronic,
 `;
 
   getPatientPrescriptions = `
-  select p.Id , p.Doctor_Id , p.Description as Note, p.Pre_Date as Prescription_Date , c.Id as Classification_Id ,conditions.Name as Condition, c.Name as Classification_Name , c.ImageUrl as ClassificationIconUrl , patients.Name as Patient_Name 
+  SELECT
+ p.Id , p.Doctor_Id , p.Description as Note,
+ p.Pre_Date as Prescription_Date ,
+ c.Id as Classification_Id ,
+ c.Name as Classification_Name ,
+ conditions.Name as Condition,
+ c.ImageUrl as ClassificationIconUrl 
   FROM prescriptions p ,
   Classifications c ,
-  Patients patients,
   Conditions conditions
   where patient_id = ? and
-   p.Classification_Id = c.id and
-   p.Patient_Id = patients.Id and 
+   c.id = Conditions.Classification_Id and
    conditions.id = p.Condition_Id
 `;
 
   getPatientPrescriptionsToDispense = `
-select p.Id , p.Doctor_Id , p.Description as Note, p.Pre_Date as Prescription_Date , c.Id as Classification_Id , c.Name as Classification_Name , c.ImageUrl as ClassificationIconUrl , patients.Name as Patient_Name 
-from prescriptions p , Classifications c , Patients patients
- where p.IsDispensed is NuLL and patient_id = ? and p.Classification_Id = c.id and p.Patient_Id = patients.Id
-`;
+  SELECT 
+  p.Id , p.Doctor_Id , p.Description as Note,
+  p.Pre_Date as Prescription_Date , 
+  c.ImageUrl as ClassificationIconUrl ,
+  Conditions.Name as Condition
+  from prescriptions p ,
+   Classifications c ,
+   Conditions conditions
+   where p.IsDispensed is NuLL and
+   patient_id = ? and
+   conditions.id = p.Condition_Id and
+   c.id = Conditions.Classification_Id 
+  `;
 
   getPatientPrescriptionsByClassification = `
-select p.Id , p.Doctor_Id , p.Description as Note, p.Pre_Date as Prescription_Date ,  c.Name as Classification_Name , c.ImageUrl as ClassificationIconUrl , patients.Name as Patient_Name 
-from prescriptions p , Classifications c , Patients patients
- where patient_id = ? and p.Classification_Id = c.id and p.Patient_Id = patients.Id and classification_Id = ?
-`;
+  SELECT
+  p.Id , p.Doctor_Id , p.Description as Note,
+  p.Pre_Date as Prescription_Date ,
+  c.Id as Classification_Id ,
+  c.Name as Classification_Name ,
+  conditions.Name as Condition,
+  c.ImageUrl as ClassificationIconUrl 
+   FROM prescriptions p ,
+   Classifications c ,
+   Conditions conditions
+   where patient_id = ? and
+    c.id = ? and
+    c.id = Conditions.Classification_Id and
+    conditions.id = p.Condition_Id
+ `;
 
   setPrescriptionDispensed = `
   update Prescriptions
@@ -331,10 +353,13 @@ ORDER by Date DESC
 `;
 
   getPrescriptionsPerClassificationCount = `
-SELECT count(p.Id) as Count , c.Name 
-from Classifications c left outer join Prescriptions p 
-on c.Id = p.Classification_Id and p.Pre_Date> ? and p.Pre_Date < ?
-group by Classification_Id
+  SELECT count(p.Id) as Count , c.Name 
+  from Classifications c 
+  left outer join Prescriptions p ,Conditions conditions 
+  on c.Id = Conditions.Classification_Id 
+  where p.Condition_Id = Conditions.id
+  and p.Pre_Date> ? and p.Pre_Date < ?
+  group by Classification_Id
 `;
 
   getMedicinsUsage = `
