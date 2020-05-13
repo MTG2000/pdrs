@@ -20,7 +20,6 @@ class PatientsService {
     patientId,
     patientName,
     medicins,
-    classificationId,
     conditionId,
     note
   ) => {
@@ -37,7 +36,6 @@ class PatientsService {
     const prescriptionId = await PatientsDomain.newPrescription(
       patientId,
       doctorId,
-      classificationId,
       conditionId,
       note
     );

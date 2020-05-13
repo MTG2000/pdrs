@@ -16,21 +16,13 @@ class Controller {
   // }
   newPrescription = async (req, res, next) => {
     try {
-      const {
-        patientId,
-        patientName,
-        medicins,
-        classificationId,
-        conditionId,
-        note,
-      } = req.body;
+      const { patientId, patientName, medicins, conditionId, note } = req.body;
 
       await PatientsService.newPrescription(
         req.user.username,
         patientId,
         patientName,
         medicins,
-        classificationId,
         conditionId,
         note
       );

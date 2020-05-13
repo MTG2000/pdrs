@@ -2,18 +2,11 @@ const DB = require("../services/db").DB;
 const sqlQueries = require("../db/sql-queries");
 const date = require("date-and-time");
 
-const newPrescription = async (
-  patientId,
-  doctorId,
-  classification,
-  conditionId,
-  note
-) => {
+const newPrescription = async (patientId, doctorId, conditionId, note) => {
   return (
     await DB.run(sqlQueries.insert_Prescription, [
       doctorId,
       patientId,
-      classification,
       conditionId,
       date.format(new Date(), "YYYY-MM-DD"),
       note,
