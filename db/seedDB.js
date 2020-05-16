@@ -75,6 +75,27 @@ let seedData = {
       pharmacyLocation: "Aleppo Al-Jamelia",
       contact: "fatehpharm@gmail.com",
     },
+    {
+      userType: 2,
+      username: "abdo",
+      password: "123123",
+      doctorName: "Abdulfattah Mohammed Asper",
+      contact: "0987221231",
+    },
+    {
+      userType: 2,
+      username: "khalid",
+      password: "123123",
+      doctorName: "Khalid Al-Saleh",
+      contact: "0983663451",
+    },
+    {
+      userType: 2,
+      username: "majd",
+      password: "123123",
+      doctorName: "Majd-Aldeen Al-Rez",
+      contact: "0983663451",
+    },
   ],
   msgCategories: [
     "Add Medinice",
