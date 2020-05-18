@@ -38,6 +38,8 @@ server.use(express.static(path.resolve(__dirname, "admin-dashboard", "build")));
 server.use(favicon(path.resolve(__dirname, "client", "build", "favicon.ico")));
 server.use(cookieParser());
 server.use(express.json());
+// for parsing application/json
+server.use(bodyParser.json());
 server.use(express.urlencoded({ extended: false }));
 server.use(cors());
 server.use(helmet());
@@ -61,7 +63,7 @@ server.get("*", (req, res) => {
 (async () => {
   if (server.get("env") === "test") return; //Initialize the db is done in the test setup file
   if (server.get("env") === "development")
-    await DB.initializeDB(true, true, true);
+    await DB.initializeDB(false, false, false);
   else await DB.initializeDB(false, false, false);
 })();
 

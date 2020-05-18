@@ -33,6 +33,20 @@ class Controller {
     }
   };
 
+  newClassification = async (req, res, next) => {
+    try {
+      const { name, imageUrl } = req.body;
+      await MedicinsService.newClassification(name, imageUrl);
+      res
+        .status(201)
+        .send(
+          new Response.Success("Success", "Classification Added Successfully")
+        );
+    } catch (error) {
+      next(error);
+    }
+  };
+
   newMedicine = async (req, res, next) => {
     try {
       const { name } = req.body;

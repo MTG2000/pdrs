@@ -3,6 +3,7 @@ import AppState from "./AppState";
 import DashboardStore from "./DashboardStore";
 import ManageUsersStore from "./ManageUsersStore";
 import ManageMedicinsStore from "./ManageMedicinsStore";
+import ManageClassificationsStore from "./ManageClassifications";
 import StatisticsStore from "./StatisticsStore";
 
 export const mainContext = React.createContext();
@@ -15,6 +16,7 @@ export const ContextProvider = (props) => {
         DashboardStore,
         ManageUsersStore,
         ManageMedicinsStore,
+        ManageClassificationsStore,
         StatisticsStore,
       }}
     >

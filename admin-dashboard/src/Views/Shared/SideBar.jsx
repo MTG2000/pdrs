@@ -23,11 +23,11 @@ const SideBar = () => {
 
   return (
     <SideNav
-      onSelect={selected => {
+      onSelect={(selected) => {
         // Add your code here
       }}
       className="bg-primary"
-      onToggle={toggled => {
+      onToggle={(toggled) => {
         setToggled(toggled);
       }}
       expanded={toggled}
@@ -36,7 +36,7 @@ const SideBar = () => {
       <SideNav.Toggle />
       <SideNav.Nav
         defaultSelected={window.location.pathname.slice(1)}
-        onSelect={selected => {
+        onSelect={(selected) => {
           const to = "/" + selected;
           if (window.location.pathname !== to) {
             history.push(to);
@@ -54,6 +54,12 @@ const SideBar = () => {
             <People style={{ fontSize: "1.75em" }} />
           </NavIcon>
           <NavText>Manage Users</NavText>
+        </NavItem>
+        <NavItem eventKey="classifications-conditions">
+          <NavIcon>
+            <LocalHospital style={{ fontSize: "1.75em" }} />
+          </NavIcon>
+          <NavText>Manage Classifications</NavText>
         </NavItem>
         <NavItem eventKey="manage-medicins">
           <NavIcon>
