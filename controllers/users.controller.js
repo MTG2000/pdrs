@@ -123,6 +123,7 @@ class Controller {
   async refreshToken(req, res, next) {
     try {
       const { refreshToken, username } = req.body;
+      console.log(req.body);
 
       const result = await UsersService.refreshToken(refreshToken, username);
 
