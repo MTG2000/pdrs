@@ -47,6 +47,18 @@ class Controller {
     }
   };
 
+  newCondition = async (req, res, next) => {
+    try {
+      const { name, classification } = req.body;
+      await MedicinsService.newCondition(name, +classification);
+      res
+        .status(201)
+        .send(new Response.Success("Success", "Condition Added Successfully"));
+    } catch (error) {
+      next(error);
+    }
+  };
+
   newMedicine = async (req, res, next) => {
     try {
       const { name } = req.body;

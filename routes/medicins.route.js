@@ -16,6 +16,12 @@ router.post(
 
 router.get("/conditions", controller.getConditions);
 
+router.post(
+  "/new-condition",
+  authMiddleware(["Admin"]),
+  controller.newCondition
+);
+
 router.post("/new", authMiddleware(["Admin"]), controller.newMedicine);
 
 router.get("/", authMiddleware(), controller.getMedicins);

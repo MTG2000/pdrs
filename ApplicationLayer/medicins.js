@@ -22,6 +22,11 @@ const newClassification = async (name, imageUrl) => {
   await MedicinsDomain.addClassification(name, imageUrl);
 };
 
+const newCondition = async (name, classification) => {
+  if (!name) throw new ErrorHandler(400, "Classification doesn't have a name");
+  await MedicinsDomain.addCondition(name, classification);
+};
+
 const getConditionsByClassification = async (classification) => {
   return await MedicinsDomain.getConditionsByClassification(classification);
 };
@@ -32,4 +37,5 @@ module.exports = {
   newMedicine,
   getConditionsByClassification,
   newClassification,
+  newCondition,
 };

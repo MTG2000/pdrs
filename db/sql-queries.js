@@ -235,7 +235,7 @@ CREATE TABLE IF NOT EXISTS Conditions
 ( 
   Id  INTEGER PRIMARY KEY, 
   Name VARCHAR(25) NOT NULL UNIQUE,
-  Classification_Id  INTEGER , 
+  Classification_Id  INTEGER NOT NULL , 
   FOREIGN KEY (Classification_Id) REFERENCES CLASSIFICATIONS (ID)
 ); `;
 

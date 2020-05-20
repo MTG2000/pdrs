@@ -37,6 +37,15 @@ class Repository {
     return result.lastID;
   };
 
+  addCondition = async (name, classification) => {
+    const result = await DB.run(sqlQueries.insert_Condition, [
+      name,
+      classification,
+    ]);
+    cache.del(`getConditions-${classification}`);
+    return result.lastID;
+  };
+
   getConditionsByClassification = async (classification) => {
     return await cache.get(`getConditions-${classification}`, async () => {
       return await DB.queryAll(sqlQueries.getConditionsByClassification, [
