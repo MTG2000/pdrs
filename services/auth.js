@@ -7,7 +7,7 @@ const generateAccessToken = async (dataToInclude) => {
     { ...dataToInclude },
     process.env.JWT_SECRET,
     {
-      expiresIn: "60m",
+      expiresIn: "1m",
     }
   );
 };

@@ -51,7 +51,7 @@ server.use("/api/users", require("./routes/users.route"));
 server.use("/api/admin", require("./routes/admin.route"));
 
 //handle serving client apps
-server.get("/admin", authMiddleware(["Admin"]), (req, res) => {
+server.get("/admin", (req, res) => {
   res.sendFile(
     path.resolve(__dirname, "admin-dashboard", "build", "index.html")
   );

@@ -1,8 +1,5 @@
 import React, { useState } from "react";
 import { FilePond } from "react-filepond";
-
-// Import FilePond styles
-import "filepond/dist/filepond.min.css";
 import { TextField, Button } from "@material-ui/core";
 
 const ManageClassifications = ({ store }) => {
@@ -14,8 +11,6 @@ const ManageClassifications = ({ store }) => {
 
     formData.append("name", name);
     formData.append("image", files[0]);
-    console.log(formData);
-
     store.NewClassification(formData);
   };
 

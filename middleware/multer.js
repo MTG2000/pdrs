@@ -25,7 +25,7 @@ module.exports = {
   imgsUpload: multer({
     storage: classificationsStorage,
     limits: {
-      fileSize: 1024 * 1024 * 5,
+      fileSize: 1024 * 1024 * 1, // 1 Megabytes
     },
     fileFilter: classificationsFilter,
   }),

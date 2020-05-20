@@ -72,6 +72,7 @@ class ManageClassificationStore {
         },
       });
 
+      this.FetchClassifications();
       NotificationManager.success("Classification Added Successfully");
     } catch (error) {
       NotificationManager.error(

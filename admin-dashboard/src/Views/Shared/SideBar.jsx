@@ -5,6 +5,7 @@ import BarChart from "@material-ui/icons/BarChart";
 import Home from "@material-ui/icons/Home";
 import ArrowBack from "@material-ui/icons/ExitToApp";
 import LocalHospital from "@material-ui/icons/LocalHospital";
+import CategoryIcon from "@material-ui/icons/Category";
 
 import { withRouter, useHistory } from "react-router-dom";
 import { mainContext } from "../../stores/Context";
@@ -57,7 +58,7 @@ const SideBar = () => {
         </NavItem>
         <NavItem eventKey="classifications-conditions">
           <NavIcon>
-            <LocalHospital style={{ fontSize: "1.75em" }} />
+            <CategoryIcon style={{ fontSize: "1.75em" }} />
           </NavIcon>
           <NavText>Manage Classifications</NavText>
         </NavItem>
