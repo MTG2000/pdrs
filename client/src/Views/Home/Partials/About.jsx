@@ -1,144 +1,120 @@
 import React from "react";
 import { Box, Typography } from "@material-ui/core";
+import { useTranslation } from "react-i18next";
 
 const About = () => {
+  const { t } = useTranslation("about");
+
   return (
     <Box pt={10} pb={6}>
       <div>
         <Typography variant="h4" color="primary">
-          What is P.D.R.S?
+          {t("what is pdrs")}
         </Typography>
 
         <Typography variant="h6" color="textSecondary">
-          Prescriptions Dispensing Regulating System is a system that helps
-          doctors to:
-          <br />
-          - Get a better Diagnose <br />
-          - Easliy Avoid medical contradactions <br />
-          - Checking whether the patient took his medicins <br />
-          - Avoiding multi dispensing the same prescription <br />
-          - Dispense prescriptions quickly from anywhere <br />
+          {t("pdrs is a system")} <br />
+          {t("pdrs helps docs")}
+          <br />- {t("1-1")} <br />- {t("1-2")} <br />- {t("1-3")} <br />-{" "}
+          {t("1-4")} <br />- {t("1-5")} <br />
         </Typography>
       </div>
       <div className="mt-5">
         <Typography variant="h4" color="primary">
-          How to get an account
+          {t("how get account")}
         </Typography>
-
         <Typography variant="h6" color="textSecondary">
-          If you are a doctor or a pharmacian all you gotta do to get an account
-          is to use the form below to send us a message and we will contact you
-          shortly and give you a username & a password and you are set to go
+          {t("2-1")}
         </Typography>
       </div>
       <div className="mt-5">
         <Typography variant="h4" color="primary">
-          How To Create a new Prescription (Doctor)
+          {t("how create prescription")}
         </Typography>
 
         <Typography variant="h6" color="textSecondary">
-          - Go to 'New Prescription' page <br />
-          - Enter the patient Id <br />
-          - if he already exist, his name will appear, otherwise a name input
-          field will appear
-          <br />
-          - choose a classification <br />
-          - descripe the patient state briefly so that you and other doctors
-          later get an idea about import PropTypes from 'pro <br />
-          -types' <br />
-          - choose the medicins from the search list to be added to the
-          prescription <br />
-          - you can mark a medicine 'bold' or 'chronic' ('bold' means that it
-          stand out more in the prescriptions page ) <br />- Click 'Submit' !!
+          - {t("3-1")} <br />- {t("3-2")} <br />- {t("3-3")} <br />- {t("3-4")}{" "}
+          <br />- {t("3-5")} <br />- {t("3-6")} <br />- {t("3-7")} <br />-{" "}
+          {t("3-8")} <br />- {t("3-9")}
+        </Typography>
+      </div>
+
+      <div className="mt-5">
+        <Typography variant="h4" color="primary">
+          {t("how check prescription")}
+        </Typography>
+
+        <Typography variant="h6" color="textSecondary">
+          - {t("4-1")} <br />- {t("4-2")} <br />- {t("4-3")} <br />- {t("4-4")}
         </Typography>
       </div>
       <div className="mt-5">
         <Typography variant="h4" color="primary">
-          How To Check a patient prescriptions (Doctor)
+          {t("how dispense prescription")}
         </Typography>
 
         <Typography variant="h6" color="textSecondary">
-          - Go to 'Patient Prescriptions' page <br />
-          - Enter the patient Id
-          <br />
-          - All the patient prescriptions will appear from newer to older with
-          their date, classification, state note and medicins <br />- You can
-          choose one of the classifications to see only prescriptions for it
+          - {t("5-1")} <br />- {t("5-2")} <br />- {t("5-3")} <br />- {t("5-4")}
         </Typography>
       </div>
       <div className="mt-5">
         <Typography variant="h4" color="primary">
-          How To Check a patient prescriptions (Doctor)
+          {t("how to contact")}
         </Typography>
 
         <Typography variant="h6" color="textSecondary">
-          - Go to 'Patient Prescriptions' page <br />
-          - Enter the patient Id <br />
-          - All the patient prescriptions will appear from newer to older with
-          their date, classification, state note and medicins <br />- You can
-          choose one of the classifications to see only prescriptions for it
+          - {t("6-1")} <br />- {t("6-2")} <br />- {t("6-3")} <br />
         </Typography>
       </div>
       <div className="mt-5">
         <Typography variant="h4" color="primary">
-          How To Dispense A prescription (Pharmacian)
+          {t("tech info")}
         </Typography>
 
         <Typography variant="h6" color="textSecondary">
-          - Go to 'Patient Prescriptions' page <br />
-          - Enter the patient Id <br />
-          - All the patient prescriptions with un-dispensed medicins will appear
-          from newer to older
-          <br />- check the medicins that you want to dispense the click the
-          'Dispense' button
-        </Typography>
-      </div>
-      <div className="mt-5">
-        <Typography variant="h4" color="primary">
-          How To Contact Us (Doctor or Pharmacian)
-        </Typography>
-
-        <Typography variant="h6" color="textSecondary">
-          - Go to 'Technical Support' page <br />
-          - Choose your message categorey <br />
-          - Enter your message <br />
-        </Typography>
-      </div>
-      <div className="mt-5">
-        <Typography variant="h4" color="primary">
-          Technical Info ( For Developers )
-        </Typography>
-
-        <Typography variant="h6" color="textSecondary">
-          The System is build using multiple technoligies ant frameworks on the
-          front-end & the back-end <br />
+          {t("system built using")} <br />
         </Typography>
         <Typography variant="h5" className="mt-3" color="primary">
-          Front End
+          {t("front end")}
         </Typography>
         <Typography variant="h6" color="textSecondary">
-          The Client App has been build using: <br />
-          - "React" Framework and Material UI <br />
-          - MobX for state management <br />
-          - Google ReCaptcha for Anti-Bots <br />
-          - Has multiple langauges (Arabic & English) <br />
-          The Admin Panel is used for checking new accounts requests, messages,
-          managing users, managing medicins, seeing reports & statistics about
-          the system and the usage data <br />
+          {t("client app built")} <br />-{" "}
+          <span className="font-weight-bold">React Js</span> Front-End Framework
+          <br />- <span className="font-weight-bold">Material UI</span>&
+          <span className="font-weight-bold">Bootstrap</span>
+          <br />- <span className="font-weight-bold">MobX</span> for State
+          Management <br />
+          - "Google ReCaptcha" for Anti-Bots <br />- Multiple langauges (Arabic
+          & English) using <span className="font-weight-bold">
+            i18next
+          </span>{" "}
+          <br />
+          The Admin Panel can be used for checking new accounts requests,
+          messages, managing users, managing (medicins, classifications,
+          conditions), seeing reports & statistics about the system and the
+          usage data <br />
         </Typography>
         <Typography variant="h5" className="mt-3" color="primary">
           Back End
         </Typography>
         <Typography variant="h6" color="textSecondary">
-          Uses NodeJs & Express Framework to create a server <br />
-          - Clean Project Architecture (DDD) <br />
-          - Uses JWT AccessTokens for Role-Based Authentication + Refresh Tokens
-          for revoking access and improving security <br />
-          - Centeral Error Handling <br />
-          - Has Unit Testing <br />
-          - A DB Seeding Script for automated random data <br />
-          - A caching service to improve data access layer speed and reduces DB
-          requests number
+          - Uses <span className="font-weight-bold">Node Js</span> &{" "}
+          <span className="font-weight-bold">Express Js</span> Web Framework{" "}
+          <br />- <span className="font-weight-bold">Domain Driven Design</span>{" "}
+          (DDD) architecture
+          <br />- <span className="font-weight-bold">JWT</span> for Role-Based
+          Authentication + Refresh Tokens for revoking access and improving
+          security <br />- <span className="font-weight-bold">Sqlite</span>{" "}
+          DataBase (No ORM library has been used because it is a university
+          project)
+          <br />
+          - Centeral Error Handling <br />- Basic Unit Testing using{" "}
+          <span className="font-weight-bold">Jest</span> &{" "}
+          <span className="font-weight-bold">Chai</span>
+          <br />
+          - A DB Seeding Script for automated random data for all tables <br />-{" "}
+          <span className="font-weight-bold">node-cache</span> A caching service
+          to improve data access layer speed and reduces DB requests number
           <br />
         </Typography>
       </div>

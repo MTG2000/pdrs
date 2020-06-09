@@ -5,13 +5,10 @@ change the navbar
 Improve The Overall UI
 Client Side Validation
 make the redirection better
-use computed in stores
-service worker for offline
+Use Better response messages
 
 -- BackEnd
 Server Side Validation
-New Classification
-private prescriptions 
 try to get a working email service
 add options to statistics
 check how many time a repo class is instanitated
@@ -20,4 +17,5 @@ decrease the accessToken exxpiration time
 *
 improve compromise detection for refresh token
 set cookies security to true
+
 

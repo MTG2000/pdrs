@@ -2,18 +2,19 @@ const PatientsService = require("../ApplicationLayer/patients");
 const Response = require("../helpers/response");
 
 class Controller {
-  // {
-  //     patientId:0233913331,
-  //     medicins:[
-  //         {
-  //             id:34,
-  //             isChronic:false,
-  //             isBold:true
-  //         },...
-  //     ],
-  // classification:"bones",
-  // note:"the patient suffer from an injury to his knee"
-  // }
+  //   {
+  //     "patientId":"0233913331",
+  //     "patientName":"A Name",
+  //      "medicins":[
+  //          {
+  //              "value":10,
+  //              "isChronic":"false",
+  //              "isBold":"true"
+  //          }
+  //      ],
+  //  "conditionId":"12",
+  //  "note":"the patient suffer from an injury to his knee"
+  //   }
   newPrescription = async (req, res, next) => {
     try {
       const { patientId, patientName, medicins, conditionId, note } = req.body;
