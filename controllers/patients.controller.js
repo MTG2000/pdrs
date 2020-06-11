@@ -1,5 +1,6 @@
 const PatientsService = require("../ApplicationLayer/patients");
 const Response = require("../helpers/response");
+const ApiError = require("../helpers/error");
 
 class Controller {
   //   {

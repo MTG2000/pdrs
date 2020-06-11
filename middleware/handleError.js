@@ -1,11 +1,15 @@
-const { handleError, ErrorHandler } = require("../helpers/error");
+const ApiError = require("../helpers/error");
 
+// Here we can handle all errors
 module.exports = (err, req, res, next) => {
-  if (!err.statusCode)
-    return handleError(
-      new ErrorHandler(400, "Invalid Data", "Please try again", err),
-      res
-    );
+  if (err instanceof ApiError) {
+    return res
+      .status(err.statusCode)
+      .json({ title: err.title, message: err.message });
+  }
 
-  handleError(err, res);
+  return res.status(400).json({
+    title: "Invalid Data",
+    message: "Please try again",
+  });
 };

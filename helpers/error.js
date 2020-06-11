@@ -1,33 +1,29 @@
-const { ErrorResponse } = require("./response");
-
-class ErrorHandler extends Error {
-  constructor(
-    statusCode,
-    title = "Something Wrong happened",
-    message = "please try again ",
-    err
-  ) {
+module.exports = class ApiError extends Error {
+  constructor(statusCode, title, message, error = null) {
     super();
     this.statusCode = statusCode;
-    this.response = new ErrorResponse(statusCode, title, message);
-    this.errorObject = err;
+    this.title = title;
+    this.message = message;
+    this.errorObject = error;
   }
 
-  sendErrorResponse(res) {
-    res.status(this.statusCode).json(this.response);
+  static BadRequest(title, msg, error) {
+    return new ApiError(400, title, msg, error);
   }
-}
 
-const handleError = (err, res) => {
-  //Send A response back to the client
-  res
-    .status(err.statusCode || 400)
-    .json(err.response || { title: "Something Wrong Happened" });
-  //Log the error
-  console.log(err);
-};
+  static NotFound(title, msg, error) {
+    return new ApiError(404, title, msg, error);
+  }
 
-module.exports = {
-  ErrorHandler,
-  handleError,
+  static InternalError(title, msg, error) {
+    return new ApiError(500, title, msg, error);
+  }
+
+  static Unauthorized(title, msg, error) {
+    return new ApiError(401, title, msg, error);
+  }
+
+  static Forbidden(title, msg, error) {
+    return new ApiError(403, title, msg, error);
+  }
 };

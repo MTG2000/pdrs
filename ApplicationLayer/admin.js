@@ -1,5 +1,6 @@
 const AdminDomain = require("../DomainLayer/admin.repository");
 const date = require("date-and-time");
+const ApiError = require("../helpers/error");
 
 class AdminService {
   getNewAccountRequests = async () => {

@@ -1,6 +1,6 @@
 const PatientsDomain = require("../DomainLayer/patients.repository");
 const UsersDomain = require("../DomainLayer/users.repository");
-const { ErrorHandler } = require("../helpers/error");
+const ApiError = require("../helpers/error");
 
 class PatientsService {
   // {
@@ -27,12 +27,12 @@ class PatientsService {
     const patientExist = await UsersDomain.getPatient(patientId);
     if (!patientExist) {
       if (patientName.trim().length <= 4)
-        throw new ErrorHandler(400, "Patient Name Very Short");
+        throw ApiError.BadRequest("Patient Name Very Short");
       await UsersDomain.newPatient(patientId, patientName);
     }
     const doctorId = await UsersDomain.getDoctorId(username);
     if (!doctorId || medicins.length === 0)
-      throw new ErrorHandler(400, "Info Required");
+      throw ApiError.BadRequest("Required fields missing values");
     const prescriptionId = await PatientsDomain.newPrescription(
       patientId,
       doctorId,

@@ -2,9 +2,9 @@ const authService = require("../services/auth");
 const argon = require("argon2");
 const Validation = require("../services/Validation");
 const UsersDomain = require("../DomainLayer/users.repository");
-const { ErrorHandler } = require("../helpers/error");
 const sha256 = require("crypto-js/sha256");
 const Axios = require("axios");
+const ApiError = require("../helpers/error");
 
 class UserAppService {
   async getAllUsers() {
@@ -18,20 +18,19 @@ class UserAppService {
 
     if (!user || !(await argon.verify(user.Password, password)))
       //User Doesn't exist or wrong credentials
-      throw new ErrorHandler(400, "Invalid Credentials");
+      throw ApiError.BadRequest("Invalid Username/Password");
     //   return SendResponse.JsonFailed(res, "Invalid Credentials");
 
     if (!user.IsActive)
-      throw new ErrorHandler(
-        400,
+      throw ApiError.BadRequest(
         "Account De-Activated",
-        "please contact the admins for info"
+        "Please contact the admins for more info"
       );
 
     const name = await UsersDomain.getUserRealName(user.Id);
     const accessToken = await authService.generateAccessToken({
       username: user.Username,
-      role: user.Type
+      role: user.Type,
     });
     //update refresh token
     const refreshToken = sha256(Math.random().toString()).toString();
@@ -45,14 +44,14 @@ class UserAppService {
         role: user.Type,
         accessToken,
         refreshToken,
-        ...name
-      }
+        ...name,
+      },
     };
   }
 
   async getPatient(id) {
     const patient = await UsersDomain.getPatient(id);
-    if (!patient) throw new ErrorHandler(404, "No Patient With this id");
+    if (!patient) throw ApiError.BadRequest("No Patient with this Id");
     return patient;
   }
 
@@ -61,7 +60,7 @@ class UserAppService {
       username,
       password: passwordRaw,
       type,
-      contact
+      contact,
     });
 
     const password = await argon.hash(passwordRaw);
@@ -84,7 +83,7 @@ class UserAppService {
     } else if (type === "Admin") {
       //Logic for inserting Admin
     }
-    throw new ErrorHandler(400, "New User Info Not Valid");
+    throw ApiError.BadRequest("New user's details not valid");
   }
 
   async toggleUserActive(id) {
@@ -98,7 +97,7 @@ class UserAppService {
     const res = await Axios.post(url);
     if (!res.data.success)
       //recaptcha failed
-      throw new ErrorHandler(400, "Recaptcha Failed", "Please try again");
+      throw ApiError.BadRequest("Recaptcha Failded", "Please try again");
 
     await UsersDomain.addAccountRequest(name, type, phone, email);
   }
@@ -127,13 +126,13 @@ class UserAppService {
 
       const accessToken = await authService.generateAccessToken({
         username,
-        role: user.Type
+        role: user.Type,
       });
       await UsersDomain.updateUserToken(user.Id, newRefreshToken);
 
       return { accessToken, refreshToken: newRefreshToken };
     }
-    throw new ErrorHandler(400, "Refresh Token Invalid");
+    throw ApiError.BadRequest("Refresh Token Invalid");
   }
 }
 
