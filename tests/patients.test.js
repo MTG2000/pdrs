@@ -15,7 +15,7 @@ describe("Testing Patients Api", () => {
   it("it should login as Doctor", async () => {
     const res = await agent.post("/api/users/login").send({
       username: "ahmad",
-      password: "123123"
+      password: "123123",
     });
     res.should.have.status(200);
     res.body.data.should.be.a("object");
@@ -26,25 +26,25 @@ describe("Testing Patients Api", () => {
     const res = await agent.post("/api/patients/new-prescription").send({
       patientId: "02227779988",
       patientName: "Fouad Shekho",
-      classificationId: 1,
+      conditionId: 1,
       note: "A break in the knee",
       medicins: [
         {
           value: 1,
           isBold: false,
-          isChronic: false
+          isChronic: false,
         },
         {
           value: 3,
           isBold: true,
-          isChronic: false
+          isChronic: false,
         },
         {
           value: 4,
           isBold: false,
-          isChronic: true
-        }
-      ]
+          isChronic: true,
+        },
+      ],
     });
     res.should.have.status(201);
   });
@@ -59,19 +59,19 @@ describe("Testing Patients Api", () => {
         {
           value: 133,
           isBold: false,
-          isChronic: false
+          isChronic: false,
         },
         {
           value: 3,
           isBold: true,
-          isChronic: false
+          isChronic: false,
         },
         {
           value: 4,
           isBold: false,
-          isChronic: true
-        }
-      ]
+          isChronic: true,
+        },
+      ],
     });
     res.should.have.status(400);
   });
@@ -86,19 +86,19 @@ describe("Testing Patients Api", () => {
         {
           value: 1,
           isBold: false,
-          isChronic: false
+          isChronic: false,
         },
         {
           value: 3,
           isBold: true,
-          isChronic: false
+          isChronic: false,
         },
         {
           value: 4,
           isBold: false,
-          isChronic: true
-        }
-      ]
+          isChronic: true,
+        },
+      ],
     });
     res.should.have.status(400);
   });

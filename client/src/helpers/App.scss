@@ -159,3 +159,33 @@ input[type="number"] {
 .line5 {
   top: 82%;
 }
+
+// Floating Message
+
+.floating-message {
+  width: 40px;
+  height: 40px;
+  text-align: center;
+  line-height: 40px;
+  color: #fff;
+  font-size: 20px;
+  background: rgba(97, 97, 97, 0.748);
+  border-radius: 50%;
+  position: fixed;
+  bottom: 60px;
+  right: 60px;
+  animation: boxshadow 1s linear infinite; /*  animation | duration|moving function | number of iteration  */
+  animation-direction: alternate;
+}
+
+@keyframes boxshadow {
+  0%,
+  100% {
+    transform: scale(1);
+    box-shadow: -2px -2px 20px rgb(212, 212, 212);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: -2px -2px 20px #575757;
+  }
+}

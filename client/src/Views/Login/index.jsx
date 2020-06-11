@@ -4,15 +4,16 @@ import {
   useTheme,
   makeStyles,
   Typography,
-  Button
+  Button,
+  Tooltip,
 } from "@material-ui/core";
 import { mainContext } from "../../stores/Context";
 import { useTranslation } from "react-i18next";
 const useStyle = makeStyles({
-  input: theme => ({
+  input: (theme) => ({
     borderColor: `${theme.palette.primary.main} !important`,
-    borderWidth: 2
-  })
+    borderWidth: 2,
+  }),
 });
 
 const LoginPage = () => {
@@ -26,7 +27,7 @@ const LoginPage = () => {
 
   const { t } = useTranslation("common");
 
-  const handleSubmit = e => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     store.Login(username, password);
   };
@@ -39,6 +40,17 @@ const LoginPage = () => {
       className="row justify-content-center flex-column align-items-center"
       style={{ minHeight: "100vh" }}
     >
+      <Tooltip
+        title={
+          <h6>
+            Accounts For Testing: <br /> (Doctor) "ahmad" , "123123"
+            <br /> (Pharmacian) "samer" , "123123"
+            <br /> (Admin) "mtg" , "mtgmtgmtg"
+          </h6>
+        }
+      >
+        <div className="floating-message">?</div>
+      </Tooltip>
       <Typography
         variant="h3"
         color="primary"
@@ -55,15 +67,15 @@ const LoginPage = () => {
           id="username"
           label={t("username")}
           value={username}
-          onChange={e => setUsername(e.target.value)}
+          onChange={(e) => setUsername(e.target.value)}
           variant="outlined"
           required
           color="primary"
           className={`${classes.input} mx-auto mb-3 col-12 `}
           InputProps={{
             classes: {
-              notchedOutline: classes.input
-            }
+              notchedOutline: classes.input,
+            },
           }}
         />
         <TextField
@@ -71,15 +83,15 @@ const LoginPage = () => {
           label={t("password")}
           type="password"
           value={password}
-          onChange={e => setPassword(e.target.value)}
+          onChange={(e) => setPassword(e.target.value)}
           variant="outlined"
           required
           color="primary"
           className={`${classes.input} mx-auto mb-3 col-12 `}
           InputProps={{
             classes: {
-              notchedOutline: classes.input
-            }
+              notchedOutline: classes.input,
+            },
           }}
         />
         <div className="row col-12 justify-content-center">
