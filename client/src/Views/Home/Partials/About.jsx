@@ -6,7 +6,7 @@ const About = () => {
   const { t } = useTranslation("about");
 
   return (
-    <Box pt={10} pb={6}>
+    <Box pt={22} pb={6}>
       <div>
         <Typography variant="h4" color="primary">
           {t("what is pdrs")}

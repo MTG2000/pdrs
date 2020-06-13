@@ -1,6 +1,5 @@
 import React, { useContext, useState } from "react";
 import Header from "./Views/Shared/Header";
-import Footer from "./Views/Shared/Footer";
 import { NotificationContainer } from "react-notifications";
 import { Container } from "react-bootstrap";
 
@@ -19,7 +18,6 @@ function App() {
       <Container>
         <AppRouter store={store} />
       </Container>
-      <Footer />
       {/* <Overlay /> */}
     </div>
   );

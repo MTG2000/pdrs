@@ -7,6 +7,7 @@ import { Container } from "@material-ui/core";
 import RequestAccount from "./Partials/RequestAccount";
 import { useTranslation } from "react-i18next";
 import About from "./Partials/About";
+import Footer from "../Shared/Footer";
 
 const Home = () => {
   const { AppStore } = useContext(mainContext);
@@ -38,6 +39,8 @@ const Home = () => {
           <RequestAccount store={store} />
         </Container>
       )}
+
+      {!store.username && <Footer />}
     </div>
   );
 };
