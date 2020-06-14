@@ -51,7 +51,7 @@ class UserAppService {
 
   async getPatient(id) {
     const patient = await UsersDomain.getPatient(id);
-    if (!patient) throw ApiError.BadRequest("No Patient with this Id");
+    if (!patient) throw ApiError.NotFound("No Patient with this Id");
     return patient;
   }
 
