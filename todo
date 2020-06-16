@@ -1,15 +1,9 @@
 
 -- FrontEnd
-Create a Main Page
-change the navbar
-Improve The Overall UI
-Client Side Validation
-make the redirection better
 Use Better response messages
 
 -- BackEnd
-Server Side Validation
-try to get a working email service
+ try to get a working email service
 add options to statistics
 check how many time a repo class is instanitated
 decrease the accessToken exxpiration time
