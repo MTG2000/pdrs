@@ -24,6 +24,8 @@ class PatientsService {
     note
   ) => {
     //!!! add validation !!!
+    if (patientId.trim().length !== 11)
+      throw ApiError.BadRequest("Patient Id have to be 11 characters length");
     const patientExist = await UsersDomain.getPatient(patientId);
     if (!patientExist) {
       if (patientName.trim().length <= 4)
