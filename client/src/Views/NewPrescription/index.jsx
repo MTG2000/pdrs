@@ -43,6 +43,7 @@ const NewPrescription = () => {
             variant="contained"
             color="primary"
             onClick={() => store.SubmitPrescription()}
+            type="submit"
           >
             <span className="content">{t("submit prescription")}</span>
             <div className="loading">

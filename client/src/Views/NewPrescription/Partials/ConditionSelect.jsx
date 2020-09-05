@@ -12,6 +12,7 @@ const ConditionSelect = ({ store }) => {
   return (
     <div className="col-12 py-5 mx-auto row justify-content-center">
       <Autocomplete
+        id="condition-input"
         value={store.selectedCondition}
         onChange={(event, newValue) => {
           store.SelectCondition(newValue);

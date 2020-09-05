@@ -1,0 +1,54 @@
+{
+    "data": [
+        {
+            "Id": 1,
+            "Name": "Heart",
+            "ImageUrl": "\\images\\classifications\\heart.svg"
+        },
+        {
+            "Id": 2,
+            "Name": "Bones",
+            "ImageUrl": "\\images\\classifications\\bones.svg"
+        },
+        {
+            "Id": 3,
+            "Name": "Brain",
+            "ImageUrl": "\\images\\classifications\\brain.svg"
+        },
+        {
+            "Id": 4,
+            "Name": "Eye",
+            "ImageUrl": "\\images\\classifications\\eye.svg"
+        },
+        {
+            "Id": 5,
+            "Name": "Stomach",
+            "ImageUrl": "\\images\\classifications\\stomach.svg"
+        },
+        {
+            "Id": 6,
+            "Name": "Tooth",
+            "ImageUrl": "\\images\\classifications\\tooth.svg"
+        },
+        {
+            "Id": 7,
+            "Name": "Kidney",
+            "ImageUrl": "\\images\\classifications\\kidney.svg"
+        },
+        {
+            "Id": 8,
+            "Name": "Lungs",
+            "ImageUrl": "\\images\\classifications\\lungs.svg"
+        },
+        {
+            "Id": 9,
+            "Name": "Ear",
+            "ImageUrl": "\\images\\classifications\\ear.svg"
+        },
+        {
+            "Id": 10,
+            "Name": "Sex",
+            "ImageUrl": "\\images\\classifications\\sex.svg"
+        }
+    ]
+}

@@ -46,7 +46,10 @@ const PrescriptionCard = ({ prescription }) => {
   );
 
   return (
-    <div className="prescription-card mx-auto py-5">
+    <div
+      className="prescription-card mx-auto py-5"
+      data-test-id="prescription-card"
+    >
       {prescription.Note ? (
         <Tooltip title={<h6>{prescription.Note}</h6>}>
           <div className="note  bg-primary px-3 py-3">
@@ -63,7 +66,10 @@ const PrescriptionCard = ({ prescription }) => {
         </div>
       )}
       <div className="icon ">
-        <img src={prescription.ClassificationIconUrl} alt="classification" />
+        <img
+          src={prescription.ClassificationIconUrl}
+          alt={prescription.Classification_Name}
+        />
       </div>
 
       <div className="medicins px-4 py-5 py-md-0  row justify-content-begin">

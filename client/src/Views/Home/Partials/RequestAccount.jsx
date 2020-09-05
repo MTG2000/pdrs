@@ -38,6 +38,7 @@ const RequestAccount = ({ store }) => {
           variant="outlined"
           value={name}
           onChange={(e) => setName(e.target.value)}
+          data-cy="name-input"
         />
         <TextField
           label={t("common:your specialty")}
@@ -49,6 +50,7 @@ const RequestAccount = ({ store }) => {
           variant="outlined"
           value={type}
           onChange={(e) => setType(e.target.value)}
+          data-cy="specialty-input"
         />
         <TextField
           label={t("common:your phone")}
@@ -60,6 +62,7 @@ const RequestAccount = ({ store }) => {
           variant="outlined"
           value={phone}
           onChange={(e) => setPhone(e.target.value)}
+          data-cy="phone-input"
         />
         <TextField
           label={t("common:your email")}
@@ -71,6 +74,7 @@ const RequestAccount = ({ store }) => {
           variant="outlined"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          data-cy="email-input"
         />
         <GoogleReCaptcha onVerify={(token) => setRecaptcha(token)} />
 

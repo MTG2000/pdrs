@@ -1,0 +1,177 @@
+{
+    "data": {
+        "prescriptions": [
+            {
+                "Id": 5,
+                "Doctor_Id": 4,
+                "Note": null,
+                "Prescription_Date": "2019-10-17",
+                "Classification_Id": 6,
+                "Classification_Name": "Tooth",
+                "Condition": "Cavities",
+                "ClassificationIconUrl": "\\images\\classifications\\tooth.svg",
+                "medicins": [
+                    {
+                        "Name": "Shfazien-Forte",
+                        "IsBold": "0",
+                        "IsChronic": "0",
+                        "Pharmacy_Id": 1
+                    },
+                    {
+                        "Name": "Cymbalta",
+                        "IsBold": "0",
+                        "IsChronic": "0",
+                        "Pharmacy_Id": 1
+                    },
+                    {
+                        "Name": "Lorazepam",
+                        "IsBold": "0",
+                        "IsChronic": "0",
+                        "Pharmacy_Id": null
+                    }
+                ]
+            },
+            {
+                "Id": 4,
+                "Doctor_Id": 2,
+                "Note": "This is a side note",
+                "Prescription_Date": "2020-02-16",
+                "Classification_Id": 7,
+                "Classification_Name": "Kidney",
+                "Condition": "Chronic kidney disease",
+                "ClassificationIconUrl": "\\images\\classifications\\kidney.svg",
+                "medicins": [
+                    {
+                        "Name": "Hydrochlorothiazide",
+                        "IsBold": "0",
+                        "IsChronic": "0",
+                        "Pharmacy_Id": 1
+                    },
+                    {
+                        "Name": "Ibuprofen",
+                        "IsBold": "0",
+                        "IsChronic": "0",
+                        "Pharmacy_Id": null
+                    },
+                    {
+                        "Name": "Doxycycline",
+                        "IsBold": "0",
+                        "IsChronic": "0",
+                        "Pharmacy_Id": null
+                    }
+                ]
+            },
+            {
+                "Id": 3,
+                "Doctor_Id": 3,
+                "Note": null,
+                "Prescription_Date": "2019-12-22",
+                "Classification_Id": 6,
+                "Classification_Name": "Tooth",
+                "Condition": "Cracked or broken teeth",
+                "ClassificationIconUrl": "\\images\\classifications\\tooth.svg",
+                "medicins": [
+                    {
+                        "Name": "Trazodone",
+                        "IsBold": "0",
+                        "IsChronic": "0",
+                        "Pharmacy_Id": null
+                    },
+                    {
+                        "Name": "Metformin",
+                        "IsBold": "0",
+                        "IsChronic": "0",
+                        "Pharmacy_Id": 1
+                    },
+                    {
+                        "Name": "Hydrochlorothiazide",
+                        "IsBold": "0",
+                        "IsChronic": "0",
+                        "Pharmacy_Id": 1
+                    },
+                    {
+                        "Name": "Ibuprofen",
+                        "IsBold": "1",
+                        "IsChronic": "0",
+                        "Pharmacy_Id": null
+                    }
+                ]
+            },
+            {
+                "Id": 2,
+                "Doctor_Id": 4,
+                "Note": null,
+                "Prescription_Date": "2019-07-27",
+                "Classification_Id": 2,
+                "Classification_Name": "Bones",
+                "Condition": "arthritis",
+                "ClassificationIconUrl": "\\images\\classifications\\bones.svg",
+                "medicins": [
+                    {
+                        "Name": "Citalopram",
+                        "IsBold": "0",
+                        "IsChronic": "0",
+                        "Pharmacy_Id": 1
+                    },
+                    {
+                        "Name": "Adderall",
+                        "IsBold": "1",
+                        "IsChronic": "0",
+                        "Pharmacy_Id": null
+                    },
+                    {
+                        "Name": "Cymbalta",
+                        "IsBold": "0",
+                        "IsChronic": "0",
+                        "Pharmacy_Id": 1
+                    },
+                    {
+                        "Name": "Lorazepam",
+                        "IsBold": "0",
+                        "IsChronic": "1",
+                        "Pharmacy_Id": null
+                    }
+                ]
+            },
+            {
+                "Id": 1,
+                "Doctor_Id": 3,
+                "Note": "This is a side note",
+                "Prescription_Date": "2019-07-31",
+                "Classification_Id": 6,
+                "Classification_Name": "Tooth",
+                "Condition": "Oral cancer",
+                "ClassificationIconUrl": "\\images\\classifications\\tooth.svg",
+                "medicins": [
+                    {
+                        "Name": "Sitamol",
+                        "IsBold": "0",
+                        "IsChronic": "0",
+                        "Pharmacy_Id": null
+                    },
+                    {
+                        "Name": "Panadol",
+                        "IsBold": "0",
+                        "IsChronic": "0",
+                        "Pharmacy_Id": 1
+                    },
+                    {
+                        "Name": "Adderall",
+                        "IsBold": "0",
+                        "IsChronic": "0",
+                        "Pharmacy_Id": 1
+                    },
+                    {
+                        "Name": "Metformin",
+                        "IsBold": "0",
+                        "IsChronic": "0",
+                        "Pharmacy_Id": null
+                    }
+                ]
+            }
+        ],
+        "chronicMedicins": [
+            "Lorazepam"
+        ]
+    }
+}

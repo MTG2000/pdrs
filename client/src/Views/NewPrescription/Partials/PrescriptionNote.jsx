@@ -10,11 +10,12 @@ const PrescriptionNote = ({ store }) => {
       <div className="container-note col-8 mx-auto px-0">
         <p className="note bg-primary">{t("note")}</p>
         <textarea
+          id="prescription-note-input"
           type="text"
           className="write-note"
           required
           value={store.note}
-          onChange={e => store.SetNote(e.target.value)}
+          onChange={(e) => store.SetNote(e.target.value)}
         ></textarea>
         <div className="line1"></div>
         <div className="line2"></div>
